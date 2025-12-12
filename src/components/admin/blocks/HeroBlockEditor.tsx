@@ -3,6 +3,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { HeroBlockData } from '@/types/cms';
+import { ImageUploader } from '../ImageUploader';
 
 interface HeroBlockEditorProps {
   data: HeroBlockData;
@@ -40,15 +41,11 @@ export function HeroBlockEditor({ data, onChange, isEditing }: HeroBlockEditorPr
             placeholder="Kort beskrivning"
           />
         </div>
-        <div className="space-y-2">
-          <Label htmlFor="hero-bg">Bakgrundsbild (URL)</Label>
-          <Input
-            id="hero-bg"
-            value={localData.backgroundImage || ''}
-            onChange={(e) => handleChange({ backgroundImage: e.target.value })}
-            placeholder="https://example.com/bild.jpg"
-          />
-        </div>
+        <ImageUploader
+          value={localData.backgroundImage || ''}
+          onChange={(url) => handleChange({ backgroundImage: url })}
+          label="Bakgrundsbild"
+        />
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label>Primär knapp</Label>
