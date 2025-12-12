@@ -3,6 +3,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { ImageBlockData } from '@/types/cms';
 import { ImageIcon } from 'lucide-react';
+import { ImageUploader } from '../ImageUploader';
 
 interface ImageBlockEditorProps {
   data: ImageBlockData;
@@ -22,15 +23,11 @@ export function ImageBlockEditor({ data, onChange, isEditing }: ImageBlockEditor
   if (isEditing) {
     return (
       <div className="space-y-4 p-4 bg-muted/50 rounded-lg">
-        <div className="space-y-2">
-          <Label htmlFor="image-src">Bild-URL</Label>
-          <Input
-            id="image-src"
-            value={localData.src || ''}
-            onChange={(e) => handleChange({ src: e.target.value })}
-            placeholder="https://example.com/bild.jpg"
-          />
-        </div>
+        <ImageUploader
+          value={localData.src || ''}
+          onChange={(url) => handleChange({ src: url })}
+          label="Bild"
+        />
         <div className="space-y-2">
           <Label htmlFor="image-alt">Alt-text (tillgänglighet)</Label>
           <Input
@@ -49,16 +46,6 @@ export function ImageBlockEditor({ data, onChange, isEditing }: ImageBlockEditor
             placeholder="Bildtext under bilden"
           />
         </div>
-        {localData.src && (
-          <div className="mt-4">
-            <p className="text-sm text-muted-foreground mb-2">Förhandsvisning:</p>
-            <img
-              src={localData.src}
-              alt={localData.alt || 'Förhandsvisning'}
-              className="max-h-48 rounded-lg object-cover"
-            />
-          </div>
-        )}
       </div>
     );
   }

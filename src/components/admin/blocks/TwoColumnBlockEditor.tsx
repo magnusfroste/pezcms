@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { TwoColumnBlockData } from '@/types/cms';
 import { Bold, Italic, List, ListOrdered, ArrowLeftRight } from 'lucide-react';
+import { ImageUploader } from '../ImageUploader';
 
 interface TwoColumnBlockEditorProps {
   data: TwoColumnBlockData;
@@ -28,10 +29,6 @@ export function TwoColumnBlockEditor({ data, isEditing, onChange }: TwoColumnBlo
     },
   });
 
-  const handleImageChange = (field: 'imageSrc' | 'imageAlt', value: string) => {
-    onChange({ ...data, [field]: value });
-  };
-
   const togglePosition = () => {
     onChange({ ...data, imagePosition: data.imagePosition === 'left' ? 'right' : 'left' });
   };
@@ -49,31 +46,19 @@ export function TwoColumnBlockEditor({ data, isEditing, onChange }: TwoColumnBlo
 
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-4">
-            <div>
-              <Label>Bild-URL</Label>
-              <Input
-                value={data.imageSrc || ''}
-                onChange={(e) => handleImageChange('imageSrc', e.target.value)}
-                placeholder="https://example.com/bild.jpg"
-              />
-            </div>
+            <ImageUploader
+              value={data.imageSrc || ''}
+              onChange={(url) => onChange({ ...data, imageSrc: url })}
+              label="Bild"
+            />
             <div>
               <Label>Alt-text</Label>
               <Input
                 value={data.imageAlt || ''}
-                onChange={(e) => handleImageChange('imageAlt', e.target.value)}
+                onChange={(e) => onChange({ ...data, imageAlt: e.target.value })}
                 placeholder="Beskrivning av bilden"
               />
             </div>
-            {data.imageSrc && (
-              <div className="aspect-video rounded-lg overflow-hidden bg-muted">
-                <img 
-                  src={data.imageSrc} 
-                  alt={data.imageAlt || ''} 
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            )}
           </div>
 
           <div className="space-y-2">
