@@ -2,95 +2,120 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
+/* Swedish Healthcare CMS Design System
+   Medical-grade aesthetic with Sophiahemmet-inspired palette
+   All colors MUST be HSL.
 */
+
+@import url('https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap');
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Medical Blue Primary - Sophiahemmet #003087 */
+    --primary: 220 100% 26%;
+    --primary-foreground: 0 0% 100%;
+    
+    /* Clean White Background */
+    --background: 210 20% 99%;
+    --foreground: 220 25% 12%;
 
+    /* Cards with subtle warmth */
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 220 25% 12%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 220 25% 12%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Secondary - Soft blue-gray */
+    --secondary: 210 25% 95%;
+    --secondary-foreground: 220 25% 20%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Muted elements */
+    --muted: 210 15% 93%;
+    --muted-foreground: 220 10% 45%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Accent - Teal for healthcare */
+    --accent: 180 45% 92%;
+    --accent-foreground: 180 60% 25%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Status colors */
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    
+    --success: 142 72% 35%;
+    --success-foreground: 0 0% 100%;
+    
+    --warning: 38 92% 50%;
+    --warning-foreground: 38 92% 15%;
+    
+    --info: 200 85% 45%;
+    --info-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    /* Borders and inputs */
+    --border: 214 20% 88%;
+    --input: 214 20% 88%;
+    --ring: 220 100% 26%;
 
     --radius: 0.5rem;
 
-    --sidebar-background: 0 0% 98%;
+    /* Sidebar */
+    --sidebar-background: 220 25% 12%;
+    --sidebar-foreground: 210 15% 93%;
+    --sidebar-primary: 0 0% 100%;
+    --sidebar-primary-foreground: 220 25% 12%;
+    --sidebar-accent: 220 25% 18%;
+    --sidebar-accent-foreground: 210 15% 93%;
+    --sidebar-border: 220 20% 20%;
+    --sidebar-ring: 220 100% 50%;
 
-    --sidebar-foreground: 240 5.3% 26.1%;
+    /* Typography */
+    --font-serif: 'PT Serif', Georgia, serif;
+    --font-sans: 'Inter', system-ui, sans-serif;
 
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 hsl(220 25% 12% / 0.05);
+    --shadow: 0 1px 3px 0 hsl(220 25% 12% / 0.1), 0 1px 2px -1px hsl(220 25% 12% / 0.1);
+    --shadow-md: 0 4px 6px -1px hsl(220 25% 12% / 0.1), 0 2px 4px -2px hsl(220 25% 12% / 0.1);
+    --shadow-lg: 0 10px 15px -3px hsl(220 25% 12% / 0.1), 0 4px 6px -4px hsl(220 25% 12% / 0.1);
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --primary: 210 60% 60%;
+    --primary-foreground: 220 25% 10%;
+    
+    --background: 220 25% 8%;
+    --foreground: 210 20% 95%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 220 25% 12%;
+    --card-foreground: 210 20% 95%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 220 25% 12%;
+    --popover-foreground: 210 20% 95%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 220 20% 18%;
+    --secondary-foreground: 210 20% 90%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --muted: 220 15% 20%;
+    --muted-foreground: 210 10% 60%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 180 30% 20%;
+    --accent-foreground: 180 50% 80%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62% 40%;
+    --destructive-foreground: 0 0% 100%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --border: 220 15% 22%;
+    --input: 220 15% 22%;
+    --ring: 210 60% 60%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 220 25% 6%;
+    --sidebar-foreground: 210 15% 90%;
+    --sidebar-primary: 210 60% 60%;
+    --sidebar-primary-foreground: 220 25% 8%;
+    --sidebar-accent: 220 25% 12%;
+    --sidebar-accent-foreground: 210 15% 90%;
+    --sidebar-border: 220 20% 15%;
+    --sidebar-ring: 210 60% 60%;
   }
 }
 
@@ -99,7 +124,108 @@ All colors MUST be HSL.
     @apply border-border;
   }
 
-  body {
-    @apply bg-background text-foreground;
+  html {
+    scroll-behavior: smooth;
   }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: var(--font-sans);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-serif);
+    @apply font-bold tracking-tight;
+  }
+}
+
+/* Tiptap Editor Styles */
+.tiptap {
+  @apply outline-none min-h-[300px] p-4;
+}
+
+.tiptap p {
+  @apply my-3 leading-relaxed;
+}
+
+.tiptap h1 {
+  @apply text-3xl font-bold mt-8 mb-4;
+  font-family: var(--font-serif);
+}
+
+.tiptap h2 {
+  @apply text-2xl font-bold mt-6 mb-3;
+  font-family: var(--font-serif);
+}
+
+.tiptap h3 {
+  @apply text-xl font-semibold mt-5 mb-2;
+  font-family: var(--font-serif);
+}
+
+.tiptap ul {
+  @apply list-disc ml-6 my-3;
+}
+
+.tiptap ol {
+  @apply list-decimal ml-6 my-3;
+}
+
+.tiptap li {
+  @apply my-1;
+}
+
+.tiptap blockquote {
+  @apply border-l-4 border-primary pl-4 italic my-4 text-muted-foreground;
+}
+
+.tiptap a {
+  @apply text-primary underline hover:no-underline;
+}
+
+.tiptap img {
+  @apply rounded-lg max-w-full h-auto my-4;
+}
+
+.tiptap p.is-editor-empty:first-child::before {
+  @apply text-muted-foreground pointer-events-none float-left h-0;
+  content: attr(data-placeholder);
+}
+
+/* Status Badge Styles */
+.status-badge {
+  @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium;
+}
+
+.status-draft {
+  @apply bg-muted text-muted-foreground;
+}
+
+.status-reviewing {
+  @apply bg-warning/20 text-warning-foreground;
+}
+
+.status-published {
+  @apply bg-success/20 text-success;
+}
+
+.status-archived {
+  @apply bg-secondary text-secondary-foreground;
+}
+
+/* Smooth page transitions */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Sticky save bar */
+.sticky-save-bar {
+  @apply fixed bottom-0 left-0 right-0 z-50;
+  @apply bg-card/95 backdrop-blur-sm border-t border-border;
+  @apply shadow-lg;
 }

@@ -1,0 +1,58 @@
+import { ReactNode, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/hooks/useAuth';
+import { AdminSidebar } from './AdminSidebar';
+import { Loader2 } from 'lucide-react';
+
+interface AdminLayoutProps {
+  children: ReactNode;
+}
+
+export function AdminLayout({ children }: AdminLayoutProps) {
+  const { user, loading, isWriter } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate('/auth');
+    }
+  }, [loading, user, navigate]);
+
+  if (loading) {
+    return (
+      <div className="flex h-screen items-center justify-center bg-background">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  if (!user) {
+    return null;
+  }
+
+  if (!isWriter) {
+    return (
+      <div className="flex h-screen items-center justify-center bg-background">
+        <div className="text-center">
+          <h1 className="font-serif text-2xl font-bold text-foreground mb-2">
+            Ingen åtkomst
+          </h1>
+          <p className="text-muted-foreground">
+            Du har inte behörighet att komma åt denna sida.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex h-screen bg-background">
+      <AdminSidebar />
+      <main className="flex-1 overflow-auto">
+        <div className="animate-fade-in">
+          {children}
+        </div>
+      </main>
+    </div>
+  );
+}
