@@ -103,7 +103,8 @@ function RenderBlock({ block }: { block: ContentBlock }) {
 }
 
 export default function PublicPage() {
-  const { slug } = useParams<{ slug: string }>();
+  const { slug: paramSlug } = useParams<{ slug: string }>();
+  const slug = paramSlug || 'hem';
 
   const { data: page, isLoading, error } = useQuery({
     queryKey: ['public-page', slug],
@@ -120,7 +121,6 @@ export default function PublicPage() {
 
       return parseContent(data);
     },
-    enabled: !!slug,
   });
 
   if (isLoading) {
