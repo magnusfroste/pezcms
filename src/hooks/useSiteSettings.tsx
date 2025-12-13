@@ -132,6 +132,20 @@ const defaultPerformanceSettings: PerformanceSettings = {
   cacheStaticAssets: true,
 };
 
+export interface CustomScriptsSettings {
+  headStart: string;
+  headEnd: string;
+  bodyStart: string;
+  bodyEnd: string;
+}
+
+const defaultCustomScriptsSettings: CustomScriptsSettings = {
+  headStart: '',
+  headEnd: '',
+  bodyStart: '',
+  bodyEnd: '',
+};
+
 // Generic hook for fetching settings
 function useSiteSettings<T>(key: string, defaultValue: T) {
   return useQuery({
@@ -240,4 +254,13 @@ export function useBrandingSettings() {
 
 export function useUpdateBrandingSettings() {
   return useUpdateSiteSettings<BrandingSettings>('branding', 'Varumärkesinställningarna har uppdaterats.');
+}
+
+// Custom Scripts hooks
+export function useCustomScriptsSettings() {
+  return useSiteSettings<CustomScriptsSettings>('custom_scripts', defaultCustomScriptsSettings);
+}
+
+export function useUpdateCustomScriptsSettings() {
+  return useUpdateSiteSettings<CustomScriptsSettings>('custom_scripts', 'Script-inställningarna har uppdaterats.');
 }

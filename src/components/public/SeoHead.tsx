@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import { useSeoSettings, usePerformanceSettings } from '@/hooks/useSiteSettings';
+import { useSeoSettings, usePerformanceSettings, useCustomScriptsSettings } from '@/hooks/useSiteSettings';
 
 interface SeoHeadProps {
   title?: string;
@@ -20,6 +20,7 @@ export function SeoHead({
 }: SeoHeadProps) {
   const { data: seoSettings } = useSeoSettings();
   const { data: performanceSettings } = usePerformanceSettings();
+  const { data: scriptsSettings } = useCustomScriptsSettings();
 
   const siteTitle = seoSettings?.siteTitle || 'Webbplats';
   const titleTemplate = seoSettings?.titleTemplate || '%s';
@@ -73,6 +74,31 @@ export function SeoHead({
       {/* Performance hints */}
       {performanceSettings?.prefetchLinks && (
         <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+      )}
+
+      {/* Custom Scripts - Head Start */}
+      {scriptsSettings?.headStart && (
+        <script type="text/javascript">
+          {`/* Head Start Scripts */`}
+        </script>
+      )}
+    </Helmet>
+  );
+}
+
+// Separate component for injecting raw scripts into head
+export function HeadScripts() {
+  const { data: scriptsSettings } = useCustomScriptsSettings();
+
+  if (!scriptsSettings?.headStart && !scriptsSettings?.headEnd) return null;
+
+  return (
+    <Helmet>
+      {scriptsSettings?.headStart && (
+        <script>{scriptsSettings.headStart}</script>
+      )}
+      {scriptsSettings?.headEnd && (
+        <script>{scriptsSettings.headEnd}</script>
       )}
     </Helmet>
   );
