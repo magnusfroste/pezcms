@@ -456,6 +456,16 @@ export default function BrandingSettingsPage() {
                     />
                   </div>
                   
+                  <div className="space-y-2">
+                    <Label>Slogan / tagline</Label>
+                    <Input
+                      value={settings.brandTagline || ''}
+                      onChange={(e) => updateField('brandTagline', e.target.value)}
+                      placeholder="T.ex. Kvalitetsvård med patienten i fokus"
+                    />
+                    <p className="text-xs text-muted-foreground">Visas i footern under organisationsnamnet</p>
+                  </div>
+                  
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <Label>Logo (ljus bakgrund)</Label>
