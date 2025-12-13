@@ -151,6 +151,10 @@ export interface ArticleGridBlockData {
 export interface YouTubeBlockData {
   url: string;
   title?: string;
+  autoplay?: boolean;
+  loop?: boolean;
+  mute?: boolean;
+  controls?: boolean;
 }
 
 // Workflow actions
