@@ -13,6 +13,11 @@ export interface FooterSettings {
   facebook?: string;
   instagram?: string;
   linkedin?: string;
+  // Section visibility
+  showBrand?: boolean;
+  showQuickLinks?: boolean;
+  showContact?: boolean;
+  showHours?: boolean;
 }
 
 export interface SeoSettings {
@@ -91,6 +96,10 @@ const defaultFooterSettings: FooterSettings = {
   facebook: '',
   instagram: '',
   linkedin: '',
+  showBrand: true,
+  showQuickLinks: true,
+  showContact: true,
+  showHours: true,
 };
 
 const defaultSeoSettings: SeoSettings = {

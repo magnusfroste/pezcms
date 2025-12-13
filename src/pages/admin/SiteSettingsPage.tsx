@@ -89,6 +89,10 @@ export default function SiteSettingsPage() {
     facebook: '',
     instagram: '',
     linkedin: '',
+    showBrand: true,
+    showQuickLinks: true,
+    showContact: true,
+    showHours: true,
   });
 
   const [seoData, setSeoData] = useState<SeoSettings>({
@@ -420,6 +424,56 @@ export default function SiteSettingsPage() {
                 Spara footer-inställningar
               </Button>
             </div>
+
+            {/* Layout Section */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="font-serif">Layout</CardTitle>
+                <CardDescription>Välj vilka sektioner som visas i footern</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <Label>Varumärke & logo</Label>
+                    <p className="text-xs text-muted-foreground">Visar organisationsnamn och tagline</p>
+                  </div>
+                  <Switch
+                    checked={footerData.showBrand !== false}
+                    onCheckedChange={(checked) => setFooterData(prev => ({ ...prev, showBrand: checked }))}
+                  />
+                </div>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <Label>Snabblänkar</Label>
+                    <p className="text-xs text-muted-foreground">Visar länkar till publicerade sidor</p>
+                  </div>
+                  <Switch
+                    checked={footerData.showQuickLinks !== false}
+                    onCheckedChange={(checked) => setFooterData(prev => ({ ...prev, showQuickLinks: checked }))}
+                  />
+                </div>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <Label>Kontaktuppgifter</Label>
+                    <p className="text-xs text-muted-foreground">Visar telefon, e-post och adress</p>
+                  </div>
+                  <Switch
+                    checked={footerData.showContact !== false}
+                    onCheckedChange={(checked) => setFooterData(prev => ({ ...prev, showContact: checked }))}
+                  />
+                </div>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <Label>Öppettider</Label>
+                    <p className="text-xs text-muted-foreground">Visar vardags- och helgtider</p>
+                  </div>
+                  <Switch
+                    checked={footerData.showHours !== false}
+                    onCheckedChange={(checked) => setFooterData(prev => ({ ...prev, showHours: checked }))}
+                  />
+                </div>
+              </CardContent>
+            </Card>
 
             <div className="grid gap-6 md:grid-cols-2">
               <Card>
