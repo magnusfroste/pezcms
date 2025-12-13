@@ -250,12 +250,12 @@ export function PublicFooter() {
           )}
           
           <div className="flex gap-6 text-sm text-primary-foreground/60">
-            <a href="#" className="hover:text-primary-foreground transition-colors">
+            <Link to="/integritetspolicy" className="hover:text-primary-foreground transition-colors">
               Integritetspolicy
-            </a>
-            <a href="#" className="hover:text-primary-foreground transition-colors">
+            </Link>
+            <Link to="/tillganglighet" className="hover:text-primary-foreground transition-colors">
               Tillgänglighet
-            </a>
+            </Link>
           </div>
         </div>
       </div>
