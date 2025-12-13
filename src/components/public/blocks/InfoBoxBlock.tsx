@@ -7,21 +7,21 @@ interface InfoBoxBlockProps {
 
 const variantStyles = {
   info: {
-    bg: 'bg-blue-50 dark:bg-blue-950/30',
-    border: 'border-blue-200 dark:border-blue-800',
-    icon: 'text-blue-600 dark:text-blue-400',
+    bg: 'bg-info/10',
+    border: 'border-info/30',
+    icon: 'text-info',
     IconComponent: Info,
   },
   success: {
-    bg: 'bg-green-50 dark:bg-green-950/30',
-    border: 'border-green-200 dark:border-green-800',
-    icon: 'text-green-600 dark:text-green-400',
+    bg: 'bg-success/10',
+    border: 'border-success/30',
+    icon: 'text-success',
     IconComponent: CheckCircle,
   },
   warning: {
-    bg: 'bg-amber-50 dark:bg-amber-950/30',
-    border: 'border-amber-200 dark:border-amber-800',
-    icon: 'text-amber-600 dark:text-amber-400',
+    bg: 'bg-warning/10',
+    border: 'border-warning/30',
+    icon: 'text-warning',
     IconComponent: AlertTriangle,
   },
   highlight: {
