@@ -86,6 +86,9 @@ export default function SiteSettingsPage() {
     postalCode: '',
     weekdayHours: '',
     weekendHours: '',
+    facebook: '',
+    instagram: '',
+    linkedin: '',
   });
 
   const [seoData, setSeoData] = useState<SeoSettings>({
@@ -465,12 +468,12 @@ export default function SiteSettingsPage() {
                 </CardContent>
               </Card>
 
-              <Card className="md:col-span-2">
+              <Card>
                 <CardHeader>
                   <CardTitle className="font-serif">Öppettider</CardTitle>
                   <CardDescription>Tider som visas i footern</CardDescription>
                 </CardHeader>
-                <CardContent className="grid gap-4 md:grid-cols-2">
+                <CardContent className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="weekdayHours">Vardagar (mån–fre)</Label>
                     <Input
@@ -487,6 +490,42 @@ export default function SiteSettingsPage() {
                       value={footerData.weekendHours}
                       onChange={(e) => setFooterData(prev => ({ ...prev, weekendHours: e.target.value }))}
                       placeholder="Stängt"
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="font-serif">Sociala medier</CardTitle>
+                  <CardDescription>Länkar till sociala medier-profiler</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="facebook">Facebook</Label>
+                    <Input
+                      id="facebook"
+                      value={footerData.facebook || ''}
+                      onChange={(e) => setFooterData(prev => ({ ...prev, facebook: e.target.value }))}
+                      placeholder="https://facebook.com/..."
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="instagram">Instagram</Label>
+                    <Input
+                      id="instagram"
+                      value={footerData.instagram || ''}
+                      onChange={(e) => setFooterData(prev => ({ ...prev, instagram: e.target.value }))}
+                      placeholder="https://instagram.com/..."
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="linkedin">LinkedIn</Label>
+                    <Input
+                      id="linkedin"
+                      value={footerData.linkedin || ''}
+                      onChange={(e) => setFooterData(prev => ({ ...prev, linkedin: e.target.value }))}
+                      placeholder="https://linkedin.com/company/..."
                     />
                   </div>
                 </CardContent>

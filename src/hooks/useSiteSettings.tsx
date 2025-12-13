@@ -10,6 +10,9 @@ export interface FooterSettings {
   postalCode: string;
   weekdayHours: string;
   weekendHours: string;
+  facebook?: string;
+  instagram?: string;
+  linkedin?: string;
 }
 
 export interface SeoSettings {
@@ -85,6 +88,9 @@ const defaultFooterSettings: FooterSettings = {
   postalCode: '',
   weekdayHours: '',
   weekendHours: '',
+  facebook: '',
+  instagram: '',
+  linkedin: '',
 };
 
 const defaultSeoSettings: SeoSettings = {
