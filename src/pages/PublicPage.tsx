@@ -5,7 +5,8 @@ import { Loader2 } from 'lucide-react';
 import { BlockRenderer } from '@/components/public/BlockRenderer';
 import { PublicNavigation } from '@/components/public/PublicNavigation';
 import { PublicFooter } from '@/components/public/PublicFooter';
-import { SeoHead } from '@/components/public/SeoHead';
+import { SeoHead, HeadScripts } from '@/components/public/SeoHead';
+import { BodyScripts } from '@/components/public/BodyScripts';
 import { cn } from '@/lib/utils';
 import type { Page, ContentBlock } from '@/types/cms';
 
@@ -75,6 +76,8 @@ export default function PublicPage() {
         noIndex={page.meta_json?.noIndex}
         noFollow={page.meta_json?.noFollow}
       />
+      <HeadScripts />
+      <BodyScripts position="start" />
 
       <div className="min-h-screen bg-background">
         <PublicNavigation />
@@ -108,6 +111,8 @@ export default function PublicPage() {
 
         <PublicFooter />
       </div>
+
+      <BodyScripts position="end" />
     </>
   );
 }

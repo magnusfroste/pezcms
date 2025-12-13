@@ -14,12 +14,15 @@ import {
   useUpdateSeoSettings,
   usePerformanceSettings,
   useUpdatePerformanceSettings,
+  useCustomScriptsSettings,
+  useUpdateCustomScriptsSettings,
   FooterSettings,
   SeoSettings,
   PerformanceSettings,
+  CustomScriptsSettings,
   FooterSectionId
 } from '@/hooks/useSiteSettings';
-import { Loader2, Save, Globe, Zap, Phone, ImageIcon, X, AlertTriangle, GripVertical } from 'lucide-react';
+import { Loader2, Save, Globe, Zap, Phone, ImageIcon, X, AlertTriangle, GripVertical, Code } from 'lucide-react';
 import { MediaLibraryPicker } from '@/components/admin/MediaLibraryPicker';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors, DragEndEvent } from '@dnd-kit/core';
@@ -128,10 +131,12 @@ export default function SiteSettingsPage() {
   const { data: footerSettings, isLoading: footerLoading } = useFooterSettings();
   const { data: seoSettings, isLoading: seoLoading } = useSeoSettings();
   const { data: performanceSettings, isLoading: performanceLoading } = usePerformanceSettings();
+  const { data: customScriptsSettings, isLoading: scriptsLoading } = useCustomScriptsSettings();
   
   const updateFooter = useUpdateFooterSettings();
   const updateSeo = useUpdateSeoSettings();
   const updatePerformance = useUpdatePerformanceSettings();
+  const updateScripts = useUpdateCustomScriptsSettings();
   
   const [footerData, setFooterData] = useState<FooterSettings>({
     phone: '',
@@ -178,6 +183,13 @@ export default function SiteSettingsPage() {
     cacheStaticAssets: true,
   });
 
+  const [scriptsData, setScriptsData] = useState<CustomScriptsSettings>({
+    headStart: '',
+    headEnd: '',
+    bodyStart: '',
+    bodyEnd: '',
+  });
+
   useEffect(() => {
     if (footerSettings) setFooterData(footerSettings);
   }, [footerSettings]);
@@ -190,8 +202,12 @@ export default function SiteSettingsPage() {
     if (performanceSettings) setPerformanceData(performanceSettings);
   }, [performanceSettings]);
 
-  const isLoading = footerLoading || seoLoading || performanceLoading;
-  const isSaving = updateFooter.isPending || updateSeo.isPending || updatePerformance.isPending;
+  useEffect(() => {
+    if (customScriptsSettings) setScriptsData(customScriptsSettings);
+  }, [customScriptsSettings]);
+
+  const isLoading = footerLoading || seoLoading || performanceLoading || scriptsLoading;
+  const isSaving = updateFooter.isPending || updateSeo.isPending || updatePerformance.isPending || updateScripts.isPending;
 
   if (isLoading) {
     return (
@@ -212,10 +228,14 @@ export default function SiteSettingsPage() {
         </div>
 
         <Tabs defaultValue="seo" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 max-w-md">
+          <TabsList className="grid w-full grid-cols-4 max-w-lg">
             <TabsTrigger value="seo" className="flex items-center gap-2">
               <Globe className="h-4 w-4" />
               SEO
+            </TabsTrigger>
+            <TabsTrigger value="scripts" className="flex items-center gap-2">
+              <Code className="h-4 w-4" />
+              Scripts
             </TabsTrigger>
             <TabsTrigger value="performance" className="flex items-center gap-2">
               <Zap className="h-4 w-4" />
@@ -384,6 +404,115 @@ export default function SiteSettingsPage() {
                       disabled={seoData.developmentMode}
                     />
                   </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          {/* Scripts Tab */}
+          <TabsContent value="scripts" className="space-y-6">
+            <Alert variant="default" className="border-amber-500/50 bg-amber-50 dark:bg-amber-950/20">
+              <AlertTriangle className="h-4 w-4 text-amber-600" />
+              <AlertTitle className="text-amber-800 dark:text-amber-200">Varning</AlertTitle>
+              <AlertDescription className="text-amber-700 dark:text-amber-300">
+                Scripts som läggs till här körs på alla publika sidor. Felaktiga scripts kan påverka webbplatsens funktion och prestanda.
+              </AlertDescription>
+            </Alert>
+
+            <div className="flex justify-end">
+              <Button onClick={() => updateScripts.mutate(scriptsData)} disabled={isSaving}>
+                {updateScripts.isPending ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Save className="h-4 w-4 mr-2" />}
+                Spara script-inställningar
+              </Button>
+            </div>
+
+            <div className="grid gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="font-serif">Head Scripts</CardTitle>
+                  <CardDescription>Scripts som läggs in i &lt;head&gt;-taggen</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="headStart">Head (start)</Label>
+                    <Textarea
+                      id="headStart"
+                      value={scriptsData.headStart}
+                      onChange={(e) => setScriptsData(prev => ({ ...prev, headStart: e.target.value }))}
+                      placeholder="<!-- Google Tag Manager -->&#10;<script>...</script>"
+                      rows={6}
+                      className="font-mono text-sm"
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      Läggs in direkt efter &lt;head&gt;. Använd för kritiska scripts som måste laddas först.
+                    </p>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="headEnd">Head (slut)</Label>
+                    <Textarea
+                      id="headEnd"
+                      value={scriptsData.headEnd}
+                      onChange={(e) => setScriptsData(prev => ({ ...prev, headEnd: e.target.value }))}
+                      placeholder="<!-- Analytics, fonts -->&#10;<script>...</script>"
+                      rows={6}
+                      className="font-mono text-sm"
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      Läggs in före &lt;/head&gt;. Perfekt för analytics och externa fonts.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="font-serif">Body Scripts</CardTitle>
+                  <CardDescription>Scripts som läggs in i &lt;body&gt;-taggen</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="bodyStart">Body (start)</Label>
+                    <Textarea
+                      id="bodyStart"
+                      value={scriptsData.bodyStart}
+                      onChange={(e) => setScriptsData(prev => ({ ...prev, bodyStart: e.target.value }))}
+                      placeholder="<!-- GTM noscript, early loaders -->&#10;<noscript>...</noscript>"
+                      rows={6}
+                      className="font-mono text-sm"
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      Läggs in direkt efter &lt;body&gt;. Använd för noscript-fallbacks och tidiga laddare.
+                    </p>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="bodyEnd">Body (slut)</Label>
+                    <Textarea
+                      id="bodyEnd"
+                      value={scriptsData.bodyEnd}
+                      onChange={(e) => setScriptsData(prev => ({ ...prev, bodyEnd: e.target.value }))}
+                      placeholder="<!-- Chat widgets, deferred scripts -->&#10;<script>...</script>"
+                      rows={6}
+                      className="font-mono text-sm"
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      Läggs in före &lt;/body&gt;. Perfekt för chat-widgets, tracking och deferred scripts.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="font-serif text-sm">Vanliga användningsfall</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ul className="text-sm text-muted-foreground space-y-1">
+                    <li>• <strong>Google Analytics / Tag Manager</strong> – Head (start)</li>
+                    <li>• <strong>Cookie-consent</strong> (CookieBot, OneTrust) – Head (start)</li>
+                    <li>• <strong>Facebook Pixel</strong> – Head (slut)</li>
+                    <li>• <strong>Chat-widgets</strong> (Intercom, Crisp, Zendesk) – Body (slut)</li>
+                    <li>• <strong>GTM noscript</strong> – Body (start)</li>
+                  </ul>
                 </CardContent>
               </Card>
             </div>
