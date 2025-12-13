@@ -33,7 +33,8 @@ export function PublicFooter() {
   });
 
   const phoneLink = settings?.phone?.replace(/[^+\d]/g, '') || '';
-  const brandName = branding?.organizationName || settings?.brandName || 'Organisation';
+  const brandName = branding?.organizationName || 'Organisation';
+  const brandTagline = branding?.brandTagline || '';
   const brandInitial = brandName.charAt(0);
 
   return (
@@ -58,9 +59,11 @@ export function PublicFooter() {
                 </>
               )}
             </div>
-            <p className="text-primary-foreground/80 text-sm leading-relaxed">
-              {settings?.brandTagline || ''}
-            </p>
+            {brandTagline && (
+              <p className="text-primary-foreground/80 text-sm leading-relaxed">
+                {brandTagline}
+              </p>
+            )}
           </div>
 
           {/* Quick Links */}

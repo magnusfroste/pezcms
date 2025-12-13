@@ -10,8 +10,6 @@ export interface FooterSettings {
   postalCode: string;
   weekdayHours: string;
   weekendHours: string;
-  brandName: string;
-  brandTagline: string;
 }
 
 export interface SeoSettings {
@@ -41,6 +39,7 @@ export interface BrandingSettings {
   logoDark?: string;
   favicon?: string;
   organizationName?: string;
+  brandTagline?: string;
   
   // Colors (HSL format)
   primaryColor?: string;
@@ -66,6 +65,7 @@ const defaultBrandingSettings: BrandingSettings = {
   logoDark: '',
   favicon: '',
   organizationName: '',
+  brandTagline: '',
   primaryColor: '220 100% 26%',
   secondaryColor: '210 40% 96%',
   accentColor: '199 89% 48%',
@@ -85,8 +85,6 @@ const defaultFooterSettings: FooterSettings = {
   postalCode: '',
   weekdayHours: '',
   weekendHours: '',
-  brandName: '',
-  brandTagline: '',
 };
 
 const defaultSeoSettings: SeoSettings = {

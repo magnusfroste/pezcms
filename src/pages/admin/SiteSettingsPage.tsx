@@ -86,8 +86,6 @@ export default function SiteSettingsPage() {
     postalCode: '',
     weekdayHours: '',
     weekendHours: '',
-    brandName: '',
-    brandTagline: '',
   });
 
   const [seoData, setSeoData] = useState<SeoSettings>({
@@ -421,34 +419,6 @@ export default function SiteSettingsPage() {
             </div>
 
             <div className="grid gap-6 md:grid-cols-2">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="font-serif">Varumärke</CardTitle>
-                  <CardDescription>Namn och beskrivning som visas i footern</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="brandName">Organisationsnamn</Label>
-                    <Input
-                      id="brandName"
-                      value={footerData.brandName}
-                      onChange={(e) => setFooterData(prev => ({ ...prev, brandName: e.target.value }))}
-                      placeholder="Sophiahemmet"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="brandTagline">Beskrivning</Label>
-                    <Textarea
-                      id="brandTagline"
-                      value={footerData.brandTagline}
-                      onChange={(e) => setFooterData(prev => ({ ...prev, brandTagline: e.target.value }))}
-                      placeholder="Kvalitetsvård med patienten i fokus..."
-                      rows={3}
-                    />
-                  </div>
-                </CardContent>
-              </Card>
-
               <Card>
                 <CardHeader>
                   <CardTitle className="font-serif">Kontaktuppgifter</CardTitle>
