@@ -1,5 +1,6 @@
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
 import { YouTubeBlockData } from '@/types/cms';
 
 interface YouTubeBlockEditorProps {
@@ -21,6 +22,20 @@ function extractYouTubeId(url: string): string | null {
   return null;
 }
 
+function buildEmbedUrl(videoId: string, data: YouTubeBlockData): string {
+  const params = new URLSearchParams();
+  if (data.autoplay) params.set('autoplay', '1');
+  if (data.loop) {
+    params.set('loop', '1');
+    params.set('playlist', videoId);
+  }
+  if (data.mute) params.set('mute', '1');
+  if (data.controls === false) params.set('controls', '0');
+  
+  const paramString = params.toString();
+  return `https://www.youtube.com/embed/${videoId}${paramString ? '?' + paramString : ''}`;
+}
+
 export function YouTubeBlockEditor({ data, onChange, isEditing }: YouTubeBlockEditorProps) {
   const videoId = extractYouTubeId(data.url || '');
   
@@ -30,7 +45,7 @@ export function YouTubeBlockEditor({ data, onChange, isEditing }: YouTubeBlockEd
         {videoId ? (
           <div className="aspect-video bg-muted rounded-lg overflow-hidden">
             <iframe
-              src={`https://www.youtube.com/embed/${videoId}`}
+              src={buildEmbedUrl(videoId, data)}
               title={data.title || 'YouTube video'}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
@@ -74,12 +89,64 @@ export function YouTubeBlockEditor({ data, onChange, isEditing }: YouTubeBlockEd
         />
       </div>
 
+      <div className="space-y-3 pt-2 border-t">
+        <Label className="text-sm font-medium">Videoalternativ</Label>
+        
+        <div className="flex items-center justify-between">
+          <div>
+            <Label htmlFor="autoplay" className="text-sm">Autoplay</Label>
+            <p className="text-xs text-muted-foreground">Starta videon automatiskt</p>
+          </div>
+          <Switch
+            id="autoplay"
+            checked={data.autoplay || false}
+            onCheckedChange={(checked) => onChange({ ...data, autoplay: checked })}
+          />
+        </div>
+
+        <div className="flex items-center justify-between">
+          <div>
+            <Label htmlFor="loop" className="text-sm">Loop</Label>
+            <p className="text-xs text-muted-foreground">Upprepa videon</p>
+          </div>
+          <Switch
+            id="loop"
+            checked={data.loop || false}
+            onCheckedChange={(checked) => onChange({ ...data, loop: checked })}
+          />
+        </div>
+
+        <div className="flex items-center justify-between">
+          <div>
+            <Label htmlFor="mute" className="text-sm">Ljud av</Label>
+            <p className="text-xs text-muted-foreground">Starta utan ljud (krävs för autoplay)</p>
+          </div>
+          <Switch
+            id="mute"
+            checked={data.mute || false}
+            onCheckedChange={(checked) => onChange({ ...data, mute: checked })}
+          />
+        </div>
+
+        <div className="flex items-center justify-between">
+          <div>
+            <Label htmlFor="controls" className="text-sm">Visa kontroller</Label>
+            <p className="text-xs text-muted-foreground">Visa play/paus-knappar</p>
+          </div>
+          <Switch
+            id="controls"
+            checked={data.controls !== false}
+            onCheckedChange={(checked) => onChange({ ...data, controls: checked })}
+          />
+        </div>
+      </div>
+
       {videoId && (
-        <div className="space-y-2">
+        <div className="space-y-2 pt-2 border-t">
           <Label>Förhandsvisning</Label>
           <div className="aspect-video bg-muted rounded-lg overflow-hidden">
             <iframe
-              src={`https://www.youtube.com/embed/${videoId}`}
+              src={buildEmbedUrl(videoId, data)}
               title={data.title || 'YouTube video'}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
