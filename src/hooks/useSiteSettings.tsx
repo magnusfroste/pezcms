@@ -23,6 +23,7 @@ export interface SeoSettings {
   googleSiteVerification: string;
   robotsIndex: boolean;
   robotsFollow: boolean;
+  developmentMode: boolean;
 }
 
 export interface PerformanceSettings {
@@ -54,6 +55,7 @@ const defaultSeoSettings: SeoSettings = {
   googleSiteVerification: '',
   robotsIndex: true,
   robotsFollow: true,
+  developmentMode: false,
 };
 
 const defaultPerformanceSettings: PerformanceSettings = {

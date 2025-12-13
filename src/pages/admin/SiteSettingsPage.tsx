@@ -18,8 +18,9 @@ import {
   SeoSettings,
   PerformanceSettings
 } from '@/hooks/useSiteSettings';
-import { Loader2, Save, Globe, Zap, Phone, ImageIcon, X } from 'lucide-react';
+import { Loader2, Save, Globe, Zap, Phone, ImageIcon, X, AlertTriangle } from 'lucide-react';
 import { MediaLibraryPicker } from '@/components/admin/MediaLibraryPicker';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 function OgImagePicker({ value, onChange }: { value: string; onChange: (url: string) => void }) {
   const [showPicker, setShowPicker] = useState(false);
@@ -98,6 +99,7 @@ export default function SiteSettingsPage() {
     googleSiteVerification: '',
     robotsIndex: true,
     robotsFollow: true,
+    developmentMode: false,
   });
 
   const [performanceData, setPerformanceData] = useState<PerformanceSettings>({
@@ -160,6 +162,16 @@ export default function SiteSettingsPage() {
 
           {/* SEO Tab */}
           <TabsContent value="seo" className="space-y-6">
+            {seoData.developmentMode && (
+              <Alert variant="destructive" className="border-destructive/50 bg-destructive/10">
+                <AlertTriangle className="h-4 w-4" />
+                <AlertTitle>Utvecklingsläge aktivt</AlertTitle>
+                <AlertDescription>
+                  Alla sidor är dolda från sökmotorer (noindex, nofollow). Kom ihåg att inaktivera detta innan lansering.
+                </AlertDescription>
+              </Alert>
+            )}
+            
             <div className="flex justify-end">
               <Button onClick={() => updateSeo.mutate(seoData)} disabled={isSaving}>
                 {updateSeo.isPending ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Save className="h-4 w-4 mr-2" />}
@@ -251,10 +263,36 @@ export default function SiteSettingsPage() {
                 </CardContent>
               </Card>
 
+              <Card className={seoData.developmentMode ? 'border-destructive/50 bg-destructive/5' : ''}>
+                <CardHeader>
+                  <CardTitle className="font-serif flex items-center gap-2">
+                    {seoData.developmentMode && <AlertTriangle className="h-4 w-4 text-destructive" />}
+                    Utvecklingsläge
+                  </CardTitle>
+                  <CardDescription>Blockera alla sökmotorer under utveckling</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label className={seoData.developmentMode ? 'text-destructive' : ''}>
+                        Utvecklingsläge (blockera sökmotorer)
+                      </Label>
+                      <p className="text-xs text-muted-foreground">
+                        Sätter noindex och nofollow på ALLA sidor globalt
+                      </p>
+                    </div>
+                    <Switch
+                      checked={seoData.developmentMode}
+                      onCheckedChange={(checked) => setSeoData(prev => ({ ...prev, developmentMode: checked }))}
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+
               <Card>
                 <CardHeader>
                   <CardTitle className="font-serif">Indexering</CardTitle>
-                  <CardDescription>Styr hur sökmotorer indexerar webbplatsen</CardDescription>
+                  <CardDescription>Styr hur sökmotorer indexerar webbplatsen (ignoreras i utvecklingsläge)</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex items-center justify-between">
@@ -265,6 +303,7 @@ export default function SiteSettingsPage() {
                     <Switch
                       checked={seoData.robotsIndex}
                       onCheckedChange={(checked) => setSeoData(prev => ({ ...prev, robotsIndex: checked }))}
+                      disabled={seoData.developmentMode}
                     />
                   </div>
                   <div className="flex items-center justify-between">
@@ -275,6 +314,7 @@ export default function SiteSettingsPage() {
                     <Switch
                       checked={seoData.robotsFollow}
                       onCheckedChange={(checked) => setSeoData(prev => ({ ...prev, robotsFollow: checked }))}
+                      disabled={seoData.developmentMode}
                     />
                   </div>
                 </CardContent>

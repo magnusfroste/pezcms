@@ -30,9 +30,12 @@ export function SeoHead({
   const finalDescription = description || seoSettings?.defaultDescription || '';
   const finalOgImage = ogImage || seoSettings?.ogImage || '';
   
-  // Per-page settings override global settings
-  const robotsIndex = noIndex ? false : (seoSettings?.robotsIndex ?? true);
-  const robotsFollow = noFollow ? false : (seoSettings?.robotsFollow ?? true);
+  // Development mode overrides all other settings
+  const isDevelopmentMode = seoSettings?.developmentMode ?? false;
+  
+  // Per-page settings override global settings (unless development mode is active)
+  const robotsIndex = isDevelopmentMode ? false : (noIndex ? false : (seoSettings?.robotsIndex ?? true));
+  const robotsFollow = isDevelopmentMode ? false : (noFollow ? false : (seoSettings?.robotsFollow ?? true));
   const robotsContent = `${robotsIndex ? 'index' : 'noindex'}, ${robotsFollow ? 'follow' : 'nofollow'}`;
 
   return (
