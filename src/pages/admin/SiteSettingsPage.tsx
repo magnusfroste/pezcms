@@ -18,15 +18,18 @@ import {
   useUpdateCustomScriptsSettings,
   useCookieBannerSettings,
   useUpdateCookieBannerSettings,
+  useMaintenanceSettings,
+  useUpdateMaintenanceSettings,
   FooterSettings,
   FooterLegalLink,
   SeoSettings,
   PerformanceSettings,
   CustomScriptsSettings,
   CookieBannerSettings,
+  MaintenanceSettings,
   FooterSectionId
 } from '@/hooks/useSiteSettings';
-import { Loader2, Save, Globe, Zap, Phone, ImageIcon, X, AlertTriangle, GripVertical, Code, CheckCircle2, Circle, Cookie, Plus, Trash2, Scale, Search, Lock, Info } from 'lucide-react';
+import { Loader2, Save, Globe, Zap, Phone, ImageIcon, X, AlertTriangle, GripVertical, Code, CheckCircle2, Circle, Cookie, Plus, Trash2, Scale, Search, Lock, Info, Wrench, Clock } from 'lucide-react';
 import { MediaLibraryPicker } from '@/components/admin/MediaLibraryPicker';
 import { CodeEditor } from '@/components/admin/CodeEditor';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -138,12 +141,14 @@ export default function SiteSettingsPage() {
   const { data: performanceSettings, isLoading: performanceLoading } = usePerformanceSettings();
   const { data: customScriptsSettings, isLoading: scriptsLoading } = useCustomScriptsSettings();
   const { data: cookieBannerSettings, isLoading: cookieLoading } = useCookieBannerSettings();
+  const { data: maintenanceSettings, isLoading: maintenanceLoading } = useMaintenanceSettings();
   
   const updateFooter = useUpdateFooterSettings();
   const updateSeo = useUpdateSeoSettings();
   const updatePerformance = useUpdatePerformanceSettings();
   const updateScripts = useUpdateCustomScriptsSettings();
   const updateCookieBanner = useUpdateCookieBannerSettings();
+  const updateMaintenance = useUpdateMaintenanceSettings();
   
   const [footerData, setFooterData] = useState<FooterSettings>({
     phone: '',
@@ -212,6 +217,13 @@ export default function SiteSettingsPage() {
     rejectButtonText: 'Endast nödvändiga',
   });
 
+  const [maintenanceData, setMaintenanceData] = useState<MaintenanceSettings>({
+    enabled: false,
+    title: 'Webbplatsen är under underhåll',
+    message: 'Vi genomför planerat underhåll just nu. Webbplatsen kommer att vara tillgänglig igen inom kort.',
+    expectedEndTime: '',
+  });
+
   useEffect(() => {
     if (footerSettings) setFooterData(footerSettings);
   }, [footerSettings]);
@@ -232,8 +244,12 @@ export default function SiteSettingsPage() {
     if (cookieBannerSettings) setCookieData(cookieBannerSettings);
   }, [cookieBannerSettings]);
 
-  const isLoading = footerLoading || seoLoading || performanceLoading || scriptsLoading || cookieLoading;
-  const isSaving = updateFooter.isPending || updateSeo.isPending || updatePerformance.isPending || updateScripts.isPending || updateCookieBanner.isPending;
+  useEffect(() => {
+    if (maintenanceSettings) setMaintenanceData(maintenanceSettings);
+  }, [maintenanceSettings]);
+
+  const isLoading = footerLoading || seoLoading || performanceLoading || scriptsLoading || cookieLoading || maintenanceLoading;
+  const isSaving = updateFooter.isPending || updateSeo.isPending || updatePerformance.isPending || updateScripts.isPending || updateCookieBanner.isPending || updateMaintenance.isPending;
 
   if (isLoading) {
     return (
@@ -254,10 +270,14 @@ export default function SiteSettingsPage() {
         </div>
 
         <Tabs defaultValue="seo" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5 max-w-2xl">
+          <TabsList className="grid w-full grid-cols-6 max-w-3xl">
             <TabsTrigger value="seo" className="flex items-center gap-2">
               <Globe className="h-4 w-4" />
               <span className="hidden sm:inline">SEO</span>
+            </TabsTrigger>
+            <TabsTrigger value="maintenance" className="flex items-center gap-2">
+              <Wrench className="h-4 w-4" />
+              <span className="hidden sm:inline">Underhåll</span>
             </TabsTrigger>
             <TabsTrigger value="scripts" className="flex items-center gap-2">
               <Code className="h-4 w-4" />
@@ -473,6 +493,132 @@ export default function SiteSettingsPage() {
                       onCheckedChange={(checked) => setSeoData(prev => ({ ...prev, robotsFollow: checked }))}
                       disabled={seoData.developmentMode}
                     />
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          {/* Maintenance Tab */}
+          <TabsContent value="maintenance" className="space-y-6">
+            {maintenanceData.enabled && (
+              <Alert variant="destructive" className="border-destructive/50 bg-destructive/10">
+                <Wrench className="h-4 w-4" />
+                <AlertTitle>Underhållsläge aktivt</AlertTitle>
+                <AlertDescription>
+                  Webbplatsen visar ett underhållsmeddelande för alla besökare. Inloggade administratörer kan fortfarande se webbplatsen.
+                </AlertDescription>
+              </Alert>
+            )}
+
+            <div className="flex justify-end">
+              <Button onClick={() => updateMaintenance.mutate(maintenanceData)} disabled={isSaving}>
+                {updateMaintenance.isPending ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Save className="h-4 w-4 mr-2" />}
+                Spara underhållsinställningar
+              </Button>
+            </div>
+
+            <div className="grid gap-6 md:grid-cols-2">
+              <Card className={maintenanceData.enabled ? 'border-destructive/50 bg-destructive/5' : ''}>
+                <CardHeader>
+                  <CardTitle className="font-serif flex items-center gap-2">
+                    {maintenanceData.enabled && <Wrench className="h-4 w-4 text-destructive" />}
+                    Underhållsläge
+                  </CardTitle>
+                  <CardDescription>Visa ett underhållsmeddelande för alla besökare</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <Alert className="bg-muted/50 border-muted-foreground/20">
+                    <Info className="h-4 w-4" />
+                    <AlertDescription className="text-sm">
+                      När underhållsläget är aktivt visas ett anpassningsbart meddelande istället för webbplatsens innehåll. 
+                      Inloggade användare kan fortfarande se webbplatsen normalt.
+                    </AlertDescription>
+                  </Alert>
+
+                  <div className="flex items-center justify-between p-3 rounded-lg border bg-card">
+                    <div className="flex items-center gap-3">
+                      <Wrench className={`h-5 w-5 ${maintenanceData.enabled ? 'text-destructive' : 'text-muted-foreground'}`} />
+                      <div>
+                        <Label className={maintenanceData.enabled ? 'text-destructive' : ''}>
+                          Aktivera underhållsläge
+                        </Label>
+                        <p className="text-xs text-muted-foreground">
+                          Blockerar åtkomst för alla ej inloggade besökare
+                        </p>
+                      </div>
+                    </div>
+                    <Switch
+                      checked={maintenanceData.enabled}
+                      onCheckedChange={(checked) => setMaintenanceData(prev => ({ ...prev, enabled: checked }))}
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="font-serif">Meddelande</CardTitle>
+                  <CardDescription>Anpassa texten som visas för besökare</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="maintenanceTitle">Rubrik</Label>
+                    <Input
+                      id="maintenanceTitle"
+                      value={maintenanceData.title}
+                      onChange={(e) => setMaintenanceData(prev => ({ ...prev, title: e.target.value }))}
+                      placeholder="Webbplatsen är under underhåll"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="maintenanceMessage">Meddelande</Label>
+                    <Textarea
+                      id="maintenanceMessage"
+                      value={maintenanceData.message}
+                      onChange={(e) => setMaintenanceData(prev => ({ ...prev, message: e.target.value }))}
+                      placeholder="Vi genomför planerat underhåll just nu..."
+                      rows={4}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="expectedEndTime" className="flex items-center gap-2">
+                      <Clock className="h-4 w-4" />
+                      Beräknad sluttid (valfritt)
+                    </Label>
+                    <Input
+                      id="expectedEndTime"
+                      type="datetime-local"
+                      value={maintenanceData.expectedEndTime || ''}
+                      onChange={(e) => setMaintenanceData(prev => ({ ...prev, expectedEndTime: e.target.value }))}
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      Visas för besökare om ifyllt
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Preview */}
+              <Card className="md:col-span-2">
+                <CardHeader>
+                  <CardTitle className="font-serif">Förhandsvisning</CardTitle>
+                  <CardDescription>Så här ser underhållssidan ut för besökare</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="bg-background border rounded-lg p-8 text-center max-w-md mx-auto">
+                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-muted mb-6">
+                      <Wrench className="h-8 w-8 text-muted-foreground" />
+                    </div>
+                    <h2 className="font-serif text-2xl font-bold mb-4">{maintenanceData.title || 'Webbplatsen är under underhåll'}</h2>
+                    <p className="text-muted-foreground mb-4">
+                      {maintenanceData.message || 'Vi genomför planerat underhåll just nu.'}
+                    </p>
+                    {maintenanceData.expectedEndTime && (
+                      <p className="text-sm text-muted-foreground">
+                        Beräknad sluttid: {new Date(maintenanceData.expectedEndTime).toLocaleString('sv-SE')}
+                      </p>
+                    )}
                   </div>
                 </CardContent>
               </Card>
