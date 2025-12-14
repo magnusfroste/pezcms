@@ -143,35 +143,69 @@ Din uppgift är att ta innehåll från en scrapad webbsida och omvandla det till
 
 ${BLOCK_TYPES_SCHEMA}
 
-VIKTIGA REGLER:
-1. Analysera innehållets struktur och välj lämpliga block-typer
-2. Behåll all viktig text och bilder
-3. Om sidan har en tydlig hero-sektion, använd "hero" block
-4. Gruppera relaterat innehåll logiskt
-5. Använd "text" block för vanlig text/artikelinnehåll
-6. Extrahera bilder till "image" block eller inkludera i andra block
-7. Identifiera FAQ-sektioner och använd "accordion"
-8. Identifiera statistik och använd "stats" block
-9. Behåll länkar i texten
+=== VIKTIGA REGLER ===
 
-YOUTUBE-VIDEOR - MYCKET VIKTIGT:
-10. Leta efter YouTube-länkar i innehållet (youtube.com/watch?v=, youtu.be/, youtube.com/embed/)
-11. Extrahera videoId från YouTube-URL:er:
-    - youtube.com/watch?v=VIDEO_ID -> videoId = VIDEO_ID
-    - youtu.be/VIDEO_ID -> videoId = VIDEO_ID  
-    - youtube.com/embed/VIDEO_ID -> videoId = VIDEO_ID
-12. Skapa "youtube" block för varje YouTube-video du hittar
-13. Om det finns iframe-embeds med YouTube, extrahera videoId från src-attributet
+FILTRERING - IGNORERA DETTA INNEHÅLL:
+- Navigationsmenyer (topbar, sidomeny, footer-länkar)
+- Brödsmulor (breadcrumbs)
+- "Tillbaka"-länkar och navigeringslänkar
+- Cookie-banners och popup-meddelanden
+- Sidofält med relaterade länkar (om de inte är huvudinnehåll)
+- Upprepade menystrukturer
+Fokusera ENDAST på huvudinnehållet (det som normalt ligger i <main> eller artikelområdet).
 
-Svara ENDAST med valid JSON, ingen annan text
+STRUKTURANALYS:
+1. Om sidan har en tydlig hero/banner-sektion med stor rubrik, använd "hero" block
+2. Behåll all viktig text, bilder och media från huvudinnehållet
+3. Gruppera relaterat innehåll logiskt i lämpliga block
 
-Svara med ett JSON-objekt:
+YOUTUBE-VIDEOR - KRITISKT VIKTIGT:
+- Sök igenom HELA innehållet efter YouTube-länkar i ALLA format:
+  * youtube.com/watch?v=VIDEO_ID (ta endast VIDEO_ID före eventuella &-tecken)
+  * youtube.com/watch?v=VIDEO_ID&embeds_referring_euri=... (ignorera allt efter &)
+  * youtu.be/VIDEO_ID
+  * youtube.com/embed/VIDEO_ID
+  * youtube-nocookie.com/embed/VIDEO_ID
+- För varje YouTube-video, skapa ett "youtube" block med:
+  * videoId: endast video-ID:t (11 tecken, t.ex. "dQw4w9WgXcQ")
+  * title: rubrik från omgivande kontext eller "Video"
+- Kontrollera HTML för <iframe> med YouTube-URL:er
+
+CITAT OCH TESTIMONIALS:
+- Leta efter mönster som:
+  * "Citerad text" — Namn, Roll
+  * "Citerad text" - Namn
+  * Blockquotes med attribution
+  * Studentberättelser, patientberättelser, etc.
+- Skapa "quote" block med: quote, author, role
+
+FAKTARUTOR OCH STATISTIK:
+- Sektioner med rubrik "Fakta om...", "Om programmet", "Snabbfakta" etc.
+- Nyckelfakta som: antal poäng, längd, start, plats
+- Skapa "stats" block för siffror/nyckeltal
+- Skapa "info-box" block för faktarutor med blandad info
+
+LÄNKGRUPPER OCH KNAPPAR:
+- Grupper av knappar eller länkar som ligger tillsammans
+- "Läs mer"-kort, relaterade sidor, utbildningskort
+- Skapa "link-grid" block för navigeringslänkar
+- Skapa "article-grid" för artikelkort med bild + rubrik + excerpt
+
+GENERELLT:
+- Använd "text" block för löpande text och artikelinnehåll
+- Använd "accordion" för FAQ-sektioner
+- Använd "two-column" för text + bild layouts
+- Använd "separator" mellan tydliga sektioner
+
+=== SVARSFORMAT ===
+Svara ENDAST med valid JSON, ingen annan text:
 {
-  "title": "Sidans titel",
+  "title": "Sidans huvudrubrik",
   "blocks": [
-    { "id": "block-1", "type": "hero", "data": { ... } },
-    { "id": "block-2", "type": "text", "data": { ... } },
-    { "id": "block-3", "type": "youtube", "data": { "videoId": "dQw4w9WgXcQ", "title": "Video titel" } }
+    { "id": "block-1", "type": "hero", "data": { "title": "...", "subtitle": "..." } },
+    { "id": "block-2", "type": "youtube", "data": { "videoId": "ABC123xyz", "title": "Video om programmet" } },
+    { "id": "block-3", "type": "quote", "data": { "quote": "...", "author": "Namn", "role": "Student" } },
+    { "id": "block-4", "type": "stats", "data": { "stats": [{ "value": "180", "label": "Högskolepoäng" }] } }
   ]
 }`
           },
@@ -183,17 +217,21 @@ URL: ${formattedUrl}
 Titel: ${metadata.title || 'Okänd'}
 Beskrivning: ${metadata.description || 'Ingen'}
 
-INNEHÅLL (Markdown):
-${markdown.substring(0, 15000)}
+=== HUVUDINNEHÅLL (Markdown) ===
+${markdown.substring(0, 18000)}
+${markdown.length > 18000 ? '\n... (innehållet är trunkerat)' : ''}
 
-${markdown.length > 15000 ? '... (innehållet är trunkerat)' : ''}
+=== HTML FÖR YOUTUBE/IFRAME-SÖKNING ===
+${html.substring(0, 8000)}
 
-HTML (för att hitta YouTube-iframes och embeds):
-${html.substring(0, 5000)}
+=== INSTRUKTIONER ===
+1. Filtrera bort navigationsinnehåll, fokusera på huvudinnehållet
+2. Hitta ALLA YouTube-videor och skapa "youtube" block för varje
+3. Identifiera citat/testimonials och skapa "quote" block
+4. Identifiera faktarutor och skapa "stats" eller "info-box" block
+5. Gruppera länksamlingar till "link-grid" eller "article-grid"
 
-VIKTIGT: Leta specifikt efter YouTube-videor (youtube.com, youtu.be) och skapa "youtube" block för dem.
-
-Skapa lämpliga CMS-block för detta innehåll. Svara endast med JSON.`
+Svara endast med JSON.`
           }
         ],
       }),
