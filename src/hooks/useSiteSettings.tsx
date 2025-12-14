@@ -185,6 +185,20 @@ const defaultCookieBannerSettings: CookieBannerSettings = {
   rejectButtonText: 'Endast nödvändiga',
 };
 
+export interface MaintenanceSettings {
+  enabled: boolean;
+  title: string;
+  message: string;
+  expectedEndTime?: string;
+}
+
+const defaultMaintenanceSettings: MaintenanceSettings = {
+  enabled: false,
+  title: 'Webbplatsen är under underhåll',
+  message: 'Vi genomför planerat underhåll just nu. Webbplatsen kommer att vara tillgänglig igen inom kort.',
+  expectedEndTime: '',
+};
+
 // Generic hook for fetching settings
 function useSiteSettings<T>(key: string, defaultValue: T) {
   return useQuery({
@@ -311,4 +325,13 @@ export function useCookieBannerSettings() {
 
 export function useUpdateCookieBannerSettings() {
   return useUpdateSiteSettings<CookieBannerSettings>('cookie_banner', 'Cookie-inställningarna har uppdaterats.');
+}
+
+// Maintenance hooks
+export function useMaintenanceSettings() {
+  return useSiteSettings<MaintenanceSettings>('maintenance', defaultMaintenanceSettings);
+}
+
+export function useUpdateMaintenanceSettings() {
+  return useUpdateSiteSettings<MaintenanceSettings>('maintenance', 'Underhållsinställningarna har uppdaterats.');
 }

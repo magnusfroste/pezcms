@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { Loader2, Lock } from 'lucide-react';
+import { Loader2, Lock, Wrench } from 'lucide-react';
 import { BlockRenderer } from '@/components/public/BlockRenderer';
 import { PublicNavigation } from '@/components/public/PublicNavigation';
 import { PublicFooter } from '@/components/public/PublicFooter';
@@ -9,7 +9,7 @@ import { SeoHead, HeadScripts } from '@/components/public/SeoHead';
 import { BodyScripts } from '@/components/public/BodyScripts';
 import { CookieBanner } from '@/components/public/CookieBanner';
 import { cn } from '@/lib/utils';
-import { useSeoSettings } from '@/hooks/useSiteSettings';
+import { useSeoSettings, useMaintenanceSettings } from '@/hooks/useSiteSettings';
 import { Button } from '@/components/ui/button';
 import { useEffect, useState } from 'react';
 import type { Page, ContentBlock } from '@/types/cms';
@@ -31,6 +31,7 @@ export default function PublicPage() {
   const navigate = useNavigate();
   const pageSlug = slug || 'hem';
   const { data: seoSettings } = useSeoSettings();
+  const { data: maintenanceSettings } = useMaintenanceSettings();
   const [user, setUser] = useState<unknown>(null);
   const [authLoading, setAuthLoading] = useState(true);
 
@@ -69,6 +70,34 @@ export default function PublicPage() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  // Maintenance mode - block unauthenticated users
+  if (maintenanceSettings?.enabled && !user) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <SeoHead title={maintenanceSettings.title || 'Underhåll'} noIndex />
+        <div className="text-center max-w-md px-6">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-muted mb-6">
+            <Wrench className="h-8 w-8 text-muted-foreground" />
+          </div>
+          <h1 className="font-serif text-3xl font-bold mb-4">
+            {maintenanceSettings.title || 'Webbplatsen är under underhåll'}
+          </h1>
+          <p className="text-muted-foreground mb-4">
+            {maintenanceSettings.message || 'Vi genomför planerat underhåll just nu. Webbplatsen kommer att vara tillgänglig igen inom kort.'}
+          </p>
+          {maintenanceSettings.expectedEndTime && (
+            <p className="text-sm text-muted-foreground mb-8">
+              Beräknad sluttid: {new Date(maintenanceSettings.expectedEndTime).toLocaleString('sv-SE')}
+            </p>
+          )}
+          <Button variant="outline" onClick={() => navigate('/auth')} size="sm">
+            Logga in (administratörer)
+          </Button>
+        </div>
       </div>
     );
   }
