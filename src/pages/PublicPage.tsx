@@ -8,6 +8,7 @@ import { PublicFooter } from '@/components/public/PublicFooter';
 import { SeoHead, HeadScripts } from '@/components/public/SeoHead';
 import { BodyScripts } from '@/components/public/BodyScripts';
 import { CookieBanner } from '@/components/public/CookieBanner';
+import { ChatWidget } from '@/components/public/ChatWidget';
 import { cn } from '@/lib/utils';
 import { useSeoSettings, useMaintenanceSettings } from '@/hooks/useSiteSettings';
 import { Button } from '@/components/ui/button';
@@ -183,6 +184,7 @@ export default function PublicPage() {
 
         <PublicFooter />
         <CookieBanner />
+        <ChatWidget />
       </div>
 
       <BodyScripts position="end" />
