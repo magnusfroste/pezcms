@@ -134,6 +134,7 @@ export function useChat(options?: UseChatOptions) {
               systemPrompt: settings?.systemPrompt,
               includeContentAsContext: settings?.includeContentAsContext,
               contentContextMaxTokens: settings?.contentContextMaxTokens,
+              includedPageSlugs: settings?.includedPageSlugs || [],
             },
           }),
           signal: abortControllerRef.current.signal,

@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { useChatSettings, useUpdateChatSettings, ChatSettings, ChatAiProvider } from '@/hooks/useSiteSettings';
+import { usePages } from '@/hooks/usePages';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -10,8 +11,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Loader2, Save, AlertTriangle, Cloud, Server, Webhook, Shield, Database, BookOpen } from 'lucide-react';
+import { Loader2, Save, AlertTriangle, Cloud, Server, Webhook, Shield, Database, BookOpen, FileText } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { Checkbox } from '@/components/ui/checkbox';
 
 export default function ChatSettingsPage() {
   const { data: settings, isLoading } = useChatSettings();
@@ -348,10 +350,17 @@ export default function ChatSettingsPage() {
                       <Database className="h-4 w-4 text-blue-600" />
                       <AlertTitle className="text-blue-800 dark:text-blue-200">Context Augmented Generation</AlertTitle>
                       <AlertDescription className="text-blue-700 dark:text-blue-300">
-                        Allt publicerat innehåll (sidor, artiklar, kontaktinfo) skickas som kontext till AI:n vid varje meddelande. 
-                        Detta gör att AI:n kan svara på frågor om er verksamhet baserat på webbplatsens innehåll.
+                        Valda sidor skickas som kontext till AI:n vid varje meddelande. 
+                        Välj vilka sidor som ska inkluderas nedan.
                       </AlertDescription>
                     </Alert>
+                  )}
+
+                  {formData.includeContentAsContext && (
+                    <PageSelector 
+                      selectedSlugs={formData.includedPageSlugs || []}
+                      onSelectionChange={(slugs) => setFormData({ ...formData, includedPageSlugs: slugs })}
+                    />
                   )}
 
                   {formData.includeContentAsContext && (
@@ -618,5 +627,93 @@ function ProviderCard({
       <h4 className="font-medium">{title}</h4>
       <p className="text-xs text-muted-foreground">{description}</p>
     </button>
+  );
+}
+
+// Page selector for knowledge base
+function PageSelector({
+  selectedSlugs,
+  onSelectionChange,
+}: {
+  selectedSlugs: string[];
+  onSelectionChange: (slugs: string[]) => void;
+}) {
+  const { data: pages, isLoading } = usePages('published');
+  
+  const allSelected = useMemo(() => {
+    if (!pages || pages.length === 0) return false;
+    return pages.every(p => selectedSlugs.includes(p.slug));
+  }, [pages, selectedSlugs]);
+
+  const togglePage = (slug: string) => {
+    if (selectedSlugs.includes(slug)) {
+      onSelectionChange(selectedSlugs.filter(s => s !== slug));
+    } else {
+      onSelectionChange([...selectedSlugs, slug]);
+    }
+  };
+
+  const toggleAll = () => {
+    if (!pages) return;
+    if (allSelected) {
+      onSelectionChange([]);
+    } else {
+      onSelectionChange(pages.map(p => p.slug));
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center p-8 border rounded-lg">
+        <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
+
+  if (!pages || pages.length === 0) {
+    return (
+      <div className="p-4 border rounded-lg text-center text-muted-foreground">
+        Inga publicerade sidor hittades.
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-3">
+      <div className="flex items-center justify-between">
+        <Label className="text-sm font-medium">Sidor att inkludera i kunskapsbasen</Label>
+        <Button 
+          variant="ghost" 
+          size="sm" 
+          onClick={toggleAll}
+          className="text-xs"
+        >
+          {allSelected ? 'Avmarkera alla' : 'Välj alla'}
+        </Button>
+      </div>
+      
+      <div className="border rounded-lg divide-y max-h-64 overflow-y-auto">
+        {pages.map(page => (
+          <label 
+            key={page.slug} 
+            className="flex items-center gap-3 p-3 hover:bg-muted/50 cursor-pointer transition-colors"
+          >
+            <Checkbox
+              checked={selectedSlugs.includes(page.slug)}
+              onCheckedChange={() => togglePage(page.slug)}
+            />
+            <FileText className="h-4 w-4 text-muted-foreground shrink-0" />
+            <div className="flex-1 min-w-0">
+              <span className="font-medium truncate block">{page.title}</span>
+              <span className="text-xs text-muted-foreground">/{page.slug}</span>
+            </div>
+          </label>
+        ))}
+      </div>
+      
+      <p className="text-xs text-muted-foreground">
+        {selectedSlugs.length} av {pages.length} sidor valda
+      </p>
+    </div>
   );
 }
