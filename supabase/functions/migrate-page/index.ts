@@ -47,7 +47,7 @@ Available CMS block types:
     Data: { style: 'line' | 'dots' | 'space' }
 
 14. youtube - YouTube video embed
-    Data: { videoId: string, title?: string }
+    Data: { url: string, title?: string } // Use full YouTube URL like "https://www.youtube.com/watch?v=VIDEO_ID"
 
 15. gallery - Image gallery
     Data: { images: [{ src: string, alt?: string, caption?: string }], columns: 2 | 3 | 4 }
@@ -191,14 +191,13 @@ Använd "info-box" för beskrivande faktarutor som inte passar som siffror.
 
 === YOUTUBE-VIDEOR ===
 Sök igenom HELA innehållet efter YouTube-länkar i ALLA format:
-- youtube.com/watch?v=VIDEO_ID (ta endast VIDEO_ID före eventuella &-tecken)
-- youtube.com/watch?v=VIDEO_ID&embeds_referring_euri=... (ignorera allt efter &)
+- youtube.com/watch?v=VIDEO_ID
 - youtu.be/VIDEO_ID
 - youtube.com/embed/VIDEO_ID
 - youtube-nocookie.com/embed/VIDEO_ID
 
 För varje YouTube-video, skapa ett "youtube" block med:
-- videoId: endast video-ID:t (11 tecken, t.ex. "dQw4w9WgXcQ")
+- url: full YouTube-URL i formatet "https://www.youtube.com/watch?v=VIDEO_ID" (extrahera VIDEO_ID och bygg om till detta format)
 - title: rubrik från omgivande kontext eller "Video"
 
 === CITAT OCH TESTIMONIALS ===
