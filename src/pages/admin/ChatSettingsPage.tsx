@@ -49,7 +49,16 @@ export default function ChatSettingsPage() {
         <AdminPageHeader 
           title="Chat-inställningar"
           description="Konfigurera AI-chatten för din webbplats"
-        />
+        >
+          <Button onClick={handleSave} disabled={updateSettings.isPending}>
+            {updateSettings.isPending ? (
+              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+            ) : (
+              <Save className="h-4 w-4 mr-2" />
+            )}
+            Spara ändringar
+          </Button>
+        </AdminPageHeader>
         <div className="max-w-4xl space-y-6">
         {/* Master toggle */}
         <Card>
@@ -597,21 +606,6 @@ export default function ChatSettingsPage() {
             </TabsContent>
           </Tabs>
         )}
-
-        {/* Save button */}
-        <div className="flex justify-end pt-4">
-          <Button
-            onClick={handleSave}
-            disabled={updateSettings.isPending}
-          >
-            {updateSettings.isPending ? (
-              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-            ) : (
-              <Save className="h-4 w-4 mr-2" />
-            )}
-            Spara inställningar
-          </Button>
-        </div>
       </div>
       </div>
     </AdminLayout>
