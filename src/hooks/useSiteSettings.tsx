@@ -248,6 +248,7 @@ export interface ChatSettings {
   // Knowledge Base (CAG)
   includeContentAsContext: boolean;
   contentContextMaxTokens: number;
+  includedPageSlugs: string[];
 }
 
 const defaultChatSettings: ChatSettings = {
@@ -275,6 +276,7 @@ const defaultChatSettings: ChatSettings = {
   dataRetentionDays: 90,
   includeContentAsContext: false,
   contentContextMaxTokens: 50000,
+  includedPageSlugs: [],
 };
 
 // Generic hook for fetching settings

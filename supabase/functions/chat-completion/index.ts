@@ -25,6 +25,7 @@ interface ChatRequest {
     systemPrompt?: string;
     includeContentAsContext?: boolean;
     contentContextMaxTokens?: number;
+    includedPageSlugs?: string[];
   };
 }
 
@@ -106,15 +107,22 @@ function extractTextFromBlock(block: any): string {
 }
 
 // Build knowledge base from pages
-async function buildKnowledgeBase(maxTokens: number): Promise<string> {
+async function buildKnowledgeBase(maxTokens: number, includedSlugs: string[] = []): Promise<string> {
   const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
   const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
   const supabase = createClient(supabaseUrl, supabaseKey);
 
-  const { data: pages, error } = await supabase
+  let query = supabase
     .from('pages')
     .select('title, slug, content_json')
     .eq('status', 'published');
+
+  // Filter by included slugs if specified
+  if (includedSlugs.length > 0) {
+    query = query.in('slug', includedSlugs);
+  }
+
+  const { data: pages, error } = await query;
 
   if (error || !pages) {
     console.error('Failed to fetch pages for knowledge base:', error);
@@ -177,7 +185,8 @@ serve(async (req) => {
     // Add knowledge base if enabled
     if (settings?.includeContentAsContext) {
       const maxTokens = settings?.contentContextMaxTokens || 50000;
-      const knowledgeBase = await buildKnowledgeBase(maxTokens);
+      const includedSlugs = settings?.includedPageSlugs || [];
+      const knowledgeBase = await buildKnowledgeBase(maxTokens, includedSlugs);
       if (knowledgeBase) {
         systemPrompt += knowledgeBase;
       }
