@@ -222,6 +222,7 @@ export interface ChatSettings {
   
   // N8N Integration
   n8nWebhookUrl: string;
+  n8nWebhookType: 'chat' | 'generic';
   n8nTriggerMode: 'always' | 'keywords' | 'fallback';
   n8nTriggerKeywords: string[];
   
@@ -262,6 +263,7 @@ const defaultChatSettings: ChatSettings = {
   localModel: 'llama3',
   localApiKey: '',
   n8nWebhookUrl: '',
+  n8nWebhookType: 'chat',
   n8nTriggerMode: 'always',
   n8nTriggerKeywords: [],
   systemPrompt: 'Du är en hjälpsam AI-assistent för en svensk organisation. Svara alltid på svenska om inte användaren skriver på ett annat språk.',

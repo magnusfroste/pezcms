@@ -22,6 +22,7 @@ interface ChatRequest {
     localModel?: string;
     localApiKey?: string;
     n8nWebhookUrl?: string;
+    n8nWebhookType?: 'chat' | 'generic';
     systemPrompt?: string;
     includeContentAsContext?: boolean;
     contentContextMaxTokens?: number;
@@ -250,31 +251,46 @@ serve(async (req) => {
         throw new Error('N8N webhook URL is not configured');
       }
 
-      // Extract latest user message for N8N AI Agent nodes
+      const n8nWebhookType = settings?.n8nWebhookType || 'chat';
       const lastUserMessage = messages.filter(m => m.role === 'user').pop();
       
-      console.log('Sending to N8N:', { 
-        webhookUrl, 
-        chatInput: lastUserMessage?.content?.substring(0, 50),
-        messageCount: fullMessages.length 
-      });
+      // Build payload based on webhook type
+      let n8nPayload: Record<string, unknown>;
+      
+      if (n8nWebhookType === 'chat') {
+        // Chat Webhook: N8N Chat node handles session memory
+        // Only send the latest message + session info
+        n8nPayload = {
+          chatInput: lastUserMessage?.content || '',
+          sessionId: sessionId || conversationId,
+          systemPrompt,
+        };
+        console.log('Sending to N8N Chat Webhook:', { 
+          webhookUrl, 
+          chatInput: lastUserMessage?.content?.substring(0, 50),
+          sessionId: sessionId || conversationId
+        });
+      } else {
+        // Generic Webhook: OpenAI-compatible format with full history
+        // Suitable for Ollama, LM Studio, or custom AI logic
+        n8nPayload = {
+          messages: fullMessages,
+          model: 'gpt-4', // Hint for downstream processing
+          conversationId,
+          sessionId,
+        };
+        console.log('Sending to N8N Generic Webhook:', { 
+          webhookUrl, 
+          messageCount: fullMessages.length
+        });
+      }
 
       const n8nResponse = await fetch(webhookUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          // Primary field for N8N AI agent nodes
-          chatInput: lastUserMessage?.content || '',
-          // Full conversation history for context
-          messages: fullMessages,
-          // Metadata
-          conversationId,
-          sessionId,
-          // System prompt for N8N workflow flexibility
-          systemPrompt,
-        }),
+        body: JSON.stringify(n8nPayload),
       });
 
       if (!n8nResponse.ok) {
