@@ -1,9 +1,36 @@
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { InfoBoxBlockData } from '@/types/cms';
-import { Info, CheckCircle, AlertTriangle, Sparkles, icons } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { InfoBoxBlockData, TiptapDocument } from '@/types/cms';
+import { Info, CheckCircle, AlertTriangle, Sparkles, icons, Bold, Italic, List, ListOrdered } from 'lucide-react';
+import { useEditor, EditorContent, generateHTML } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+import Link from '@tiptap/extension-link';
+import Placeholder from '@tiptap/extension-placeholder';
+
+// Helper to check if content is Tiptap JSON
+function isTiptapDocument(content: unknown): content is TiptapDocument {
+  return typeof content === 'object' && content !== null && (content as TiptapDocument).type === 'doc';
+}
+
+// Get initial content for editor
+function getEditorContent(content: string | TiptapDocument | undefined): string {
+  if (!content) return '';
+  if (isTiptapDocument(content)) {
+    return generateHTML(content, [StarterKit, Link]);
+  }
+  return `<p>${content}</p>`;
+}
+
+// Render content as HTML
+function renderContent(content: string | TiptapDocument | undefined): string {
+  if (!content) return '';
+  if (isTiptapDocument(content)) {
+    return generateHTML(content, [StarterKit, Link]);
+  }
+  return `<p>${content}</p>`;
+}
 
 const VARIANT_CONFIG = {
   info: {
@@ -46,6 +73,19 @@ interface InfoBoxBlockEditorProps {
 export function InfoBoxBlockEditor({ data, isEditing, onChange }: InfoBoxBlockEditorProps) {
   const variant = data.variant || 'info';
   const config = VARIANT_CONFIG[variant];
+
+  const editor = useEditor({
+    extensions: [
+      StarterKit,
+      Link.configure({ openOnClick: false }),
+      Placeholder.configure({ placeholder: 'Skriv ditt meddelande här...' }),
+    ],
+    content: getEditorContent(data.content),
+    editable: isEditing,
+    onUpdate: ({ editor }) => {
+      onChange({ ...data, content: editor.getJSON() as TiptapDocument });
+    },
+  });
 
   const renderIcon = () => {
     if (data.icon) {
@@ -116,14 +156,50 @@ export function InfoBoxBlockEditor({ data, isEditing, onChange }: InfoBoxBlockEd
           />
         </div>
 
-        <div>
+        <div className="space-y-2">
           <Label>Innehåll</Label>
-          <Textarea
-            value={data.content || ''}
-            onChange={(e) => onChange({ ...data, content: e.target.value })}
-            placeholder="Skriv ditt meddelande här..."
-            rows={4}
-          />
+          {editor && (
+            <>
+              <div className="flex gap-1 border-b pb-2 mb-2">
+                <Button
+                  type="button"
+                  variant={editor.isActive('bold') ? 'secondary' : 'ghost'}
+                  size="sm"
+                  onClick={() => editor.chain().focus().toggleBold().run()}
+                >
+                  <Bold className="h-4 w-4" />
+                </Button>
+                <Button
+                  type="button"
+                  variant={editor.isActive('italic') ? 'secondary' : 'ghost'}
+                  size="sm"
+                  onClick={() => editor.chain().focus().toggleItalic().run()}
+                >
+                  <Italic className="h-4 w-4" />
+                </Button>
+                <Button
+                  type="button"
+                  variant={editor.isActive('bulletList') ? 'secondary' : 'ghost'}
+                  size="sm"
+                  onClick={() => editor.chain().focus().toggleBulletList().run()}
+                >
+                  <List className="h-4 w-4" />
+                </Button>
+                <Button
+                  type="button"
+                  variant={editor.isActive('orderedList') ? 'secondary' : 'ghost'}
+                  size="sm"
+                  onClick={() => editor.chain().focus().toggleOrderedList().run()}
+                >
+                  <ListOrdered className="h-4 w-4" />
+                </Button>
+              </div>
+              <EditorContent 
+                editor={editor} 
+                className="prose prose-sm max-w-none min-h-[100px] border rounded-md p-3 focus-within:ring-2 focus-within:ring-ring"
+              />
+            </>
+          )}
         </div>
 
         <div className={`border rounded-lg p-4 ${config.className}`}>
@@ -131,7 +207,10 @@ export function InfoBoxBlockEditor({ data, isEditing, onChange }: InfoBoxBlockEd
             {renderIcon()}
             <div>
               <h4 className="font-semibold">{data.title || 'Rubrik'}</h4>
-              <p className="text-sm mt-1 opacity-90">{data.content || 'Innehåll...'}</p>
+              <div 
+                className="text-sm mt-1 opacity-90 prose prose-sm max-w-none"
+                dangerouslySetInnerHTML={{ __html: renderContent(data.content) || 'Innehåll...' }}
+              />
             </div>
           </div>
         </div>
@@ -146,7 +225,10 @@ export function InfoBoxBlockEditor({ data, isEditing, onChange }: InfoBoxBlockEd
         {renderIcon()}
         <div>
           <h4 className="font-semibold text-lg">{data.title || 'Viktig information'}</h4>
-          <p className="mt-2 opacity-90">{data.content || 'Inget innehåll'}</p>
+          <div 
+            className="mt-2 opacity-90 prose prose-sm max-w-none"
+            dangerouslySetInnerHTML={{ __html: renderContent(data.content) || 'Inget innehåll' }}
+          />
         </div>
       </div>
     </div>

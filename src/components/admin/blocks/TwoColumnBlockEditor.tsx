@@ -5,9 +5,24 @@ import Placeholder from '@tiptap/extension-placeholder';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
-import { TwoColumnBlockData } from '@/types/cms';
+import { TwoColumnBlockData, TiptapDocument } from '@/types/cms';
 import { Bold, Italic, List, ListOrdered, ArrowLeftRight } from 'lucide-react';
 import { ImageUploader } from '../ImageUploader';
+import { generateHTML } from '@tiptap/react';
+
+// Helper to check if content is Tiptap JSON
+function isTiptapDocument(content: unknown): content is TiptapDocument {
+  return typeof content === 'object' && content !== null && (content as TiptapDocument).type === 'doc';
+}
+
+// Get initial content for editor (convert JSON to HTML for Tiptap)
+function getEditorContent(content: string | TiptapDocument | undefined): string {
+  if (!content) return '';
+  if (isTiptapDocument(content)) {
+    return generateHTML(content, [StarterKit, Link]);
+  }
+  return content;
+}
 
 interface TwoColumnBlockEditorProps {
   data: TwoColumnBlockData;
@@ -22,15 +37,25 @@ export function TwoColumnBlockEditor({ data, isEditing, onChange }: TwoColumnBlo
       Link.configure({ openOnClick: false }),
       Placeholder.configure({ placeholder: 'Skriv ditt innehåll här...' }),
     ],
-    content: data.content || '',
+    content: getEditorContent(data.content),
     editable: isEditing,
     onUpdate: ({ editor }) => {
-      onChange({ ...data, content: editor.getHTML() });
+      // Save as Tiptap JSON instead of HTML
+      onChange({ ...data, content: editor.getJSON() as TiptapDocument });
     },
   });
 
   const togglePosition = () => {
     onChange({ ...data, imagePosition: data.imagePosition === 'left' ? 'right' : 'left' });
+  };
+
+  // Helper to render content as HTML for preview
+  const renderContent = (): string => {
+    if (!data.content) return '<p>Inget innehåll</p>';
+    if (isTiptapDocument(data.content)) {
+      return generateHTML(data.content, [StarterKit, Link]);
+    }
+    return data.content;
   };
 
   if (isEditing) {
@@ -131,7 +156,7 @@ export function TwoColumnBlockEditor({ data, isEditing, onChange }: TwoColumnBlo
       </div>
       <div 
         className="prose prose-sm max-w-none self-center"
-        dangerouslySetInnerHTML={{ __html: data.content || '<p>Inget innehåll</p>' }}
+        dangerouslySetInnerHTML={{ __html: renderContent() }}
       />
     </div>
   );

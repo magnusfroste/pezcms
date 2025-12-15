@@ -1,9 +1,8 @@
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
-import { Plus, Trash2, GripVertical } from 'lucide-react';
-import { AccordionBlockData } from '@/types/cms';
+import { Plus, Trash2, GripVertical, Bold, Italic, List, ListOrdered } from 'lucide-react';
+import { AccordionBlockData, TiptapDocument } from '@/types/cms';
 import { ImagePickerField } from '@/components/admin/ImagePickerField';
 import {
   DndContext,
@@ -22,6 +21,33 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { useEditor, EditorContent, generateHTML } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+import Link from '@tiptap/extension-link';
+import Placeholder from '@tiptap/extension-placeholder';
+
+// Helper to check if content is Tiptap JSON
+function isTiptapDocument(content: unknown): content is TiptapDocument {
+  return typeof content === 'object' && content !== null && (content as TiptapDocument).type === 'doc';
+}
+
+// Get initial content for editor
+function getEditorContent(answer: string | TiptapDocument | undefined): string {
+  if (!answer) return '';
+  if (isTiptapDocument(answer)) {
+    return generateHTML(answer, [StarterKit, Link]);
+  }
+  return `<p>${answer}</p>`;
+}
+
+// Render answer as HTML
+function renderAnswer(answer: string | TiptapDocument | undefined): string {
+  if (!answer) return '';
+  if (isTiptapDocument(answer)) {
+    return generateHTML(answer, [StarterKit, Link]);
+  }
+  return `<p>${answer}</p>`;
+}
 
 interface AccordionBlockEditorProps {
   data: AccordionBlockData;
@@ -32,8 +58,8 @@ interface AccordionBlockEditorProps {
 interface SortableItemProps {
   id: string;
   index: number;
-  item: { question: string; answer: string; image?: string; imageAlt?: string };
-  onUpdate: (index: number, field: 'question' | 'answer' | 'image' | 'imageAlt', value: string) => void;
+  item: { question: string; answer: string | TiptapDocument; image?: string; imageAlt?: string };
+  onUpdate: (index: number, field: 'question' | 'answer' | 'image' | 'imageAlt', value: string | TiptapDocument) => void;
   onRemove: (index: number) => void;
 }
 
@@ -52,6 +78,18 @@ function SortableAccordionItem({ id, index, item, onUpdate, onRemove }: Sortable
     transition,
     opacity: isDragging ? 0.5 : 1,
   };
+
+  const editor = useEditor({
+    extensions: [
+      StarterKit,
+      Link.configure({ openOnClick: false }),
+      Placeholder.configure({ placeholder: 'Skriv svaret här...' }),
+    ],
+    content: getEditorContent(item.answer),
+    onUpdate: ({ editor }) => {
+      onUpdate(index, 'answer', editor.getJSON() as TiptapDocument);
+    },
+  });
 
   return (
     <div ref={setNodeRef} style={style} className="border border-border rounded-lg p-4 space-y-3 bg-background">
@@ -81,12 +119,51 @@ function SortableAccordionItem({ id, index, item, onUpdate, onRemove }: Sortable
         onChange={(e) => onUpdate(index, 'question', e.target.value)}
         placeholder="Skriv frågan här..."
       />
-      <Textarea
-        value={item.answer}
-        onChange={(e) => onUpdate(index, 'answer', e.target.value)}
-        placeholder="Skriv svaret här..."
-        rows={3}
-      />
+      <div className="space-y-2">
+        <Label className="text-sm">Svar</Label>
+        {editor && (
+          <>
+            <div className="flex gap-1 border-b pb-2 mb-2">
+              <Button
+                type="button"
+                variant={editor.isActive('bold') ? 'secondary' : 'ghost'}
+                size="sm"
+                onClick={() => editor.chain().focus().toggleBold().run()}
+              >
+                <Bold className="h-4 w-4" />
+              </Button>
+              <Button
+                type="button"
+                variant={editor.isActive('italic') ? 'secondary' : 'ghost'}
+                size="sm"
+                onClick={() => editor.chain().focus().toggleItalic().run()}
+              >
+                <Italic className="h-4 w-4" />
+              </Button>
+              <Button
+                type="button"
+                variant={editor.isActive('bulletList') ? 'secondary' : 'ghost'}
+                size="sm"
+                onClick={() => editor.chain().focus().toggleBulletList().run()}
+              >
+                <List className="h-4 w-4" />
+              </Button>
+              <Button
+                type="button"
+                variant={editor.isActive('orderedList') ? 'secondary' : 'ghost'}
+                size="sm"
+                onClick={() => editor.chain().focus().toggleOrderedList().run()}
+              >
+                <ListOrdered className="h-4 w-4" />
+              </Button>
+            </div>
+            <EditorContent 
+              editor={editor} 
+              className="prose prose-sm max-w-none min-h-[80px] border rounded-md p-3 focus-within:ring-2 focus-within:ring-ring bg-background"
+            />
+          </>
+        )}
+      </div>
       <div className="space-y-2">
         <Label className="text-sm">Bild (valfritt)</Label>
         <ImagePickerField
@@ -114,7 +191,7 @@ export function AccordionBlockEditor({ data, onChange, canEdit }: AccordionBlock
     })
   );
 
-  const updateItem = (index: number, field: 'question' | 'answer' | 'image' | 'imageAlt', value: string) => {
+  const updateItem = (index: number, field: 'question' | 'answer' | 'image' | 'imageAlt', value: string | TiptapDocument) => {
     const newItems = [...data.items];
     newItems[index] = { ...newItems[index], [field]: value };
     onChange({ ...data, items: newItems });
@@ -123,7 +200,7 @@ export function AccordionBlockEditor({ data, onChange, canEdit }: AccordionBlock
   const addItem = () => {
     onChange({
       ...data,
-      items: [...data.items, { question: '', answer: '' }]
+      items: [...data.items, { question: '', answer: { type: 'doc', content: [] } as TiptapDocument }]
     });
   };
 
@@ -150,7 +227,10 @@ export function AccordionBlockEditor({ data, onChange, canEdit }: AccordionBlock
         {data.items.map((item, index) => (
           <div key={index} className="border border-border rounded-lg p-4">
             <p className="font-medium">{item.question || 'Ingen fråga'}</p>
-            <p className="text-sm text-muted-foreground mt-1">{item.answer || 'Inget svar'}</p>
+            <div 
+              className="text-sm text-muted-foreground mt-1 prose prose-sm max-w-none"
+              dangerouslySetInnerHTML={{ __html: renderAnswer(item.answer) || 'Inget svar' }}
+            />
           </div>
         ))}
         {data.items.length === 0 && (

@@ -1,4 +1,21 @@
-import { TwoColumnBlockData } from '@/types/cms';
+import { TwoColumnBlockData, TiptapDocument } from '@/types/cms';
+import { generateHTML } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+import Link from '@tiptap/extension-link';
+
+// Helper to check if content is Tiptap JSON
+function isTiptapDocument(content: unknown): content is TiptapDocument {
+  return typeof content === 'object' && content !== null && (content as TiptapDocument).type === 'doc';
+}
+
+// Render content as HTML (handles both legacy HTML strings and Tiptap JSON)
+function renderContent(content: string | TiptapDocument | undefined): string {
+  if (!content) return '';
+  if (isTiptapDocument(content)) {
+    return generateHTML(content, [StarterKit, Link]);
+  }
+  return content;
+}
 
 interface TwoColumnBlockProps {
   data: TwoColumnBlockData;
@@ -21,7 +38,7 @@ export function TwoColumnBlock({ data }: TwoColumnBlockProps) {
             </div>
           )}
           <div className={`prose prose-lg max-w-none ${imageFirst ? '' : 'md:[direction:ltr]'}`}>
-            <div dangerouslySetInnerHTML={{ __html: data.content || '' }} />
+            <div dangerouslySetInnerHTML={{ __html: renderContent(data.content) }} />
           </div>
         </div>
       </div>
