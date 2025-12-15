@@ -6,7 +6,19 @@ import Link from '@tiptap/extension-link';
 import { Toggle } from '@/components/ui/toggle';
 import { Separator } from '@/components/ui/separator';
 import { Bold, Italic, List, ListOrdered, Quote, Heading1, Heading2 } from 'lucide-react';
-import { TextBlockData } from '@/types/cms';
+import { TextBlockData, TiptapDocument } from '@/types/cms';
+
+// Helper to check if content is Tiptap JSON
+function isTiptapDocument(content: string | TiptapDocument): content is TiptapDocument {
+  return typeof content === 'object' && content !== null && content.type === 'doc';
+}
+
+// Convert content to editor-compatible format
+function getEditorContent(content: string | TiptapDocument | undefined): string | TiptapDocument {
+  if (!content) return '';
+  if (isTiptapDocument(content)) return content;
+  return content; // HTML string for legacy content
+}
 
 interface TextBlockEditorProps {
   data: TextBlockData;
@@ -21,10 +33,11 @@ export function TextBlockEditor({ data, onChange, isEditing }: TextBlockEditorPr
       Placeholder.configure({ placeholder: 'Skriv ditt innehåll här...' }),
       Link.configure({ openOnClick: false }),
     ],
-    content: data.content || '',
+    content: getEditorContent(data.content),
     editable: isEditing,
     onUpdate: ({ editor }) => {
-      onChange({ ...data, content: editor.getHTML() });
+      // Save as Tiptap JSON for new content (headless-ready)
+      onChange({ ...data, content: editor.getJSON() as TiptapDocument });
     },
   });
 
@@ -35,8 +48,12 @@ export function TextBlockEditor({ data, onChange, isEditing }: TextBlockEditorPr
   }, [editor, isEditing]);
 
   useEffect(() => {
-    if (editor && data.content !== editor.getHTML()) {
-      editor.commands.setContent(data.content || '');
+    // Compare JSON content properly
+    const currentContent = editor?.getJSON();
+    const newContent = getEditorContent(data.content);
+    
+    if (editor && JSON.stringify(currentContent) !== JSON.stringify(newContent)) {
+      editor.commands.setContent(newContent);
     }
   }, [data.content, editor]);
 

@@ -97,8 +97,27 @@ export interface HeroBlockData {
   secondaryButton?: { text: string; url: string };
 }
 
+// Tiptap JSON document structure (ProseMirror format)
+export interface TiptapMark {
+  type: string;
+  attrs?: Record<string, unknown>;
+}
+
+export interface TiptapNode {
+  type: string;
+  attrs?: Record<string, unknown>;
+  content?: TiptapNode[];
+  marks?: TiptapMark[];
+  text?: string;
+}
+
+export interface TiptapDocument {
+  type: 'doc';
+  content: TiptapNode[];
+}
+
 export interface TextBlockData {
-  content: string; // HTML from Tiptap
+  content: string | TiptapDocument; // HTML (legacy) or Tiptap JSON
   backgroundColor?: string;
 }
 
