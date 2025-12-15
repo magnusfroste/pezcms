@@ -23,3 +23,6 @@ verify_jwt = false
 
 [functions.invalidate-cache]
 verify_jwt = true
+
+[functions.content-api]
+verify_jwt = false
