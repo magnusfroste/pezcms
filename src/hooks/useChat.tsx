@@ -132,6 +132,8 @@ export function useChat(options?: UseChatOptions) {
               localApiKey: settings?.localApiKey,
               n8nWebhookUrl: settings?.n8nWebhookUrl,
               systemPrompt: settings?.systemPrompt,
+              includeContentAsContext: settings?.includeContentAsContext,
+              contentContextMaxTokens: settings?.contentContextMaxTokens,
             },
           }),
           signal: abortControllerRef.current.signal,

@@ -10,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Loader2, Save, AlertTriangle, Cloud, Server, Webhook, Shield } from 'lucide-react';
+import { Loader2, Save, AlertTriangle, Cloud, Server, Webhook, Shield, Database, BookOpen } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
 export default function ChatSettingsPage() {
@@ -65,9 +65,10 @@ export default function ChatSettingsPage() {
 
         {formData.enabled && (
           <Tabs defaultValue="general" className="space-y-6">
-            <TabsList className="grid grid-cols-4 w-full">
+            <TabsList className="grid grid-cols-5 w-full">
               <TabsTrigger value="general">Allmänt</TabsTrigger>
               <TabsTrigger value="provider">AI-leverantör</TabsTrigger>
+              <TabsTrigger value="knowledge">Kunskapsbas</TabsTrigger>
               <TabsTrigger value="display">Visning</TabsTrigger>
               <TabsTrigger value="privacy">Integritet</TabsTrigger>
             </TabsList>
@@ -310,6 +311,74 @@ export default function ChatSettingsPage() {
                       </div>
                     )}
                   </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            {/* Knowledge Base settings */}
+            <TabsContent value="knowledge">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <BookOpen className="h-5 w-5" />
+                    Kunskapsbas (CAG)
+                  </CardTitle>
+                  <CardDescription>
+                    Inkludera webbplatsens innehåll som kontext för AI:n
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="flex items-center justify-between p-4 rounded-lg border">
+                    <div>
+                      <h4 className="font-medium">Inkludera CMS-innehåll</h4>
+                      <p className="text-sm text-muted-foreground">
+                        AI:n får tillgång till allt publicerat innehåll på webbplatsen
+                      </p>
+                    </div>
+                    <Switch
+                      checked={formData.includeContentAsContext ?? false}
+                      onCheckedChange={(includeContentAsContext) => 
+                        setFormData({ ...formData, includeContentAsContext })
+                      }
+                    />
+                  </div>
+
+                  {formData.includeContentAsContext && (
+                    <Alert className="bg-blue-50 border-blue-200 dark:bg-blue-950 dark:border-blue-900">
+                      <Database className="h-4 w-4 text-blue-600" />
+                      <AlertTitle className="text-blue-800 dark:text-blue-200">Context Augmented Generation</AlertTitle>
+                      <AlertDescription className="text-blue-700 dark:text-blue-300">
+                        Allt publicerat innehåll (sidor, artiklar, kontaktinfo) skickas som kontext till AI:n vid varje meddelande. 
+                        Detta gör att AI:n kan svara på frågor om er verksamhet baserat på webbplatsens innehåll.
+                      </AlertDescription>
+                    </Alert>
+                  )}
+
+                  {formData.includeContentAsContext && (
+                    <div className="space-y-2">
+                      <Label htmlFor="maxTokens">Max antal tokens</Label>
+                      <Select
+                        value={String(formData.contentContextMaxTokens ?? 50000)}
+                        onValueChange={(value) => setFormData({ 
+                          ...formData, 
+                          contentContextMaxTokens: parseInt(value)
+                        })}
+                      >
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="25000">25 000 (Liten webbplats)</SelectItem>
+                          <SelectItem value="50000">50 000 (Medelstor)</SelectItem>
+                          <SelectItem value="100000">100 000 (Stor webbplats)</SelectItem>
+                          <SelectItem value="200000">200 000 (Mycket stor)</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <p className="text-xs text-muted-foreground">
+                        Gemini 2.5 Flash stödjer upp till 1 miljon tokens. En typisk sida är ca 500-1000 tokens.
+                      </p>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             </TabsContent>

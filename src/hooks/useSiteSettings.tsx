@@ -244,6 +244,10 @@ export interface ChatSettings {
   anonymizeData: boolean;
   auditLogging: boolean;
   dataRetentionDays: number;
+  
+  // Knowledge Base (CAG)
+  includeContentAsContext: boolean;
+  contentContextMaxTokens: number;
 }
 
 const defaultChatSettings: ChatSettings = {
@@ -269,6 +273,8 @@ const defaultChatSettings: ChatSettings = {
   anonymizeData: false,
   auditLogging: true,
   dataRetentionDays: 90,
+  includeContentAsContext: false,
+  contentContextMaxTokens: 50000,
 };
 
 // Generic hook for fetching settings

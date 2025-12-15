@@ -23,7 +23,136 @@ interface ChatRequest {
     localApiKey?: string;
     n8nWebhookUrl?: string;
     systemPrompt?: string;
+    includeContentAsContext?: boolean;
+    contentContextMaxTokens?: number;
   };
+}
+
+// Extract text from block content
+function extractTextFromBlock(block: any): string {
+  if (!block) return '';
+  
+  const texts: string[] = [];
+  const type = block.type;
+  const data = block.data || block;
+
+  switch (type) {
+    case 'text':
+      // Strip HTML tags from rich text
+      if (data.content) {
+        texts.push(data.content.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim());
+      }
+      break;
+    case 'hero':
+      if (data.title) texts.push(data.title);
+      if (data.subtitle) texts.push(data.subtitle);
+      if (data.ctaText) texts.push(data.ctaText);
+      break;
+    case 'cta':
+      if (data.title) texts.push(data.title);
+      if (data.subtitle) texts.push(data.subtitle);
+      if (data.buttonText) texts.push(data.buttonText);
+      break;
+    case 'accordion':
+      if (data.items && Array.isArray(data.items)) {
+        data.items.forEach((item: any) => {
+          if (item.question) texts.push(item.question);
+          if (item.answer) texts.push(item.answer.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim());
+        });
+      }
+      break;
+    case 'contact':
+      if (data.phone) texts.push(`Telefon: ${data.phone}`);
+      if (data.email) texts.push(`E-post: ${data.email}`);
+      if (data.address) texts.push(`Adress: ${data.address}`);
+      break;
+    case 'quote':
+      if (data.quote) texts.push(data.quote);
+      if (data.author) texts.push(`- ${data.author}`);
+      break;
+    case 'info-box':
+    case 'infoBox':
+      if (data.title) texts.push(data.title);
+      if (data.content) texts.push(data.content.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim());
+      break;
+    case 'stats':
+      if (data.items && Array.isArray(data.items)) {
+        data.items.forEach((item: any) => {
+          if (item.value && item.label) texts.push(`${item.value} ${item.label}`);
+        });
+      }
+      break;
+    case 'article-grid':
+    case 'articleGrid':
+      if (data.items && Array.isArray(data.items)) {
+        data.items.forEach((item: any) => {
+          if (item.title) texts.push(item.title);
+          if (item.excerpt) texts.push(item.excerpt);
+        });
+      }
+      break;
+    case 'link-grid':
+    case 'linkGrid':
+      if (data.items && Array.isArray(data.items)) {
+        data.items.forEach((item: any) => {
+          if (item.title) texts.push(item.title);
+          if (item.description) texts.push(item.description);
+        });
+      }
+      break;
+  }
+
+  return texts.join(' ');
+}
+
+// Build knowledge base from pages
+async function buildKnowledgeBase(maxTokens: number): Promise<string> {
+  const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+  const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+  const supabase = createClient(supabaseUrl, supabaseKey);
+
+  const { data: pages, error } = await supabase
+    .from('pages')
+    .select('title, slug, content_json')
+    .eq('status', 'published');
+
+  if (error || !pages) {
+    console.error('Failed to fetch pages for knowledge base:', error);
+    return '';
+  }
+
+  const sections: string[] = [];
+  let estimatedTokens = 0;
+
+  for (const page of pages) {
+    const pageTexts: string[] = [];
+    
+    if (page.content_json && Array.isArray(page.content_json)) {
+      for (const block of page.content_json) {
+        const text = extractTextFromBlock(block);
+        if (text) pageTexts.push(text);
+      }
+    }
+
+    if (pageTexts.length > 0) {
+      const pageContent = `### ${page.title} (/${page.slug})\n${pageTexts.join('\n')}`;
+      const contentTokens = Math.ceil(pageContent.length / 4); // Rough estimate: 4 chars per token
+      
+      if (estimatedTokens + contentTokens > maxTokens) {
+        console.log(`Knowledge base truncated at ${estimatedTokens} tokens (max: ${maxTokens})`);
+        break;
+      }
+      
+      sections.push(pageContent);
+      estimatedTokens += contentTokens;
+    }
+  }
+
+  if (sections.length === 0) return '';
+
+  console.log(`Built knowledge base: ${pages.length} pages, ~${estimatedTokens} tokens`);
+  
+  return `\n\n## Webbplatsens innehåll (kunskapsbas)\nAnvänd följande information för att svara på frågor om verksamheten:\n\n${sections.join('\n\n')}`;
 }
 
 serve(async (req) => {
@@ -37,12 +166,22 @@ serve(async (req) => {
     console.log('Chat request received:', { 
       messageCount: messages.length, 
       provider: settings?.aiProvider,
+      includeContent: settings?.includeContentAsContext,
       conversationId,
       sessionId
     });
 
     const aiProvider = settings?.aiProvider || 'lovable';
-    const systemPrompt = settings?.systemPrompt || 'Du är en hjälpsam AI-assistent.';
+    let systemPrompt = settings?.systemPrompt || 'Du är en hjälpsam AI-assistent.';
+
+    // Add knowledge base if enabled
+    if (settings?.includeContentAsContext) {
+      const maxTokens = settings?.contentContextMaxTokens || 50000;
+      const knowledgeBase = await buildKnowledgeBase(maxTokens);
+      if (knowledgeBase) {
+        systemPrompt += knowledgeBase;
+      }
+    }
 
     // Prepare messages with system prompt
     const fullMessages: ChatMessage[] = [
