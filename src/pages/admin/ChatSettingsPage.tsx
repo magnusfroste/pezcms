@@ -44,8 +44,11 @@ export default function ChatSettingsPage() {
 
   return (
     <AdminLayout>
-      <div>
-        <h1 className="text-2xl font-serif font-semibold mb-6">Chat-inställningar</h1>
+      <div className="space-y-6">
+        <div>
+          <h1 className="font-serif text-2xl font-bold text-foreground">Chat-inställningar</h1>
+          <p className="text-muted-foreground mt-1">Konfigurera AI-chatten för din webbplats</p>
+        </div>
         <div className="max-w-4xl space-y-6">
         {/* Master toggle */}
         <Card>

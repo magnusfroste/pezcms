@@ -115,7 +115,7 @@ export default function UsersPage() {
       <div>
         <div className="mb-8 flex items-center justify-between">
           <div>
-            <h1 className="font-serif text-3xl font-bold text-foreground">Användare</h1>
+            <h1 className="font-serif text-2xl font-bold text-foreground">Användare</h1>
             <p className="text-muted-foreground mt-1">Hantera användare och deras roller</p>
           </div>
           <CreateUserDialog />
