@@ -102,15 +102,30 @@ serve(async (req) => {
         throw new Error('N8N webhook URL is not configured');
       }
 
+      // Extract latest user message for N8N AI Agent nodes
+      const lastUserMessage = messages.filter(m => m.role === 'user').pop();
+      
+      console.log('Sending to N8N:', { 
+        webhookUrl, 
+        chatInput: lastUserMessage?.content?.substring(0, 50),
+        messageCount: fullMessages.length 
+      });
+
       const n8nResponse = await fetch(webhookUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          // Primary field for N8N AI agent nodes
+          chatInput: lastUserMessage?.content || '',
+          // Full conversation history for context
           messages: fullMessages,
+          // Metadata
           conversationId,
           sessionId,
+          // System prompt for N8N workflow flexibility
+          systemPrompt,
         }),
       });
 
