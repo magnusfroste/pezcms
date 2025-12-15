@@ -149,7 +149,7 @@ export interface LinkGridBlockData {
 }
 
 export interface TwoColumnBlockData {
-  content: string;
+  content: string | TiptapDocument; // HTML (legacy) or Tiptap JSON
   imageSrc: string;
   imageAlt: string;
   imagePosition: 'left' | 'right';
@@ -157,14 +157,14 @@ export interface TwoColumnBlockData {
 
 export interface InfoBoxBlockData {
   title: string;
-  content: string;
+  content: string | TiptapDocument; // Plaintext/HTML (legacy) or Tiptap JSON
   variant: 'info' | 'success' | 'warning' | 'highlight';
   icon?: string;
 }
 
 export interface AccordionBlockData {
   title?: string;
-  items: { question: string; answer: string; image?: string; imageAlt?: string }[];
+  items: { question: string; answer: string | TiptapDocument; image?: string; imageAlt?: string }[];
 }
 
 export interface ArticleGridBlockData {

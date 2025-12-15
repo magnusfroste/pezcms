@@ -1,10 +1,28 @@
-import { AccordionBlockData } from '@/types/cms';
+import { AccordionBlockData, TiptapDocument } from '@/types/cms';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
+import { generateHTML } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+import Link from '@tiptap/extension-link';
+
+// Helper to check if content is Tiptap JSON
+function isTiptapDocument(content: unknown): content is TiptapDocument {
+  return typeof content === 'object' && content !== null && (content as TiptapDocument).type === 'doc';
+}
+
+// Render answer as HTML (handles both legacy plaintext and Tiptap JSON)
+function renderAnswer(answer: string | TiptapDocument | undefined): string {
+  if (!answer) return '';
+  if (isTiptapDocument(answer)) {
+    return generateHTML(answer, [StarterKit, Link]);
+  }
+  // Legacy plaintext - wrap in paragraph
+  return `<p>${answer}</p>`;
+}
 
 interface AccordionBlockProps {
   data: AccordionBlockData;
@@ -30,7 +48,10 @@ export function AccordionBlock({ data }: AccordionBlockProps) {
                 {item.question}
               </AccordionTrigger>
               <AccordionContent className="text-muted-foreground">
-                <p>{item.answer}</p>
+                <div 
+                  className="prose prose-sm max-w-none"
+                  dangerouslySetInnerHTML={{ __html: renderAnswer(item.answer) }}
+                />
                 {item.image && (
                   <img 
                     src={item.image} 
