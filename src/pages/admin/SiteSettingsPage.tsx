@@ -252,6 +252,17 @@ export default function SiteSettingsPage() {
   const isLoading = footerLoading || seoLoading || performanceLoading || scriptsLoading || cookieLoading || maintenanceLoading;
   const isSaving = updateFooter.isPending || updateSeo.isPending || updatePerformance.isPending || updateScripts.isPending || updateCookieBanner.isPending || updateMaintenance.isPending;
 
+  const handleSaveAll = async () => {
+    await Promise.all([
+      updateSeo.mutateAsync(seoData),
+      updateMaintenance.mutateAsync(maintenanceData),
+      updateScripts.mutateAsync(scriptsData),
+      updateCookieBanner.mutateAsync(cookieData),
+      updatePerformance.mutateAsync(performanceData),
+      updateFooter.mutateAsync(footerData),
+    ]);
+  };
+
   if (isLoading) {
     return (
       <AdminLayout>
@@ -268,7 +279,12 @@ export default function SiteSettingsPage() {
         <AdminPageHeader 
           title="Webbplatsinställningar"
           description="Hantera SEO, prestanda och kontaktinformation"
-        />
+        >
+          <Button onClick={handleSaveAll} disabled={isSaving}>
+            {isSaving ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Save className="h-4 w-4 mr-2" />}
+            Spara ändringar
+          </Button>
+        </AdminPageHeader>
 
         <Tabs defaultValue="seo" className="space-y-6">
           <TabsList className="grid w-full grid-cols-6 max-w-3xl">
@@ -310,12 +326,6 @@ export default function SiteSettingsPage() {
               </Alert>
             )}
             
-            <div className="flex justify-end">
-              <Button onClick={() => updateSeo.mutate(seoData)} disabled={isSaving}>
-                {updateSeo.isPending ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Save className="h-4 w-4 mr-2" />}
-                Spara SEO-inställningar
-              </Button>
-            </div>
 
             <div className="grid gap-6 md:grid-cols-2">
               <Card>
@@ -512,12 +522,6 @@ export default function SiteSettingsPage() {
               </Alert>
             )}
 
-            <div className="flex justify-end">
-              <Button onClick={() => updateMaintenance.mutate(maintenanceData)} disabled={isSaving}>
-                {updateMaintenance.isPending ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Save className="h-4 w-4 mr-2" />}
-                Spara underhållsinställningar
-              </Button>
-            </div>
 
             <div className="grid gap-6 md:grid-cols-2">
               <Card className={maintenanceData.enabled ? 'border-destructive/50 bg-destructive/5' : ''}>
@@ -677,12 +681,6 @@ export default function SiteSettingsPage() {
               </CardContent>
             </Card>
 
-            <div className="flex justify-end">
-              <Button onClick={() => updateScripts.mutate(scriptsData)} disabled={isSaving}>
-                {updateScripts.isPending ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Save className="h-4 w-4 mr-2" />}
-                Spara script-inställningar
-              </Button>
-            </div>
 
             <div className="grid gap-6">
               <Card>
@@ -766,12 +764,6 @@ export default function SiteSettingsPage() {
 
           {/* Cookies Tab */}
           <TabsContent value="cookies" className="space-y-6">
-            <div className="flex justify-end">
-              <Button onClick={() => updateCookieBanner.mutate(cookieData)} disabled={isSaving}>
-                {updateCookieBanner.isPending ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Save className="h-4 w-4 mr-2" />}
-                Spara cookie-inställningar
-              </Button>
-            </div>
 
             <Card>
               <CardHeader>
@@ -888,12 +880,6 @@ export default function SiteSettingsPage() {
 
           {/* Performance Tab */}
           <TabsContent value="performance" className="space-y-6">
-            <div className="flex justify-end">
-              <Button onClick={() => updatePerformance.mutate(performanceData)} disabled={isSaving}>
-                {updatePerformance.isPending ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Save className="h-4 w-4 mr-2" />}
-                Spara prestandainställningar
-              </Button>
-            </div>
 
             <div className="grid gap-6 md:grid-cols-2">
               <Card>
@@ -977,12 +963,6 @@ export default function SiteSettingsPage() {
 
           {/* Footer Tab */}
           <TabsContent value="footer" className="space-y-6">
-            <div className="flex justify-end">
-              <Button onClick={() => updateFooter.mutate(footerData)} disabled={isSaving}>
-                {updateFooter.isPending ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Save className="h-4 w-4 mr-2" />}
-                Spara footer-inställningar
-              </Button>
-            </div>
 
             {/* Layout Section */}
             <Card>
