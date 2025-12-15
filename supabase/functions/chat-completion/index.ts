@@ -137,7 +137,19 @@ serve(async (req) => {
 
       // N8N returns a structured response, convert to SSE format
       const n8nData = await n8nResponse.json();
-      const responseContent = n8nData.message || n8nData.response || 'Jag kunde inte behandla din förfrågan.';
+      console.log('N8N response data:', JSON.stringify(n8nData));
+      
+      // Handle various N8N response formats:
+      // - Array with output: [{ "output": "..." }]
+      // - Object with message/response: { "message": "..." } or { "response": "..." }
+      // - Object with output: { "output": "..." }
+      let responseContent = 'Jag kunde inte behandla din förfrågan.';
+      
+      if (Array.isArray(n8nData) && n8nData.length > 0) {
+        responseContent = n8nData[0].output || n8nData[0].message || n8nData[0].response || responseContent;
+      } else if (typeof n8nData === 'object' && n8nData !== null) {
+        responseContent = n8nData.output || n8nData.message || n8nData.response || responseContent;
+      }
       
       // Create a simple SSE stream for N8N response
       const encoder = new TextEncoder();
