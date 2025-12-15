@@ -274,6 +274,34 @@ export default function ChatSettingsPage() {
                         </div>
 
                         <div className="space-y-2">
+                          <Label>Webhook-typ</Label>
+                          <Select
+                            value={formData.n8nWebhookType || 'chat'}
+                            onValueChange={(value) => setFormData({ 
+                              ...formData, 
+                              n8nWebhookType: value as 'chat' | 'generic'
+                            })}
+                          >
+                            <SelectTrigger>
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="chat">
+                                Chat Webhook (med sessionsminne)
+                              </SelectItem>
+                              <SelectItem value="generic">
+                                Generic Webhook (OpenAI-kompatibel)
+                              </SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <p className="text-xs text-muted-foreground">
+                            {formData.n8nWebhookType === 'generic' 
+                              ? 'Skickar full konversationshistorik. Använd för Ollama, LM Studio eller egen AI-logik.'
+                              : 'N8N Chat-noden hanterar sessionsminnet. Perfekt för AI Agent med Memory.'}
+                          </p>
+                        </div>
+
+                        <div className="space-y-2">
                           <Label>Trigger-läge</Label>
                           <Select
                             value={formData.n8nTriggerMode}

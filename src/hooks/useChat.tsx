@@ -131,6 +131,7 @@ export function useChat(options?: UseChatOptions) {
               localModel: settings?.localModel,
               localApiKey: settings?.localApiKey,
               n8nWebhookUrl: settings?.n8nWebhookUrl,
+              n8nWebhookType: settings?.n8nWebhookType || 'chat',
               systemPrompt: settings?.systemPrompt,
               includeContentAsContext: settings?.includeContentAsContext,
               contentContextMaxTokens: settings?.contentContextMaxTokens,
