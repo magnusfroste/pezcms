@@ -9,14 +9,14 @@ interface ChatEmptyStateProps {
 }
 
 const defaultPrompts = [
-  'Vad kan du hjälpa mig med?',
-  'Berätta mer om era tjänster',
-  'Hur kan jag boka en tid?',
+  'What can you help me with?',
+  'Tell me more about your services',
+  'How can I book an appointment?',
 ];
 
 export function ChatEmptyState({ 
-  title = 'AI Assistent',
-  welcomeMessage = 'Hej! Hur kan jag hjälpa dig idag?',
+  title = 'AI Assistant',
+  welcomeMessage = 'Hi! How can I help you today?',
   suggestedPrompts = defaultPrompts,
   onPromptClick 
 }: ChatEmptyStateProps) {

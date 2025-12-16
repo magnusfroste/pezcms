@@ -87,7 +87,7 @@ export function ChatWidget() {
           <MessageCircle className="h-6 w-6" />
         )}
         <span className="sr-only">
-          {isOpen ? 'Stäng chat' : settings.widgetButtonText || 'Öppna chat'}
+          {isOpen ? 'Close chat' : settings.widgetButtonText || 'Open chat'}
         </span>
       </Button>
     </div>

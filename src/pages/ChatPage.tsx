@@ -103,7 +103,7 @@ export default function ChatPage() {
               className="w-full gap-2"
             >
               <Plus className="h-4 w-4" />
-              Ny konversation
+              New conversation
             </Button>
           </div>
           
@@ -134,7 +134,7 @@ export default function ChatPage() {
               
               {conversations.length === 0 && (
                 <p className="text-sm text-muted-foreground text-center py-8 px-4">
-                  Inga tidigare konversationer
+                  No previous conversations
                 </p>
               )}
             </div>

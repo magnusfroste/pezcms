@@ -16,7 +16,7 @@ export function ChatInput({
   onSend, 
   onCancel, 
   isLoading, 
-  placeholder = 'Skriv ditt meddelande...',
+  placeholder = 'Type your message...',
   disabled 
 }: ChatInputProps) {
   const [value, setValue] = useState('');

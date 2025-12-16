@@ -67,7 +67,7 @@ export function ChatMessage({ role, content, createdAt }: ChatMessageProps) {
             'text-[10px] mt-1 block',
             isUser ? 'text-primary-foreground/60' : 'text-muted-foreground'
           )}>
-            {createdAt.toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' })}
+            {createdAt.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
           </time>
         )}
       </div>
