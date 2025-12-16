@@ -6,7 +6,7 @@ import { Switch } from '@/components/ui/switch';
 import { Slider } from '@/components/ui/slider';
 import { HeroBlockData } from '@/types/cms';
 import { ImageUploader } from '../ImageUploader';
-import { Image, Video, Palette, Maximize, Monitor, AlignVerticalJustifyStart, AlignVerticalJustifyCenter, AlignVerticalJustifyEnd } from 'lucide-react';
+import { Image, Video, Palette, Maximize, AlignVerticalJustifyStart, AlignVerticalJustifyCenter, AlignVerticalJustifyEnd, Type, MoveUp, Sparkles } from 'lucide-react';
 
 interface HeroBlockEditorProps {
   data: HeroBlockData;
@@ -247,6 +247,31 @@ export function HeroBlockEditor({ data, onChange, isEditing }: HeroBlockEditorPr
               />
             </div>
           )}
+
+          {/* Title Animation */}
+          <div className="space-y-2">
+            <Label className="text-xs text-muted-foreground">Title Animation</Label>
+            <div className="grid grid-cols-4 gap-2">
+              {[
+                { value: 'none', label: 'None', icon: Type },
+                { value: 'fade-in', label: 'Fade', icon: Sparkles },
+                { value: 'slide-up', label: 'Slide', icon: MoveUp },
+                { value: 'typewriter', label: 'Type', icon: Type },
+              ].map(({ value, label, icon: Icon }) => (
+                <Button
+                  key={value}
+                  type="button"
+                  variant={(localData.titleAnimation || 'none') === value ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => handleChange({ titleAnimation: value as HeroBlockData['titleAnimation'] })}
+                  className="flex items-center gap-1"
+                >
+                  <Icon className="h-3 w-3" />
+                  {label}
+                </Button>
+              ))}
+            </div>
+          </div>
         </div>
 
         <div className="grid grid-cols-2 gap-4">

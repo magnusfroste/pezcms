@@ -18,6 +18,13 @@ const alignmentClasses: Record<string, string> = {
   bottom: 'items-end pb-32',
 };
 
+const titleAnimationClasses: Record<string, string> = {
+  none: '',
+  'fade-in': 'animate-fade-in',
+  'slide-up': 'animate-slide-up',
+  typewriter: 'overflow-hidden whitespace-nowrap animate-typewriter border-r-2 border-current animate-blink',
+};
+
 export function HeroBlock({ data }: HeroBlockProps) {
   if (!data.title) return null;
   
@@ -27,6 +34,7 @@ export function HeroBlock({ data }: HeroBlockProps) {
   const heightMode = data.heightMode || 'auto';
   const contentAlignment = data.contentAlignment || 'center';
   const overlayOpacity = data.overlayOpacity ?? 60;
+  const titleAnimation = data.titleAnimation || 'none';
   
   return (
     <section 
@@ -74,7 +82,15 @@ export function HeroBlock({ data }: HeroBlockProps) {
         "relative container mx-auto text-center max-w-3xl z-10",
         heightMode === 'auto' && "py-0"
       )}>
-        <h1 className="font-serif text-5xl font-bold mb-6">{data.title}</h1>
+        <h1 
+          className={cn(
+            "font-serif text-5xl font-bold mb-6",
+            titleAnimationClasses[titleAnimation],
+            titleAnimation === 'typewriter' && "inline-block"
+          )}
+        >
+          {data.title}
+        </h1>
         {data.subtitle && <p className="text-xl opacity-90 mb-8">{data.subtitle}</p>}
         <div className="flex gap-4 justify-center flex-wrap">
           {data.primaryButton?.text && data.primaryButton?.url && (
