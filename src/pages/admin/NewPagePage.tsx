@@ -11,10 +11,10 @@ import { z } from 'zod';
 import { useToast } from '@/hooks/use-toast';
 
 const pageSchema = z.object({
-  title: z.string().min(2, 'Titeln måste vara minst 2 tecken'),
+  title: z.string().min(2, 'Title must be at least 2 characters'),
   slug: z.string()
-    .min(2, 'URL-sluggen måste vara minst 2 tecken')
-    .regex(/^[a-z0-9-]+$/, 'URL-sluggen får bara innehålla små bokstäver, siffror och bindestreck'),
+    .min(2, 'URL slug must be at least 2 characters')
+    .regex(/^[a-z0-9-]+$/, 'URL slug can only contain lowercase letters, numbers and hyphens'),
 });
 
 export default function NewPagePage() {
@@ -47,7 +47,7 @@ export default function NewPagePage() {
     const result = pageSchema.safeParse({ title, slug });
     if (!result.success) {
       toast({
-        title: 'Valideringsfel',
+        title: 'Validation Error',
         description: result.error.errors[0].message,
         variant: 'destructive',
       });
@@ -71,42 +71,42 @@ export default function NewPagePage() {
           className="mb-6"
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
-          Tillbaka till sidor
+          Back to pages
         </Button>
 
         <Card>
           <CardHeader>
-            <CardTitle className="font-serif text-2xl">Skapa ny sida</CardTitle>
+            <CardTitle className="font-serif text-2xl">Create New Page</CardTitle>
             <CardDescription>
-              Fyll i grundläggande information för din nya sida
+              Fill in basic information for your new page
             </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="title">Sidtitel</Label>
+                <Label htmlFor="title">Page Title</Label>
                 <Input
                   id="title"
                   value={title}
                   onChange={(e) => handleTitleChange(e.target.value)}
-                  placeholder="t.ex. Om sjukhuset"
+                  placeholder="e.g. About Us"
                   className="text-lg"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="slug">URL-slug</Label>
+                <Label htmlFor="slug">URL Slug</Label>
                 <div className="flex items-center gap-2">
                   <span className="text-muted-foreground">/</span>
                   <Input
                     id="slug"
                     value={slug}
                     onChange={(e) => setSlug(e.target.value.toLowerCase())}
-                    placeholder="om-sjukhuset"
+                    placeholder="about-us"
                   />
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  Denna URL används för att nå sidan: sophiahemmet.se/{slug || 'url-slug'}
+                  This URL will be used to access the page: yoursite.com/{slug || 'url-slug'}
                 </p>
               </div>
 
@@ -116,13 +116,13 @@ export default function NewPagePage() {
                   variant="outline"
                   onClick={() => navigate('/admin/pages')}
                 >
-                  Avbryt
+                  Cancel
                 </Button>
                 <Button type="submit" disabled={createPage.isPending}>
                   {createPage.isPending && (
                     <Loader2 className="h-4 w-4 mr-2 animate-spin" />
                   )}
-                  Skapa sida
+                  Create Page
                 </Button>
               </div>
             </form>

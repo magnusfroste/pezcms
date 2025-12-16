@@ -11,14 +11,14 @@ import { Loader2, Mail, Lock, User } from 'lucide-react';
 import { z } from 'zod';
 
 const loginSchema = z.object({
-  email: z.string().email('Ogiltig e-postadress'),
-  password: z.string().min(6, 'Lösenord måste vara minst 6 tecken'),
+  email: z.string().email('Invalid email address'),
+  password: z.string().min(6, 'Password must be at least 6 characters'),
 });
 
 const signupSchema = z.object({
-  email: z.string().email('Ogiltig e-postadress'),
-  password: z.string().min(6, 'Lösenord måste vara minst 6 tecken'),
-  fullName: z.string().min(2, 'Namn måste vara minst 2 tecken'),
+  email: z.string().email('Invalid email address'),
+  password: z.string().min(6, 'Password must be at least 6 characters'),
+  fullName: z.string().min(2, 'Name must be at least 2 characters'),
 });
 
 export default function AuthPage() {
@@ -45,7 +45,7 @@ export default function AuthPage() {
     const result = loginSchema.safeParse({ email: loginEmail, password: loginPassword });
     if (!result.success) {
       toast({
-        title: 'Valideringsfel',
+        title: 'Validation Error',
         description: result.error.errors[0].message,
         variant: 'destructive',
       });
@@ -58,9 +58,9 @@ export default function AuthPage() {
     
     if (error) {
       toast({
-        title: 'Inloggning misslyckades',
+        title: 'Login failed',
         description: error.message === 'Invalid login credentials' 
-          ? 'Felaktig e-post eller lösenord'
+          ? 'Incorrect email or password'
           : error.message,
         variant: 'destructive',
       });
@@ -79,7 +79,7 @@ export default function AuthPage() {
     });
     if (!result.success) {
       toast({
-        title: 'Valideringsfel',
+        title: 'Validation Error',
         description: result.error.errors[0].message,
         variant: 'destructive',
       });
@@ -92,17 +92,17 @@ export default function AuthPage() {
     
     if (error) {
       const message = error.message.includes('already registered')
-        ? 'En användare med denna e-postadress finns redan'
+        ? 'A user with this email already exists'
         : error.message;
       toast({
-        title: 'Registrering misslyckades',
+        title: 'Registration failed',
         description: message,
         variant: 'destructive',
       });
     } else {
       toast({
-        title: 'Konto skapat!',
-        description: 'Du kan nu logga in med dina uppgifter.',
+        title: 'Account created!',
+        description: 'You can now log in with your credentials.',
       });
       navigate('/admin');
     }
@@ -117,35 +117,35 @@ export default function AuthPage() {
             <span className="text-primary-foreground font-serif font-bold text-2xl">S</span>
           </div>
           <div>
-            <h1 className="font-serif font-bold text-2xl text-foreground">Sophiahemmet</h1>
+            <h1 className="font-serif font-bold text-2xl text-foreground">Sophia CMS</h1>
             <p className="text-sm text-muted-foreground">Content Management System</p>
           </div>
         </div>
 
         <Card className="shadow-lg">
           <CardHeader className="text-center">
-            <CardTitle className="font-serif text-xl">Välkommen</CardTitle>
+            <CardTitle className="font-serif text-xl">Welcome</CardTitle>
             <CardDescription>
-              Logga in eller skapa ett konto för att hantera innehåll
+              Sign in or create an account to manage content
             </CardDescription>
           </CardHeader>
           <CardContent>
             <Tabs defaultValue="login" className="w-full">
               <TabsList className="grid w-full grid-cols-2 mb-6">
-                <TabsTrigger value="login">Logga in</TabsTrigger>
-                <TabsTrigger value="signup">Skapa konto</TabsTrigger>
+                <TabsTrigger value="login">Sign In</TabsTrigger>
+                <TabsTrigger value="signup">Create Account</TabsTrigger>
               </TabsList>
 
               <TabsContent value="login">
                 <form onSubmit={handleLogin} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="login-email">E-postadress</Label>
+                    <Label htmlFor="login-email">Email Address</Label>
                     <div className="relative">
                       <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                       <Input
                         id="login-email"
                         type="email"
-                        placeholder="namn@sjukhus.se"
+                        placeholder="name@company.com"
                         value={loginEmail}
                         onChange={(e) => setLoginEmail(e.target.value)}
                         className="pl-10"
@@ -154,7 +154,7 @@ export default function AuthPage() {
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="login-password">Lösenord</Label>
+                    <Label htmlFor="login-password">Password</Label>
                     <div className="relative">
                       <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                       <Input
@@ -170,7 +170,7 @@ export default function AuthPage() {
                   </div>
                   <Button type="submit" className="w-full" disabled={isLoading}>
                     {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                    Logga in
+                    Sign In
                   </Button>
                 </form>
               </TabsContent>
@@ -178,13 +178,13 @@ export default function AuthPage() {
               <TabsContent value="signup">
                 <form onSubmit={handleSignup} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="signup-name">Fullständigt namn</Label>
+                    <Label htmlFor="signup-name">Full Name</Label>
                     <div className="relative">
                       <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                       <Input
                         id="signup-name"
                         type="text"
-                        placeholder="Anna Andersson"
+                        placeholder="John Doe"
                         value={signupName}
                         onChange={(e) => setSignupName(e.target.value)}
                         className="pl-10"
@@ -193,13 +193,13 @@ export default function AuthPage() {
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="signup-email">E-postadress</Label>
+                    <Label htmlFor="signup-email">Email Address</Label>
                     <div className="relative">
                       <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                       <Input
                         id="signup-email"
                         type="email"
-                        placeholder="namn@sjukhus.se"
+                        placeholder="name@company.com"
                         value={signupEmail}
                         onChange={(e) => setSignupEmail(e.target.value)}
                         className="pl-10"
@@ -208,13 +208,13 @@ export default function AuthPage() {
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="signup-password">Lösenord</Label>
+                    <Label htmlFor="signup-password">Password</Label>
                     <div className="relative">
                       <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                       <Input
                         id="signup-password"
                         type="password"
-                        placeholder="Minst 6 tecken"
+                        placeholder="At least 6 characters"
                         value={signupPassword}
                         onChange={(e) => setSignupPassword(e.target.value)}
                         className="pl-10"
@@ -224,7 +224,7 @@ export default function AuthPage() {
                   </div>
                   <Button type="submit" className="w-full" disabled={isLoading}>
                     {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                    Skapa konto
+                    Create Account
                   </Button>
                 </form>
               </TabsContent>
@@ -234,7 +234,7 @@ export default function AuthPage() {
 
         <p className="text-center text-sm text-muted-foreground mt-6">
           <Link to="/" className="hover:text-primary transition-colors">
-            ← Tillbaka till startsidan
+            ← Back to homepage
           </Link>
         </p>
       </div>

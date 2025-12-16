@@ -20,14 +20,14 @@ import {
 } from "@/components/ui/tooltip";
 
 const navigation = [
-  { name: "Översikt", href: "/admin", icon: LayoutDashboard },
-  { name: "Sidor", href: "/admin/pages", icon: FileText },
+  { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
+  { name: "Pages", href: "/admin/pages", icon: FileText },
   { name: "Content Hub", href: "/admin/content-hub", icon: Database, adminOnly: true },
-  { name: "Menyordning", href: "/admin/menu-order", icon: Menu, adminOnly: true },
-  { name: "Användare", href: "/admin/users", icon: Users, adminOnly: true },
-  { name: "Varumärke", href: "/admin/branding", icon: Palette, adminOnly: true },
+  { name: "Menu Order", href: "/admin/menu-order", icon: Menu, adminOnly: true },
+  { name: "Users", href: "/admin/users", icon: Users, adminOnly: true },
+  { name: "Branding", href: "/admin/branding", icon: Palette, adminOnly: true },
   { name: "AI Chat", href: "/admin/chat", icon: MessageSquare, adminOnly: true },
-  { name: "Inställningar", href: "/admin/settings", icon: Settings, adminOnly: true },
+  { name: "Settings", href: "/admin/settings", icon: Settings, adminOnly: true },
 ];
 
 export function AdminSidebar() {
@@ -98,7 +98,7 @@ export function AdminSidebar() {
           {!isCollapsed && (
             <div className="flex-1 min-w-0 overflow-hidden">
               <p className="text-sm font-medium truncate">{profile?.full_name || profile?.email}</p>
-              <p className="text-xs text-sidebar-foreground/60">{role ? ROLE_LABELS[role] : "Laddar..."}</p>
+              <p className="text-xs text-sidebar-foreground/60">{role ? ROLE_LABELS[role] : "Loading..."}</p>
             </div>
           )}
         </div>
@@ -106,14 +106,14 @@ export function AdminSidebar() {
           <SidebarMenuItem>
             <Tooltip>
               <TooltipTrigger asChild>
-                <SidebarMenuButton onClick={signOut} tooltip="Logga ut">
+                <SidebarMenuButton onClick={signOut} tooltip="Sign Out">
                   <LogOut className="h-4 w-4" />
-                  <span>Logga ut</span>
+                  <span>Sign Out</span>
                 </SidebarMenuButton>
               </TooltipTrigger>
               {isCollapsed && (
                 <TooltipContent side="right">
-                  Logga ut
+                  Sign Out
                 </TooltipContent>
               )}
             </Tooltip>

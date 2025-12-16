@@ -59,7 +59,7 @@ function SortablePageItem({ page, onToggleVisibility }: SortablePageItemProps) {
           {!page.show_in_menu && (
             <span className="text-xs text-muted-foreground flex items-center gap-1">
               <EyeOff className="h-3 w-3" />
-              Dold
+              Hidden
             </span>
           )}
         </div>
@@ -71,14 +71,14 @@ function SortablePageItem({ page, onToggleVisibility }: SortablePageItemProps) {
           <Switch
             checked={page.show_in_menu}
             onCheckedChange={(checked) => onToggleVisibility(page.id, checked)}
-            aria-label={page.show_in_menu ? 'Dölj från meny' : 'Visa i meny'}
+            aria-label={page.show_in_menu ? 'Hide from menu' : 'Show in menu'}
           />
         </div>
         <span className={cn(
           "text-xs px-2 py-1 rounded-full",
           page.status === 'published' ? "bg-green-100 text-green-800" : "bg-muted text-muted-foreground"
         )}>
-          {page.status === 'published' ? 'Publicerad' : page.status}
+          {page.status === 'published' ? 'Published' : page.status}
         </span>
       </div>
     </div>
@@ -158,14 +158,14 @@ export default function MenuOrderPage() {
       queryClient.invalidateQueries({ queryKey: ['public-nav-pages'] });
       setHasChanges(false);
       toast({
-        title: 'Sparat',
-        description: 'Menyinställningarna har uppdaterats.',
+        title: 'Saved',
+        description: 'Menu settings have been updated.',
       });
     },
     onError: () => {
       toast({
-        title: 'Fel',
-        description: 'Kunde inte spara menyinställningarna.',
+        title: 'Error',
+        description: 'Could not save menu settings.',
         variant: 'destructive',
       });
     },
@@ -191,8 +191,8 @@ export default function MenuOrderPage() {
     <AdminLayout>
       <div className="space-y-6">
         <AdminPageHeader 
-          title="Menyordning"
-          description="Dra och släpp för att ändra ordningen, använd växlaren för att dölja sidor"
+          title="Menu Order"
+          description="Drag and drop to change the order, use the toggle to hide pages"
         >
           <Button onClick={handleSave} disabled={!hasChanges || saveMutation.isPending} className="relative">
             {hasChanges && <span className="absolute -top-1 -right-1 h-3 w-3 rounded-full bg-destructive" />}
@@ -201,14 +201,14 @@ export default function MenuOrderPage() {
             ) : (
               <Save className="h-4 w-4 mr-2" />
             )}
-            Spara ändringar
+            Save Changes
           </Button>
         </AdminPageHeader>
 
         <Card>
           <CardHeader>
-            <CardTitle className="font-serif">Sidor</CardTitle>
-            <CardDescription>Ordningen och synligheten bestämmer hur sidorna visas i navigationsmenyn. Dolda sidor är fortfarande tillgängliga via direktlänk.</CardDescription>
+            <CardTitle className="font-serif">Pages</CardTitle>
+            <CardDescription>The order and visibility determines how pages appear in the navigation menu. Hidden pages are still accessible via direct link.</CardDescription>
           </CardHeader>
           <CardContent>
             <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
@@ -225,7 +225,7 @@ export default function MenuOrderPage() {
               </SortableContext>
             </DndContext>
             {orderedPages.length === 0 && (
-              <p className="text-center text-muted-foreground py-8">Inga sidor skapade ännu</p>
+              <p className="text-center text-muted-foreground py-8">No pages created yet</p>
             )}
           </CardContent>
         </Card>

@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Plus, Search, Filter, MoreHorizontal, Edit, Trash2, Copy, ArrowUpDown, Clock } from 'lucide-react';
 import { formatDistanceToNow, format } from 'date-fns';
-import { sv } from 'date-fns/locale';
+import { enUS } from 'date-fns/locale';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { AdminPageHeader } from '@/components/admin/AdminPageHeader';
 import { Button } from '@/components/ui/button';
@@ -75,7 +75,7 @@ export default function PagesListPage() {
       
       switch (sortField) {
         case 'title':
-          comparison = a.title.localeCompare(b.title, 'sv');
+          comparison = a.title.localeCompare(b.title, 'en');
           break;
         case 'updated_at':
           comparison = new Date(a.updated_at).getTime() - new Date(b.updated_at).getTime();
@@ -101,7 +101,7 @@ export default function PagesListPage() {
   const handleDuplicate = async (page: { title: string; slug: string }) => {
     const newSlug = `${page.slug}-copy-${Date.now()}`;
     const result = await createPage.mutateAsync({
-      title: `${page.title} (kopia)`,
+      title: `${page.title} (copy)`,
       slug: newSlug,
     });
     navigate(`/admin/pages/${result.id}`);
@@ -118,14 +118,14 @@ export default function PagesListPage() {
     <AdminLayout>
       <div>
         <AdminPageHeader 
-          title="Sidor"
-          description="Hantera och redigera dina sidor"
+          title="Pages"
+          description="Manage and edit your pages"
         >
           <MigratePageDialog />
           <Button asChild>
             <Link to="/admin/pages/new">
               <Plus className="h-4 w-4 mr-2" />
-              Ny sida
+              New Page
             </Link>
           </Button>
         </AdminPageHeader>
@@ -137,7 +137,7 @@ export default function PagesListPage() {
               <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
-                  placeholder="Sök efter titel eller slug..."
+                  placeholder="Search by title or slug..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   className="pl-10"
@@ -149,14 +149,14 @@ export default function PagesListPage() {
               >
                 <SelectTrigger className="w-full sm:w-[180px]">
                   <Filter className="h-4 w-4 mr-2" />
-                  <SelectValue placeholder="Filtrera status" />
+                  <SelectValue placeholder="Filter status" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">Alla statusar</SelectItem>
-                  <SelectItem value="draft">Utkast</SelectItem>
-                  <SelectItem value="reviewing">Granskning</SelectItem>
-                  <SelectItem value="published">Publicerad</SelectItem>
-                  <SelectItem value="archived">Arkiverad</SelectItem>
+                  <SelectItem value="all">All statuses</SelectItem>
+                  <SelectItem value="draft">Draft</SelectItem>
+                  <SelectItem value="reviewing">Review</SelectItem>
+                  <SelectItem value="published">Published</SelectItem>
+                  <SelectItem value="archived">Archived</SelectItem>
                 </SelectContent>
               </Select>
               <Select 
@@ -169,15 +169,15 @@ export default function PagesListPage() {
               >
                 <SelectTrigger className="w-full sm:w-[200px]">
                   <ArrowUpDown className="h-4 w-4 mr-2" />
-                  <SelectValue placeholder="Sortera" />
+                  <SelectValue placeholder="Sort" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="updated_at-desc">Senast uppdaterad</SelectItem>
-                  <SelectItem value="updated_at-asc">Äldst uppdaterad</SelectItem>
-                  <SelectItem value="title-asc">Titel A-Ö</SelectItem>
-                  <SelectItem value="title-desc">Titel Ö-A</SelectItem>
-                  <SelectItem value="status-asc">Status (utkast först)</SelectItem>
-                  <SelectItem value="status-desc">Status (publicerad först)</SelectItem>
+                  <SelectItem value="updated_at-desc">Recently updated</SelectItem>
+                  <SelectItem value="updated_at-asc">Oldest updated</SelectItem>
+                  <SelectItem value="title-asc">Title A-Z</SelectItem>
+                  <SelectItem value="title-desc">Title Z-A</SelectItem>
+                  <SelectItem value="status-asc">Status (draft first)</SelectItem>
+                  <SelectItem value="status-desc">Status (published first)</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -188,10 +188,10 @@ export default function PagesListPage() {
         <Card>
           <CardHeader>
             <CardTitle className="font-serif">
-              {filteredAndSortedPages.length} {filteredAndSortedPages.length === 1 ? 'sida' : 'sidor'}
+              {filteredAndSortedPages.length} {filteredAndSortedPages.length === 1 ? 'page' : 'pages'}
             </CardTitle>
             <CardDescription>
-              Klicka på en sida för att redigera den
+              Click on a page to edit it
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -205,14 +205,14 @@ export default function PagesListPage() {
               <div className="text-center py-12">
                 <p className="text-muted-foreground mb-4">
                   {search || statusFilter !== 'all' 
-                    ? 'Inga sidor matchar din sökning'
-                    : 'Inga sidor ännu. Skapa din första sida!'}
+                    ? 'No pages match your search'
+                    : 'No pages yet. Create your first page!'}
                 </p>
                 {!search && statusFilter === 'all' && (
                   <Button asChild>
                     <Link to="/admin/pages/new">
                       <Plus className="h-4 w-4 mr-2" />
-                      Skapa sida
+                      Create Page
                     </Link>
                   </Button>
                 )}
@@ -235,14 +235,14 @@ export default function PagesListPage() {
                             <span className="truncate">/{page.slug}</span>
                             <span className="hidden sm:inline">•</span>
                             <span className="hidden sm:inline text-xs">
-                              {formatDistanceToNow(new Date(page.updated_at), { addSuffix: true, locale: sv })}
+                              {formatDistanceToNow(new Date(page.updated_at), { addSuffix: true, locale: enUS })}
                             </span>
                           </div>
                         </div>
                         {page.scheduled_at && page.status === 'reviewing' && (
                           <div className="hidden sm:flex items-center gap-1.5 text-xs bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 px-2 py-1 rounded-md">
                             <Clock className="h-3 w-3" />
-                            <span>{format(new Date(page.scheduled_at), "d MMM HH:mm", { locale: sv })}</span>
+                            <span>{format(new Date(page.scheduled_at), "MMM d HH:mm", { locale: enUS })}</span>
                           </div>
                         )}
                         <StatusBadge status={page.status} />
@@ -263,12 +263,12 @@ export default function PagesListPage() {
                         <DropdownMenuItem asChild>
                           <Link to={`/admin/pages/${page.id}`}>
                             <Edit className="h-4 w-4 mr-2" />
-                            Redigera
+                            Edit
                           </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => handleDuplicate(page)}>
                           <Copy className="h-4 w-4 mr-2" />
-                          Duplicera
+                          Duplicate
                         </DropdownMenuItem>
                         {isAdmin && (
                           <>
@@ -278,7 +278,7 @@ export default function PagesListPage() {
                               className="text-destructive focus:text-destructive"
                             >
                               <Trash2 className="h-4 w-4 mr-2" />
-                              Radera
+                              Delete
                             </DropdownMenuItem>
                           </>
                         )}
@@ -296,18 +296,18 @@ export default function PagesListPage() {
       <AlertDialog open={!!deleteId} onOpenChange={() => setDeleteId(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Är du säker?</AlertDialogTitle>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              Denna åtgärd kan inte ångras. Sidan kommer att raderas permanent.
+              This action cannot be undone. The page will be permanently deleted.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Avbryt</AlertDialogCancel>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
-              Radera
+              Delete
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

@@ -86,10 +86,10 @@ export default function UsersPage() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-users'] });
-      toast({ title: 'Roll uppdaterad', description: 'Användarens roll har ändrats.' });
+      toast({ title: 'Role updated', description: 'User role has been changed.' });
     },
     onError: (error: Error) => {
-      toast({ title: 'Fel', description: error.message, variant: 'destructive' });
+      toast({ title: 'Error', description: error.message, variant: 'destructive' });
     },
   });
 
@@ -98,8 +98,8 @@ export default function UsersPage() {
       <AdminLayout>
         <div className="text-center">
           <Shield className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-          <h1 className="font-serif text-2xl font-bold mb-2">Ingen åtkomst</h1>
-          <p className="text-muted-foreground">Endast administratörer kan hantera användare.</p>
+          <h1 className="font-serif text-2xl font-bold mb-2">No Access</h1>
+          <p className="text-muted-foreground">Only administrators can manage users.</p>
         </div>
       </AdminLayout>
     );
@@ -115,17 +115,17 @@ export default function UsersPage() {
     <AdminLayout>
       <div>
         <AdminPageHeader 
-          title="Användare"
-          description="Hantera användare och deras roller"
+          title="Users"
+          description="Manage users and their roles"
         >
           <CreateUserDialog />
         </AdminPageHeader>
 
         <Card>
           <CardHeader>
-            <CardTitle className="font-serif">Alla användare</CardTitle>
+            <CardTitle className="font-serif">All Users</CardTitle>
             <CardDescription>
-              Ändra roller genom att välja i dropdown-menyn
+              Change roles using the dropdown menu
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -134,15 +134,15 @@ export default function UsersPage() {
                 {[...Array(5)].map((_, i) => <Skeleton key={i} className="h-16 w-full" />)}
               </div>
             ) : !users?.length ? (
-              <p className="text-center py-8 text-muted-foreground">Inga användare hittades</p>
+              <p className="text-center py-8 text-muted-foreground">No users found</p>
             ) : (
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Användare</TableHead>
-                    <TableHead>E-post</TableHead>
-                    <TableHead>Roll</TableHead>
-                    <TableHead>Registrerad</TableHead>
+                    <TableHead>User</TableHead>
+                    <TableHead>Email</TableHead>
+                    <TableHead>Role</TableHead>
+                    <TableHead>Registered</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -153,9 +153,9 @@ export default function UsersPage() {
                           <div className="h-9 w-9 rounded-full bg-muted flex items-center justify-center">
                             <User className="h-4 w-4 text-muted-foreground" />
                           </div>
-                          <span className="font-medium">{user.full_name || 'Okänd'}</span>
+                          <span className="font-medium">{user.full_name || 'Unknown'}</span>
                           {user.id === currentUser?.id && (
-                            <Badge variant="outline" className="text-xs">Du</Badge>
+                            <Badge variant="outline" className="text-xs">You</Badge>
                           )}
                         </div>
                       </TableCell>
@@ -175,15 +175,15 @@ export default function UsersPage() {
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="writer">Skribent</SelectItem>
-                              <SelectItem value="approver">Granskare</SelectItem>
-                              <SelectItem value="admin">Administratör</SelectItem>
+                              <SelectItem value="writer">Writer</SelectItem>
+                              <SelectItem value="approver">Approver</SelectItem>
+                              <SelectItem value="admin">Administrator</SelectItem>
                             </SelectContent>
                           </Select>
                         )}
                       </TableCell>
                       <TableCell className="text-muted-foreground">
-                        {new Date(user.created_at).toLocaleDateString('sv-SE')}
+                        {new Date(user.created_at).toLocaleDateString('en-US')}
                       </TableCell>
                     </TableRow>
                   ))}
