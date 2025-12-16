@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Plus, Search, Filter, MoreHorizontal, Edit, Trash2, Copy, ArrowUpDown, Clock } from 'lucide-react';
+import { Plus, Search, Filter, MoreHorizontal, Edit, Trash2, Copy, ArrowUpDown, Clock, LayoutTemplate } from 'lucide-react';
 import { formatDistanceToNow, format } from 'date-fns';
 import { enUS } from 'date-fns/locale';
 import { AdminLayout } from '@/components/admin/AdminLayout';
@@ -122,6 +122,12 @@ export default function PagesListPage() {
           description="Manage and edit your pages"
         >
           <MigratePageDialog />
+          <Button variant="outline" asChild>
+            <Link to="/admin/new-site">
+              <LayoutTemplate className="h-4 w-4 mr-2" />
+              Create Site from Template
+            </Link>
+          </Button>
           <Button asChild>
             <Link to="/admin/pages/new">
               <Plus className="h-4 w-4 mr-2" />
