@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Save, Send, Check, X, Loader2, ExternalLink, Eye, Clock } from 'lucide-react';
 import { format } from 'date-fns';
-import { sv } from 'date-fns/locale';
+import { enUS } from 'date-fns/locale';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -68,7 +68,7 @@ export default function PageEditorPage() {
         meta_json: meta,
       });
       setHasChanges(false);
-      toast({ title: 'Sparad ✓', description: 'Ändringarna har sparats.' });
+      toast({ title: 'Saved ✓', description: 'Changes have been saved.' });
     } finally {
       setIsSaving(false);
     }
@@ -89,19 +89,19 @@ export default function PageEditorPage() {
       await handleSave();
       await updateStatus.mutateAsync({ id, status: 'reviewing', scheduledAt });
       toast({
-        title: 'Schemalagd',
+        title: 'Scheduled',
         description: scheduledAt 
-          ? `Sidan publiceras ${format(scheduledAt, "d MMMM 'kl.' HH:mm", { locale: sv })}`
-          : 'Schemaläggning borttagen',
+          ? `Page will be published on ${format(scheduledAt, "MMMM d 'at' HH:mm", { locale: enUS })}`
+          : 'Schedule removed',
       });
     } else if (page?.status === 'reviewing') {
       // Just update the schedule
       await updateStatus.mutateAsync({ id, status: 'reviewing', scheduledAt });
       toast({
-        title: scheduledAt ? 'Schemalagd' : 'Schemaläggning borttagen',
+        title: scheduledAt ? 'Scheduled' : 'Schedule removed',
         description: scheduledAt 
-          ? `Sidan publiceras ${format(scheduledAt, "d MMMM 'kl.' HH:mm", { locale: sv })}`
-          : 'Sidan väntar nu på manuell godkännande',
+          ? `Page will be published on ${format(scheduledAt, "MMMM d 'at' HH:mm", { locale: enUS })}`
+          : 'Page is now awaiting manual approval',
       });
     }
   };
@@ -114,7 +114,7 @@ export default function PageEditorPage() {
 
   const handleReject = async () => {
     if (id) {
-      await updateStatus.mutateAsync({ id, status: 'draft', feedback: 'Behöver ändringar' });
+      await updateStatus.mutateAsync({ id, status: 'draft', feedback: 'Needs changes' });
     }
   };
 
@@ -154,8 +154,8 @@ export default function PageEditorPage() {
     return (
       <AdminLayout>
         <div className="text-center">
-          <h1 className="text-2xl font-serif font-bold mb-4">Sidan hittades inte</h1>
-          <Button onClick={() => navigate('/admin/pages')}>Tillbaka till sidor</Button>
+          <h1 className="text-2xl font-serif font-bold mb-4">Page not found</h1>
+          <Button onClick={() => navigate('/admin/pages')}>Back to pages</Button>
         </div>
       </AdminLayout>
     );
@@ -194,13 +194,13 @@ export default function PageEditorPage() {
               {id && <VersionHistoryPanel pageId={id} onRestore={handleVersionRestore} />}
               <Button variant="outline" size="sm" onClick={handlePreview}>
                 <Eye className="h-4 w-4 mr-2" />
-                Förhandsgranska
+                Preview
               </Button>
               {page.status === 'published' && (
                 <Button variant="outline" size="sm" asChild>
                   <a href={`/${page.slug}`} target="_blank" rel="noopener noreferrer">
                     <ExternalLink className="h-4 w-4 mr-2" />
-                    Visa live
+                    View Live
                   </a>
                 </Button>
               )}
@@ -225,26 +225,26 @@ export default function PageEditorPage() {
           <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <StatusBadge status={page.status} />
-              {hasChanges && <span className="text-sm text-muted-foreground">Osparade ändringar</span>}
+              {hasChanges && <span className="text-sm text-muted-foreground">Unsaved changes</span>}
             </div>
             <div className="flex items-center gap-3">
               {canEdit && (
                 <Button variant="outline" onClick={handleSave} disabled={isSaving || !hasChanges}>
                   {isSaving ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Save className="h-4 w-4 mr-2" />}
-                  SPARA UTKAST
+                  SAVE DRAFT
                 </Button>
               )}
               {canSendForReview && (
                 <Button onClick={() => handleSendForReview()} disabled={updateStatus.isPending}>
                   <Send className="h-4 w-4 mr-2" />
-                  SKICKA FÖR GRANSKNING
+                  SEND FOR REVIEW
                 </Button>
               )}
               {canApprove && (
                 <>
                   <Button variant="outline" onClick={handleReject} disabled={updateStatus.isPending}>
                     <X className="h-4 w-4 mr-2" />
-                    ÅTERFÖRVISA
+                    REJECT
                   </Button>
                   <SchedulePublishDialog
                     scheduledAt={page.scheduled_at}
@@ -253,14 +253,14 @@ export default function PageEditorPage() {
                   />
                   <Button onClick={handleApprove} disabled={updateStatus.isPending} className="bg-success hover:bg-success/90">
                     <Check className="h-4 w-4 mr-2" />
-                    GODKÄNN & PUBLICERA
+                    APPROVE & PUBLISH
                   </Button>
                 </>
               )}
               {page.status === 'reviewing' && page.scheduled_at && (
                 <div className="flex items-center gap-2 text-sm text-muted-foreground bg-muted px-3 py-1.5 rounded-md">
                   <Clock className="h-4 w-4" />
-                  <span>Publiceras {format(new Date(page.scheduled_at), "d MMM 'kl.' HH:mm", { locale: sv })}</span>
+                  <span>Publishes {format(new Date(page.scheduled_at), "MMM d 'at' HH:mm", { locale: enUS })}</span>
                 </div>
               )}
             </div>

@@ -120,13 +120,13 @@ export function useCreatePage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['pages'] });
       toast({
-        title: 'Sida skapad',
-        description: 'En ny sida har skapats.',
+        title: 'Page created',
+        description: 'A new page has been created.',
       });
     },
     onError: (error: Error) => {
       toast({
-        title: 'Fel',
+        title: 'Error',
         description: error.message,
         variant: 'destructive',
       });
@@ -187,7 +187,7 @@ export function useUpdatePage() {
     },
     onError: (error: Error) => {
       toast({
-        title: 'Fel vid sparande',
+        title: 'Error saving',
         description: error.message,
         variant: 'destructive',
       });
@@ -261,7 +261,6 @@ export function useUpdatePageStatus() {
           console.log(`[usePages] Cache invalidated for: ${data.slug}`);
         } catch (cacheError) {
           console.warn('[usePages] Cache invalidation failed:', cacheError);
-          // Don't fail the publish operation if cache invalidation fails
         }
       }
       
@@ -272,20 +271,20 @@ export function useUpdatePageStatus() {
       queryClient.invalidateQueries({ queryKey: ['page', data.id] });
       
       const messages: Record<PageStatus, string> = {
-        draft: 'Sidan har återförvisats till utkast.',
-        reviewing: 'Sidan har skickats för granskning.',
-        published: 'Sidan har publicerats!',
-        archived: 'Sidan har arkiverats.',
+        draft: 'Page has been returned to draft.',
+        reviewing: 'Page has been sent for review.',
+        published: 'Page has been published!',
+        archived: 'Page has been archived.',
       };
       
       toast({
-        title: 'Status uppdaterad',
+        title: 'Status updated',
         description: messages[variables.status],
       });
     },
     onError: (error: Error) => {
       toast({
-        title: 'Fel',
+        title: 'Error',
         description: error.message,
         variant: 'destructive',
       });
@@ -319,13 +318,13 @@ export function useDeletePage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['pages'] });
       toast({
-        title: 'Sida raderad',
-        description: 'Sidan har raderats permanent.',
+        title: 'Page deleted',
+        description: 'Page has been permanently deleted.',
       });
     },
     onError: (error: Error) => {
       toast({
-        title: 'Fel',
+        title: 'Error',
         description: error.message,
         variant: 'destructive',
       });

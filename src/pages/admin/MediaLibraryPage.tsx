@@ -70,8 +70,8 @@ export default function MediaLibraryPage() {
     setCopiedUrl(fileName);
     setTimeout(() => setCopiedUrl(null), 2000);
     toast({
-      title: 'URL kopierad',
-      description: 'Bildens URL har kopierats till urklipp',
+      title: 'URL Copied',
+      description: 'Image URL has been copied to clipboard',
     });
   };
 
@@ -87,15 +87,15 @@ export default function MediaLibraryPage() {
       if (error) throw error;
 
       toast({
-        title: 'Bild borttagen',
-        description: 'Bilden har tagits bort från mediabiblioteket',
+        title: 'Image Deleted',
+        description: 'Image has been removed from the media library',
       });
       refetch();
     } catch (error) {
       console.error('Delete error:', error);
       toast({
-        title: 'Kunde inte ta bort bild',
-        description: 'Ett fel uppstod. Försök igen.',
+        title: 'Could not delete image',
+        description: 'An error occurred. Please try again.',
         variant: 'destructive',
       });
     } finally {
@@ -118,13 +118,13 @@ export default function MediaLibraryPage() {
     <AdminLayout>
       <div className="space-y-6">
         <AdminPageHeader 
-          title="Mediabibliotek"
-          description="Hantera uppladdade bilder"
+          title="Media Library"
+          description="Manage uploaded images"
         >
           <Button asChild>
             <a href="/admin/pages">
               <Upload className="h-4 w-4 mr-2" />
-              Ladda upp via sideditor
+              Upload via page editor
             </a>
           </Button>
         </AdminPageHeader>
@@ -133,7 +133,7 @@ export default function MediaLibraryPage() {
         <div className="relative max-w-md">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Sök bilder..."
+            placeholder="Search images..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-9"
@@ -149,12 +149,12 @@ export default function MediaLibraryPage() {
           <div className="text-center py-12 bg-muted/30 rounded-lg border border-dashed">
             <ImageIcon className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
             <h3 className="text-lg font-medium text-foreground mb-1">
-              {searchQuery ? 'Inga bilder hittades' : 'Inga bilder uppladdade'}
+              {searchQuery ? 'No images found' : 'No images uploaded'}
             </h3>
             <p className="text-muted-foreground text-sm">
               {searchQuery 
-                ? 'Försök med en annan sökning'
-                : 'Ladda upp bilder via sideditorn för att se dem här'
+                ? 'Try a different search'
+                : 'Upload images via the page editor to see them here'
               }
             </p>
           </div>
@@ -187,7 +187,7 @@ export default function MediaLibraryPage() {
                     ) : (
                       <Copy className="h-3 w-3 mr-1" />
                     )}
-                    Kopiera URL
+                    Copy URL
                   </Button>
                   <Button
                     size="sm"
@@ -196,7 +196,7 @@ export default function MediaLibraryPage() {
                     onClick={() => setDeleteFile(file)}
                   >
                     <Trash2 className="h-3 w-3 mr-1" />
-                    Ta bort
+                    Delete
                   </Button>
                 </div>
 
@@ -219,14 +219,14 @@ export default function MediaLibraryPage() {
       <AlertDialog open={!!deleteFile} onOpenChange={() => setDeleteFile(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Ta bort bild?</AlertDialogTitle>
+            <AlertDialogTitle>Delete image?</AlertDialogTitle>
             <AlertDialogDescription>
-              Är du säker på att du vill ta bort "{deleteFile?.name}"? 
-              Detta kan inte ångras och bilden kommer inte längre visas på sidor där den används.
+              Are you sure you want to delete "{deleteFile?.name}"? 
+              This cannot be undone and the image will no longer display on pages where it's used.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel disabled={isDeleting}>Avbryt</AlertDialogCancel>
+            <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
               disabled={isDeleting}
@@ -235,7 +235,7 @@ export default function MediaLibraryPage() {
               {isDeleting ? (
                 <Loader2 className="h-4 w-4 animate-spin mr-2" />
               ) : null}
-              Ta bort
+              Delete
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

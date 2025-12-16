@@ -222,10 +222,10 @@ export type WorkflowAction =
   | 'archive';
 
 export const STATUS_LABELS: Record<PageStatus, string> = {
-  draft: 'Utkast',
-  reviewing: 'Granskning',
-  published: 'Publicerad',
-  archived: 'Arkiverad',
+  draft: 'Draft',
+  reviewing: 'Review',
+  published: 'Published',
+  archived: 'Archived',
 };
 
 export const STATUS_ICONS: Record<PageStatus, string> = {
@@ -236,7 +236,7 @@ export const STATUS_ICONS: Record<PageStatus, string> = {
 };
 
 export const ROLE_LABELS: Record<AppRole, string> = {
-  writer: 'Skribent',
-  approver: 'Granskare',
-  admin: 'Administratör',
+  writer: 'Writer',
+  approver: 'Approver',
+  admin: 'Administrator',
 };

@@ -27,8 +27,8 @@ export default function AdminDashboard() {
     <AdminLayout>
       <div>
         <AdminPageHeader 
-          title={`Välkommen, ${profile?.full_name?.split(' ')[0] || 'användare'}`}
-          description="Här är en översikt över ditt innehåll"
+          title={`Welcome, ${profile?.full_name?.split(' ')[0] || 'user'}`}
+          description="Here's an overview of your content"
         />
 
         {/* Stats Grid */}
@@ -41,7 +41,7 @@ export default function AdminDashboard() {
                 </div>
                 <div>
                   <p className="text-2xl font-bold">{isLoading ? '-' : stats.total}</p>
-                  <p className="text-sm text-muted-foreground">Totalt antal sidor</p>
+                  <p className="text-sm text-muted-foreground">Total pages</p>
                 </div>
               </div>
             </CardContent>
@@ -55,7 +55,7 @@ export default function AdminDashboard() {
                 </div>
                 <div>
                   <p className="text-2xl font-bold">{isLoading ? '-' : stats.draft}</p>
-                  <p className="text-sm text-muted-foreground">Utkast</p>
+                  <p className="text-sm text-muted-foreground">Drafts</p>
                 </div>
               </div>
             </CardContent>
@@ -69,7 +69,7 @@ export default function AdminDashboard() {
                 </div>
                 <div>
                   <p className="text-2xl font-bold">{isLoading ? '-' : stats.reviewing}</p>
-                  <p className="text-sm text-muted-foreground">Väntar på granskning</p>
+                  <p className="text-sm text-muted-foreground">Pending review</p>
                 </div>
               </div>
             </CardContent>
@@ -83,7 +83,7 @@ export default function AdminDashboard() {
                 </div>
                 <div>
                   <p className="text-2xl font-bold">{isLoading ? '-' : stats.published}</p>
-                  <p className="text-sm text-muted-foreground">Publicerade</p>
+                  <p className="text-sm text-muted-foreground">Published</p>
                 </div>
               </div>
             </CardContent>
@@ -95,13 +95,13 @@ export default function AdminDashboard() {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
               <div>
-                <CardTitle className="font-serif">Senaste sidor</CardTitle>
-                <CardDescription>Nyligen uppdaterade sidor</CardDescription>
+                <CardTitle className="font-serif">Recent Pages</CardTitle>
+                <CardDescription>Recently updated pages</CardDescription>
               </div>
               <Button asChild size="sm">
                 <Link to="/admin/pages/new">
                   <Plus className="h-4 w-4 mr-1" />
-                  Ny sida
+                  New Page
                 </Link>
               </Button>
             </CardHeader>
@@ -114,7 +114,7 @@ export default function AdminDashboard() {
                 </div>
               ) : recentPages.length === 0 ? (
                 <p className="text-muted-foreground text-center py-8">
-                  Inga sidor ännu. Skapa din första sida!
+                  No pages yet. Create your first page!
                 </p>
               ) : (
                 <div className="space-y-3">
@@ -140,8 +140,8 @@ export default function AdminDashboard() {
           {isApprover && (
             <Card>
               <CardHeader>
-                <CardTitle className="font-serif">Väntar på granskning</CardTitle>
-                <CardDescription>Sidor som behöver godkännas</CardDescription>
+                <CardTitle className="font-serif">Pending Review</CardTitle>
+                <CardDescription>Pages awaiting approval</CardDescription>
               </CardHeader>
               <CardContent>
                 {isLoading ? (
@@ -154,7 +154,7 @@ export default function AdminDashboard() {
                   <div className="text-center py-8">
                     <CheckCircle className="h-12 w-12 text-success mx-auto mb-3" />
                     <p className="text-muted-foreground">
-                      Inga sidor väntar på granskning
+                      No pages pending review
                     </p>
                   </div>
                 ) : (
@@ -168,11 +168,11 @@ export default function AdminDashboard() {
                         <div>
                           <p className="font-medium">{page.title}</p>
                           <p className="text-sm text-muted-foreground">
-                            Uppdaterad {new Date(page.updated_at).toLocaleDateString('sv-SE')}
+                            Updated {new Date(page.updated_at).toLocaleDateString('en-US')}
                           </p>
                         </div>
                         <Button size="sm" variant="outline">
-                          Granska
+                          Review
                         </Button>
                       </Link>
                     ))}
@@ -186,20 +186,20 @@ export default function AdminDashboard() {
           {!isApprover && (
             <Card>
               <CardHeader>
-                <CardTitle className="font-serif">Snabbåtgärder</CardTitle>
-                <CardDescription>Vanliga åtgärder</CardDescription>
+                <CardTitle className="font-serif">Quick Actions</CardTitle>
+                <CardDescription>Common actions</CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
                 <Button asChild className="w-full justify-start" variant="outline">
                   <Link to="/admin/pages/new">
                     <Plus className="h-4 w-4 mr-2" />
-                    Skapa ny sida
+                    Create new page
                   </Link>
                 </Button>
                 <Button asChild className="w-full justify-start" variant="outline">
                   <Link to="/admin/pages">
                     <FileText className="h-4 w-4 mr-2" />
-                    Visa alla sidor
+                    View all pages
                   </Link>
                 </Button>
               </CardContent>
