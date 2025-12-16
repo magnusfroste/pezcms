@@ -104,7 +104,7 @@ export function PublicFooter() {
       case 'quickLinks':
         return (
           <div key="quickLinks">
-            <h3 className="font-serif font-bold text-lg mb-4">Snabblänkar</h3>
+            <h3 className="font-serif font-bold text-lg mb-4">Quick Links</h3>
             <nav className="flex flex-col gap-2">
               {pages.slice(0, 6).map((page) => (
                 <Link
@@ -122,7 +122,7 @@ export function PublicFooter() {
       case 'contact':
         return (
           <div key="contact">
-            <h3 className="font-serif font-bold text-lg mb-4">Kontakt</h3>
+            <h3 className="font-serif font-bold text-lg mb-4">Contact</h3>
             <div className="flex flex-col gap-3">
               {settings?.phone && (
                 <a
@@ -158,14 +158,14 @@ export function PublicFooter() {
       case 'hours':
         return (
           <div key="hours">
-            <h3 className="font-serif font-bold text-lg mb-4">Öppettider</h3>
+            <h3 className="font-serif font-bold text-lg mb-4">Opening Hours</h3>
             <div className="flex flex-col gap-2 text-sm text-primary-foreground/80">
               <div className="flex items-center gap-3">
                 <Clock className="h-4 w-4 flex-shrink-0" />
-                <span>Måndag–Fredag</span>
+                <span>Monday–Friday</span>
               </div>
               <p className="ml-7">{settings?.weekdayHours || '–'}</p>
-              <p className="ml-7 mt-2">Lördag–Söndag: {settings?.weekendHours || '–'}</p>
+              <p className="ml-7 mt-2">Saturday–Sunday: {settings?.weekendHours || '–'}</p>
             </div>
           </div>
         );
@@ -185,7 +185,7 @@ export function PublicFooter() {
         {/* Bottom bar */}
         <div className="border-t border-primary-foreground/20 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-primary-foreground/60">
-            © {new Date().getFullYear()} {brandName}. Alla rättigheter förbehållna.
+            © {new Date().getFullYear()} {brandName}. All rights reserved.
           </p>
           
           {/* Social Media Links */}

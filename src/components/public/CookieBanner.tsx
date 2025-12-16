@@ -12,12 +12,12 @@ const COOKIE_CONSENT_KEY = 'cookie-consent';
 
 const defaultSettings: CookieBannerSettings = {
   enabled: true,
-  title: 'Vi använder cookies',
-  description: 'Vi använder cookies för att förbättra din upplevelse på webbplatsen, analysera trafik och anpassa innehåll. Genom att klicka på "Acceptera alla" samtycker du till vår användning av cookies.',
-  policyLinkText: 'Läs mer om vår integritetspolicy',
-  policyLinkUrl: '/integritetspolicy',
-  acceptButtonText: 'Acceptera alla',
-  rejectButtonText: 'Endast nödvändiga',
+  title: 'We use cookies',
+  description: 'We use cookies to improve your experience on the website, analyze traffic and personalize content. By clicking "Accept all" you consent to our use of cookies.',
+  policyLinkText: 'Read more about our privacy policy',
+  policyLinkUrl: '/privacy-policy',
+  acceptButtonText: 'Accept all',
+  rejectButtonText: 'Essential only',
 };
 
 export function CookieBanner() {
@@ -81,7 +81,7 @@ export function CookieBanner() {
         'animate-fade-in'
       )}
       role="dialog"
-      aria-label="Cookie-samtycke"
+      aria-label="Cookie consent"
     >
       <div className="container mx-auto max-w-4xl">
         <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
@@ -119,7 +119,7 @@ export function CookieBanner() {
           <button
             onClick={handleReject}
             className="absolute top-4 right-4 md:relative md:top-0 md:right-0 p-2 rounded-md hover:bg-muted transition-colors"
-            aria-label="Stäng"
+            aria-label="Close"
           >
             <X className="h-4 w-4 text-muted-foreground" />
           </button>
