@@ -56,8 +56,8 @@ export default function ChatSettingsPage() {
     <AdminLayout>
       <div className="space-y-6">
         <AdminPageHeader 
-          title="Chat-inställningar"
-          description="Konfigurera AI-chatten för din webbplats"
+          title="Chat Settings"
+          description="Configure the AI chat for your website"
         >
           <Button onClick={handleSave} disabled={updateSettings.isPending} className="relative">
             {hasChanges && <span className="absolute -top-1 -right-1 h-3 w-3 rounded-full bg-destructive" />}
@@ -66,7 +66,7 @@ export default function ChatSettingsPage() {
             ) : (
               <Save className="h-4 w-4 mr-2" />
             )}
-            Spara ändringar
+            Save changes
           </Button>
         </AdminPageHeader>
         <div className="max-w-4xl space-y-6">
@@ -75,9 +75,9 @@ export default function ChatSettingsPage() {
           <CardHeader>
             <div className="flex items-center justify-between">
               <div>
-                <CardTitle>AI Chat-system</CardTitle>
+                <CardTitle>AI Chat System</CardTitle>
                 <CardDescription>
-                  Aktivera AI-driven chat för din webbplats
+                  Enable AI-powered chat for your website
                 </CardDescription>
               </div>
               <Switch
@@ -91,62 +91,62 @@ export default function ChatSettingsPage() {
         {formData.enabled && (
           <Tabs defaultValue="general" className="space-y-6">
             <TabsList className="grid grid-cols-5 w-full">
-              <TabsTrigger value="general">Allmänt</TabsTrigger>
-              <TabsTrigger value="provider">AI-leverantör</TabsTrigger>
-              <TabsTrigger value="knowledge">Kunskapsbas</TabsTrigger>
-              <TabsTrigger value="display">Visning</TabsTrigger>
-              <TabsTrigger value="privacy">Integritet</TabsTrigger>
+              <TabsTrigger value="general">General</TabsTrigger>
+              <TabsTrigger value="provider">AI Provider</TabsTrigger>
+              <TabsTrigger value="knowledge">Knowledge Base</TabsTrigger>
+              <TabsTrigger value="display">Display</TabsTrigger>
+              <TabsTrigger value="privacy">Privacy</TabsTrigger>
             </TabsList>
 
             {/* General settings */}
             <TabsContent value="general">
               <Card>
                 <CardHeader>
-                  <CardTitle>Grundläggande inställningar</CardTitle>
+                  <CardTitle>Basic Settings</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="title">Chattitel</Label>
+                    <Label htmlFor="title">Chat Title</Label>
                     <Input
                       id="title"
                       value={formData.title}
                       onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                      placeholder="AI Assistent"
+                      placeholder="AI Assistant"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="welcomeMessage">Välkomstmeddelande</Label>
+                    <Label htmlFor="welcomeMessage">Welcome Message</Label>
                     <Textarea
                       id="welcomeMessage"
                       value={formData.welcomeMessage}
                       onChange={(e) => setFormData({ ...formData, welcomeMessage: e.target.value })}
-                      placeholder="Hej! Hur kan jag hjälpa dig idag?"
+                      placeholder="Hello! How can I help you today?"
                       rows={2}
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="placeholder">Placeholder-text</Label>
+                    <Label htmlFor="placeholder">Placeholder Text</Label>
                     <Input
                       id="placeholder"
                       value={formData.placeholder}
                       onChange={(e) => setFormData({ ...formData, placeholder: e.target.value })}
-                      placeholder="Skriv ditt meddelande..."
+                      placeholder="Type your message..."
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="systemPrompt">System-prompt</Label>
+                    <Label htmlFor="systemPrompt">System Prompt</Label>
                     <Textarea
                       id="systemPrompt"
                       value={formData.systemPrompt}
                       onChange={(e) => setFormData({ ...formData, systemPrompt: e.target.value })}
-                      placeholder="Du är en hjälpsam AI-assistent..."
+                      placeholder="You are a helpful AI assistant..."
                       rows={4}
                     />
                     <p className="text-xs text-muted-foreground">
-                      Instruktioner till AI:n om hur den ska bete sig och svara.
+                      Instructions for the AI on how to behave and respond.
                     </p>
                   </div>
                 </CardContent>
@@ -157,9 +157,9 @@ export default function ChatSettingsPage() {
             <TabsContent value="provider">
               <Card>
                 <CardHeader>
-                  <CardTitle>AI-leverantör</CardTitle>
+                  <CardTitle>AI Provider</CardTitle>
                   <CardDescription>
-                    Välj hur AI-svaren ska genereras
+                    Choose how AI responses should be generated
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
@@ -169,18 +169,18 @@ export default function ChatSettingsPage() {
                       <ProviderCard
                         provider="lovable"
                         title="Lovable AI"
-                        description="Cloud-baserad AI"
+                        description="Cloud-based AI"
                         icon={<Cloud className="h-5 w-5" />}
-                        badge="Rekommenderad"
+                        badge="Recommended"
                         selected={formData.aiProvider === 'lovable'}
                         onClick={() => setFormData({ ...formData, aiProvider: 'lovable' })}
                       />
                       <ProviderCard
                         provider="local"
-                        title="Lokal AI"
-                        description="HIPAA-kompatibel"
+                        title="Local AI"
+                        description="HIPAA-compliant"
                         icon={<Server className="h-5 w-5" />}
-                        badge="Privat"
+                        badge="Private"
                         badgeVariant="secondary"
                         selected={formData.aiProvider === 'local'}
                         onClick={() => setFormData({ ...formData, aiProvider: 'local' })}
@@ -200,14 +200,14 @@ export default function ChatSettingsPage() {
                       <div className="space-y-4 pt-4 border-t">
                         <Alert>
                           <Cloud className="h-4 w-4" />
-                          <AlertTitle>Cloud-baserad lösning</AlertTitle>
+                          <AlertTitle>Cloud-based Solution</AlertTitle>
                           <AlertDescription>
-                            Data skickas till externa AI-tjänster. Ej lämpligt för HIPAA eller känslig patientdata.
+                            Data is sent to external AI services. Not suitable for HIPAA or sensitive patient data.
                           </AlertDescription>
                         </Alert>
 
                         <div className="space-y-2">
-                          <Label>AI-modell</Label>
+                          <Label>AI Model</Label>
                           <Select
                             value={formData.lovableModel}
                             onValueChange={(value) => setFormData({ 
@@ -219,9 +219,9 @@ export default function ChatSettingsPage() {
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="google/gemini-2.5-flash">Gemini 2.5 Flash (Snabb)</SelectItem>
-                              <SelectItem value="google/gemini-2.5-pro">Gemini 2.5 Pro (Kraftfull)</SelectItem>
-                              <SelectItem value="openai/gpt-5-mini">GPT-5 Mini (Balanserad)</SelectItem>
+                              <SelectItem value="google/gemini-2.5-flash">Gemini 2.5 Flash (Fast)</SelectItem>
+                              <SelectItem value="google/gemini-2.5-pro">Gemini 2.5 Pro (Powerful)</SelectItem>
+                              <SelectItem value="openai/gpt-5-mini">GPT-5 Mini (Balanced)</SelectItem>
                             </SelectContent>
                           </Select>
                         </div>
@@ -233,14 +233,14 @@ export default function ChatSettingsPage() {
                       <div className="space-y-4 pt-4 border-t">
                         <Alert className="bg-green-50 border-green-200 dark:bg-green-950 dark:border-green-900">
                           <Shield className="h-4 w-4 text-green-600" />
-                          <AlertTitle className="text-green-800 dark:text-green-200">HIPAA-kompatibel</AlertTitle>
+                          <AlertTitle className="text-green-800 dark:text-green-200">HIPAA-compliant</AlertTitle>
                           <AlertDescription className="text-green-700 dark:text-green-300">
-                            All data bearbetas lokalt. Ingen data lämnar era servrar.
+                            All data is processed locally. No data leaves your servers.
                           </AlertDescription>
                         </Alert>
 
                         <div className="space-y-2">
-                          <Label htmlFor="localEndpoint">Endpoint-URL</Label>
+                          <Label htmlFor="localEndpoint">Endpoint URL</Label>
                           <Input
                             id="localEndpoint"
                             value={formData.localEndpoint}
@@ -248,12 +248,12 @@ export default function ChatSettingsPage() {
                             placeholder="http://localhost:11434"
                           />
                           <p className="text-xs text-muted-foreground">
-                            OpenAI-kompatibel API (t.ex. Ollama, vLLM, LocalAI)
+                            OpenAI-compatible API (e.g., Ollama, vLLM, LocalAI)
                           </p>
                         </div>
 
                         <div className="space-y-2">
-                          <Label htmlFor="localModel">Modellnamn</Label>
+                          <Label htmlFor="localModel">Model Name</Label>
                           <Input
                             id="localModel"
                             value={formData.localModel}
@@ -263,13 +263,13 @@ export default function ChatSettingsPage() {
                         </div>
 
                         <div className="space-y-2">
-                          <Label htmlFor="localApiKey">API-nyckel (valfri)</Label>
+                          <Label htmlFor="localApiKey">API Key (optional)</Label>
                           <Input
                             id="localApiKey"
                             type="password"
                             value={formData.localApiKey}
                             onChange={(e) => setFormData({ ...formData, localApiKey: e.target.value })}
-                            placeholder="Om din lokala server kräver autentisering"
+                            placeholder="If your local server requires authentication"
                           />
                         </div>
                       </div>
@@ -282,12 +282,12 @@ export default function ChatSettingsPage() {
                           <Webhook className="h-4 w-4" />
                           <AlertTitle>Agentic Workflows</AlertTitle>
                           <AlertDescription>
-                            Koppla chatten till N8N för att utföra åtgärder som bokningar, datahämtning m.m.
+                            Connect the chat to N8N to perform actions such as bookings, data retrieval, etc.
                           </AlertDescription>
                         </Alert>
 
                         <div className="space-y-2">
-                          <Label htmlFor="n8nWebhookUrl">Webhook-URL</Label>
+                          <Label htmlFor="n8nWebhookUrl">Webhook URL</Label>
                           <Input
                             id="n8nWebhookUrl"
                             value={formData.n8nWebhookUrl}
@@ -297,7 +297,7 @@ export default function ChatSettingsPage() {
                         </div>
 
                         <div className="space-y-2">
-                          <Label>Webhook-typ</Label>
+                          <Label>Webhook Type</Label>
                           <Select
                             value={formData.n8nWebhookType || 'chat'}
                             onValueChange={(value) => setFormData({ 
@@ -310,22 +310,22 @@ export default function ChatSettingsPage() {
                             </SelectTrigger>
                             <SelectContent>
                               <SelectItem value="chat">
-                                Chat Webhook (med sessionsminne)
+                                Chat Webhook (with session memory)
                               </SelectItem>
                               <SelectItem value="generic">
-                                Generic Webhook (OpenAI-kompatibel)
+                                Generic Webhook (OpenAI-compatible)
                               </SelectItem>
                             </SelectContent>
                           </Select>
                           <p className="text-xs text-muted-foreground">
                             {formData.n8nWebhookType === 'generic' 
-                              ? 'Skickar full konversationshistorik. Använd för Ollama, LM Studio eller egen AI-logik.'
-                              : 'N8N Chat-noden hanterar sessionsminnet. Perfekt för AI Agent med Memory.'}
+                              ? 'Sends full conversation history. Use for Ollama, LM Studio or custom AI logic.'
+                              : 'N8N Chat node handles session memory. Perfect for AI Agent with Memory.'}
                           </p>
                         </div>
 
                         <div className="space-y-2">
-                          <Label>Trigger-läge</Label>
+                          <Label>Trigger Mode</Label>
                           <Select
                             value={formData.n8nTriggerMode}
                             onValueChange={(value) => setFormData({ 
@@ -337,16 +337,16 @@ export default function ChatSettingsPage() {
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="always">Alla meddelanden</SelectItem>
-                              <SelectItem value="keywords">Endast vid nyckelord</SelectItem>
-                              <SelectItem value="fallback">Som fallback</SelectItem>
+                              <SelectItem value="always">All messages</SelectItem>
+                              <SelectItem value="keywords">Only on keywords</SelectItem>
+                              <SelectItem value="fallback">As fallback</SelectItem>
                             </SelectContent>
                           </Select>
                         </div>
 
                         {formData.n8nTriggerMode === 'keywords' && (
                           <div className="space-y-2">
-                            <Label htmlFor="n8nKeywords">Trigger-nyckelord</Label>
+                            <Label htmlFor="n8nKeywords">Trigger Keywords</Label>
                             <Input
                               id="n8nKeywords"
                               value={formData.n8nTriggerKeywords.join(', ')}
@@ -354,10 +354,10 @@ export default function ChatSettingsPage() {
                                 ...formData, 
                                 n8nTriggerKeywords: e.target.value.split(',').map(k => k.trim()).filter(Boolean)
                               })}
-                              placeholder="boka, pris, kontakt"
+                              placeholder="book, price, contact"
                             />
                             <p className="text-xs text-muted-foreground">
-                              Kommaseparerade nyckelord som triggar N8N-webhook
+                              Comma-separated keywords that trigger the N8N webhook
                             </p>
                           </div>
                         )}
@@ -374,18 +374,18 @@ export default function ChatSettingsPage() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <BookOpen className="h-5 w-5" />
-                    Kunskapsbas (CAG)
+                    Knowledge Base (CAG)
                   </CardTitle>
                   <CardDescription>
-                    Inkludera webbplatsens innehåll som kontext för AI:n
+                    Include website content as context for the AI
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <div className="flex items-center justify-between p-4 rounded-lg border">
                     <div>
-                      <h4 className="font-medium">Inkludera CMS-innehåll</h4>
+                      <h4 className="font-medium">Include CMS Content</h4>
                       <p className="text-sm text-muted-foreground">
-                        AI:n får tillgång till allt publicerat innehåll på webbplatsen
+                        AI gets access to all published content on the website
                       </p>
                     </div>
                     <Switch
@@ -401,8 +401,8 @@ export default function ChatSettingsPage() {
                       <Database className="h-4 w-4 text-blue-600" />
                       <AlertTitle className="text-blue-800 dark:text-blue-200">Context Augmented Generation</AlertTitle>
                       <AlertDescription className="text-blue-700 dark:text-blue-300">
-                        Valda sidor skickas som kontext till AI:n vid varje meddelande. 
-                        Välj vilka sidor som ska inkluderas nedan.
+                        Selected pages are sent as context to the AI with each message. 
+                        Choose which pages to include below.
                       </AlertDescription>
                     </Alert>
                   )}
@@ -416,7 +416,7 @@ export default function ChatSettingsPage() {
 
                   {formData.includeContentAsContext && (
                     <div className="space-y-2">
-                      <Label htmlFor="maxTokens">Max antal tokens</Label>
+                      <Label htmlFor="maxTokens">Max Number of Tokens</Label>
                       <Select
                         value={String(formData.contentContextMaxTokens ?? 50000)}
                         onValueChange={(value) => setFormData({ 
@@ -428,14 +428,14 @@ export default function ChatSettingsPage() {
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="25000">25 000 (Liten webbplats)</SelectItem>
-                          <SelectItem value="50000">50 000 (Medelstor)</SelectItem>
-                          <SelectItem value="100000">100 000 (Stor webbplats)</SelectItem>
-                          <SelectItem value="200000">200 000 (Mycket stor)</SelectItem>
+                          <SelectItem value="25000">25,000 (Small website)</SelectItem>
+                          <SelectItem value="50000">50,000 (Medium)</SelectItem>
+                          <SelectItem value="100000">100,000 (Large website)</SelectItem>
+                          <SelectItem value="200000">200,000 (Very large)</SelectItem>
                         </SelectContent>
                       </Select>
                       <p className="text-xs text-muted-foreground">
-                        Gemini 2.5 Flash stödjer upp till 1 miljon tokens. En typisk sida är ca 500-1000 tokens.
+                        Gemini 2.5 Flash supports up to 1 million tokens. A typical page is about 500-1000 tokens.
                       </p>
                     </div>
                   )}
@@ -447,18 +447,18 @@ export default function ChatSettingsPage() {
             <TabsContent value="display">
               <Card>
                 <CardHeader>
-                  <CardTitle>Visningsalternativ</CardTitle>
+                  <CardTitle>Display Options</CardTitle>
                   <CardDescription>
-                    Välj var och hur chatten ska visas
+                    Choose where and how the chat should be displayed
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   {/* Landing page */}
                   <div className="flex items-center justify-between p-4 rounded-lg border">
                     <div>
-                      <h4 className="font-medium">Landningssida</h4>
+                      <h4 className="font-medium">Landing Page</h4>
                       <p className="text-sm text-muted-foreground">
-                        Fullskärms-chatsida på /chat
+                        Fullscreen chat page at /chat
                       </p>
                     </div>
                     <Switch
@@ -472,9 +472,9 @@ export default function ChatSettingsPage() {
                   {/* Block */}
                   <div className="flex items-center justify-between p-4 rounded-lg border">
                     <div>
-                      <h4 className="font-medium">CMS-block</h4>
+                      <h4 className="font-medium">CMS Block</h4>
                       <p className="text-sm text-muted-foreground">
-                        Möjlighet att lägga till chat på valfri sida
+                        Ability to add chat to any page
                       </p>
                     </div>
                     <Switch
@@ -489,9 +489,9 @@ export default function ChatSettingsPage() {
                   <div className="space-y-4 p-4 rounded-lg border">
                     <div className="flex items-center justify-between">
                       <div>
-                        <h4 className="font-medium">Flytande widget</h4>
+                        <h4 className="font-medium">Floating Widget</h4>
                         <p className="text-sm text-muted-foreground">
-                          Chat-knapp i hörnet på alla sidor
+                          Chat button in the corner of all pages
                         </p>
                       </div>
                       <Switch
@@ -517,19 +517,19 @@ export default function ChatSettingsPage() {
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="bottom-right">Nedre högra</SelectItem>
-                              <SelectItem value="bottom-left">Nedre vänstra</SelectItem>
+                              <SelectItem value="bottom-right">Bottom right</SelectItem>
+                              <SelectItem value="bottom-left">Bottom left</SelectItem>
                             </SelectContent>
                           </Select>
                         </div>
 
                         <div className="space-y-2">
-                          <Label htmlFor="widgetButtonText">Knapptext</Label>
+                          <Label htmlFor="widgetButtonText">Button Text</Label>
                           <Input
                             id="widgetButtonText"
                             value={formData.widgetButtonText}
                             onChange={(e) => setFormData({ ...formData, widgetButtonText: e.target.value })}
-                            placeholder="Chatta med oss"
+                            placeholder="Chat with us"
                           />
                         </div>
                       </div>
@@ -543,17 +543,17 @@ export default function ChatSettingsPage() {
             <TabsContent value="privacy">
               <Card>
                 <CardHeader>
-                  <CardTitle>Integritet & Efterlevnad</CardTitle>
+                  <CardTitle>Privacy & Compliance</CardTitle>
                   <CardDescription>
-                    Inställningar för datahantering och GDPR
+                    Settings for data handling and GDPR
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <div className="flex items-center justify-between p-4 rounded-lg border">
                     <div>
-                      <h4 className="font-medium">Spara konversationer</h4>
+                      <h4 className="font-medium">Save Conversations</h4>
                       <p className="text-sm text-muted-foreground">
-                        Lagra chatthistorik i databasen
+                        Store chat history in the database
                       </p>
                     </div>
                     <Switch
@@ -566,9 +566,9 @@ export default function ChatSettingsPage() {
 
                   <div className="flex items-center justify-between p-4 rounded-lg border">
                     <div>
-                      <h4 className="font-medium">Anonymisera data</h4>
+                      <h4 className="font-medium">Anonymize Data</h4>
                       <p className="text-sm text-muted-foreground">
-                        Ta bort personnummer och känslig info
+                        Remove personal identification numbers and sensitive info
                       </p>
                     </div>
                     <Switch
@@ -581,9 +581,9 @@ export default function ChatSettingsPage() {
 
                   <div className="flex items-center justify-between p-4 rounded-lg border">
                     <div>
-                      <h4 className="font-medium">Audit-loggning</h4>
+                      <h4 className="font-medium">Audit Logging</h4>
                       <p className="text-sm text-muted-foreground">
-                        Logga alla chattaktiviteter
+                        Log all chat activities
                       </p>
                     </div>
                     <Switch
@@ -595,7 +595,7 @@ export default function ChatSettingsPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="dataRetention">Datalagring (dagar)</Label>
+                    <Label htmlFor="dataRetention">Data Retention (days)</Label>
                     <Input
                       id="dataRetention"
                       type="number"
@@ -608,7 +608,7 @@ export default function ChatSettingsPage() {
                       })}
                     />
                     <p className="text-xs text-muted-foreground">
-                      Konversationer raderas automatiskt efter denna period
+                      Conversations are automatically deleted after this period
                     </p>
                   </div>
                 </CardContent>
@@ -711,7 +711,7 @@ function PageSelector({
   if (!pages || pages.length === 0) {
     return (
       <div className="p-4 border rounded-lg text-center text-muted-foreground">
-        Inga publicerade sidor hittades.
+        No published pages found.
       </div>
     );
   }
@@ -719,14 +719,14 @@ function PageSelector({
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
-        <Label className="text-sm font-medium">Sidor att inkludera i kunskapsbasen</Label>
+        <Label className="text-sm font-medium">Pages to include in knowledge base</Label>
         <Button 
           variant="ghost" 
           size="sm" 
           onClick={toggleAll}
           className="text-xs"
         >
-          {allSelected ? 'Avmarkera alla' : 'Välj alla'}
+          {allSelected ? 'Deselect all' : 'Select all'}
         </Button>
       </div>
       
@@ -750,7 +750,7 @@ function PageSelector({
       </div>
       
       <p className="text-xs text-muted-foreground">
-        {selectedSlugs.length} av {pages.length} sidor valda
+        {selectedSlugs.length} of {pages.length} pages selected
       </p>
     </div>
   );
