@@ -126,7 +126,7 @@ export function PublicNavigation() {
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2 rounded-md hover:bg-muted transition-colors"
-              aria-label={mobileMenuOpen ? 'Stäng meny' : 'Öppna meny'}
+              aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
             >
               {mobileMenuOpen ? (
                 <X className="h-6 w-6" />
