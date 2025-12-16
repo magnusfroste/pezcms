@@ -21,6 +21,7 @@ import MenuOrderPage from "./pages/admin/MenuOrderPage";
 import ChatSettingsPage from "./pages/admin/ChatSettingsPage";
 import ContentHubPage from "./pages/admin/ContentHubPage";
 import QuickStartPage from "./pages/admin/QuickStartPage";
+import NewSitePage from "./pages/admin/NewSitePage";
 import PreviewPage from "./pages/PreviewPage";
 import PublicPage from "./pages/PublicPage";
 import ChatPage from "./pages/ChatPage";
@@ -44,6 +45,7 @@ const router = createBrowserRouter([
   { path: "/admin/chat", element: <ChatSettingsPage /> },
   { path: "/admin/content-hub", element: <ContentHubPage /> },
   { path: "/admin/quick-start", element: <QuickStartPage /> },
+  { path: "/admin/new-site", element: <NewSitePage /> },
   { path: "/preview/:id", element: <PreviewPage /> },
   { path: "/:slug", element: <PublicPage /> },
   { path: "/:slug", element: <PublicPage /> },
