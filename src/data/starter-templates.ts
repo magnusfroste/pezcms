@@ -1,5 +1,5 @@
 import { ContentBlock, PageMeta } from '@/types/cms';
-import { BrandingSettings, ChatSettings, FooterSettings } from '@/hooks/useSiteSettings';
+import { BrandingSettings, ChatSettings, FooterSettings, SeoSettings, CookieBannerSettings } from '@/hooks/useSiteSettings';
 
 // Page definition within a template
 export interface TemplatePage {
@@ -29,6 +29,8 @@ export interface StarterTemplate {
   branding: Partial<BrandingSettings>;
   chatSettings: Partial<ChatSettings>;
   footerSettings: Partial<FooterSettings>;
+  seoSettings: Partial<SeoSettings>;
+  cookieBannerSettings: Partial<CookieBannerSettings>;
   
   // General settings
   siteSettings: {
@@ -1186,6 +1188,8 @@ export const STARTER_TEMPLATES: StarterTemplate[] = [
     aiChatPosition: 'Small card widget for quick support',
     pages: launchpadPages,
     branding: {
+      organizationName: 'LaunchPad',
+      brandTagline: 'Launch Your Vision',
       primaryColor: '250 84% 54%',
       headingFont: 'Space Grotesk',
       bodyFont: 'Inter',
@@ -1194,6 +1198,8 @@ export const STARTER_TEMPLATES: StarterTemplate[] = [
     },
     chatSettings: {
       enabled: true,
+      aiProvider: 'lovable',
+      n8nWebhookUrl: '',
       widgetEnabled: true,
       widgetPosition: 'bottom-right',
       welcomeMessage: 'Hi! How can we help you today?',
@@ -1217,6 +1223,17 @@ export const STARTER_TEMPLATES: StarterTemplate[] = [
         { id: 'privacy', label: 'Integritetspolicy', url: '/integritetspolicy', enabled: true },
       ],
     },
+    seoSettings: {
+      siteTitle: 'LaunchPad',
+      titleTemplate: '%s | LaunchPad',
+      defaultDescription: 'The platform that scales with your ambition. Build faster, iterate smarter, grow exponentially.',
+      robotsIndex: true,
+      robotsFollow: true,
+      developmentMode: false,
+    },
+    cookieBannerSettings: {
+      enabled: true,
+    },
     siteSettings: {
       homepageSlug: 'hem',
     },
@@ -1231,6 +1248,8 @@ export const STARTER_TEMPLATES: StarterTemplate[] = [
     aiChatPosition: 'Large embedded assistant with data sovereignty messaging',
     pages: trustcorpPages,
     branding: {
+      organizationName: 'TrustCorp',
+      brandTagline: 'Enterprise Excellence',
       primaryColor: '220 70% 35%',
       headingFont: 'Playfair Display',
       bodyFont: 'Source Sans Pro',
@@ -1239,6 +1258,8 @@ export const STARTER_TEMPLATES: StarterTemplate[] = [
     },
     chatSettings: {
       enabled: true,
+      aiProvider: 'n8n',
+      n8nWebhookUrl: 'https://your-n8n-instance.com/webhook/chat',
       widgetEnabled: false,
       blockEnabled: true,
       welcomeMessage: 'Welcome to TrustCorp. How can I assist you today?',
@@ -1261,6 +1282,17 @@ export const STARTER_TEMPLATES: StarterTemplate[] = [
         { id: 'privacy', label: 'Integritetspolicy', url: '/integritetspolicy', enabled: true },
       ],
     },
+    seoSettings: {
+      siteTitle: 'TrustCorp',
+      titleTemplate: '%s | TrustCorp',
+      defaultDescription: 'Enterprise solutions that demand excellence, security, and scalability.',
+      robotsIndex: true,
+      robotsFollow: true,
+      developmentMode: false,
+    },
+    cookieBannerSettings: {
+      enabled: true,
+    },
     siteSettings: {
       homepageSlug: 'hem',
     },
@@ -1275,6 +1307,8 @@ export const STARTER_TEMPLATES: StarterTemplate[] = [
     aiChatPosition: 'Full-height featured AI with explicit privacy messaging',
     pages: securehealthPages,
     branding: {
+      organizationName: 'SecureHealth',
+      brandTagline: 'Your Health, Your Privacy',
       primaryColor: '199 89% 35%',
       headingFont: 'Merriweather',
       bodyFont: 'Open Sans',
@@ -1283,11 +1317,13 @@ export const STARTER_TEMPLATES: StarterTemplate[] = [
     },
     chatSettings: {
       enabled: true,
+      aiProvider: 'local',
+      localEndpoint: 'https://your-local-llm.internal/v1',
+      n8nWebhookUrl: '',
       widgetEnabled: true,
       widgetPosition: 'bottom-right',
       welcomeMessage: 'Hello! I\'m your private health assistant. How can I help?',
       systemPrompt: 'You are a HIPAA-compliant healthcare assistant. Be compassionate, informative, and always emphasize patient privacy. Never provide medical diagnoses.',
-      aiProvider: 'local',
       suggestedPrompts: [
         'What services do you offer?',
         'How do I book an appointment?',
@@ -1305,6 +1341,17 @@ export const STARTER_TEMPLATES: StarterTemplate[] = [
         { id: 'privacy', label: 'Integritetspolicy', url: '/integritetspolicy', enabled: true },
         { id: 'accessibility', label: 'Tillgänglighet', url: '/tillganglighet', enabled: true },
       ],
+    },
+    seoSettings: {
+      siteTitle: 'SecureHealth',
+      titleTemplate: '%s | SecureHealth',
+      defaultDescription: 'HIPAA-compliant healthcare services with complete privacy. Your data stays on our servers.',
+      robotsIndex: true,
+      robotsFollow: true,
+      developmentMode: false,
+    },
+    cookieBannerSettings: {
+      enabled: true,
     },
     siteSettings: {
       homepageSlug: 'hem',

@@ -12,7 +12,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { StarterTemplateSelector } from '@/components/admin/StarterTemplateSelector';
 import { StarterTemplate } from '@/data/starter-templates';
 import { useCreatePage, usePages, useDeletePage } from '@/hooks/usePages';
-import { useUpdateBrandingSettings, useUpdateChatSettings, useUpdateGeneralSettings, useUpdateFooterSettings } from '@/hooks/useSiteSettings';
+import { useUpdateBrandingSettings, useUpdateChatSettings, useUpdateGeneralSettings, useUpdateFooterSettings, useUpdateSeoSettings, useUpdateCookieBannerSettings } from '@/hooks/useSiteSettings';
 import { useToast } from '@/hooks/use-toast';
 
 type CreationStep = 'select' | 'creating' | 'done';
@@ -38,6 +38,8 @@ export default function NewSitePage() {
   const updateChat = useUpdateChatSettings();
   const updateGeneral = useUpdateGeneralSettings();
   const updateFooter = useUpdateFooterSettings();
+  const updateSeo = useUpdateSeoSettings();
+  const updateCookieBanner = useUpdateCookieBannerSettings();
   const { toast } = useToast();
 
   const handleTemplateSelect = (template: StarterTemplate) => {
@@ -101,7 +103,15 @@ export default function NewSitePage() {
       setProgress({ currentPage: selectedTemplate.pages.length, totalPages: selectedTemplate.pages.length, currentStep: 'Applying footer...' });
       await updateFooter.mutateAsync(selectedTemplate.footerSettings as any);
 
-      // Step 5: Set homepage
+      // Step 5: Apply SEO settings
+      setProgress({ currentPage: selectedTemplate.pages.length, totalPages: selectedTemplate.pages.length, currentStep: 'Configuring SEO...' });
+      await updateSeo.mutateAsync(selectedTemplate.seoSettings as any);
+
+      // Step 6: Apply Cookie Banner settings
+      setProgress({ currentPage: selectedTemplate.pages.length, totalPages: selectedTemplate.pages.length, currentStep: 'Configuring cookies...' });
+      await updateCookieBanner.mutateAsync(selectedTemplate.cookieBannerSettings as any);
+
+      // Step 7: Set homepage
       setProgress({ currentPage: selectedTemplate.pages.length, totalPages: selectedTemplate.pages.length, currentStep: 'Finalizing...' });
       await updateGeneral.mutateAsync({ homepageSlug: selectedTemplate.siteSettings.homepageSlug });
 
