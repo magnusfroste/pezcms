@@ -1175,6 +1175,169 @@ const securehealthPages: TemplatePage[] = [
 ];
 
 // =====================================================
+// MOMENTUM - Single-Page YC-Style Template
+// =====================================================
+const momentumPages: TemplatePage[] = [
+  {
+    title: 'Home',
+    slug: 'hem',
+    isHomePage: true,
+    menu_order: 1,
+    showInMenu: true,
+    meta: {
+      description: 'Ship faster. Scale smarter. The developer platform that turns ideas into production.',
+      showTitle: false,
+      titleAlignment: 'center',
+    },
+    blocks: [
+      // Section 1: Hero (viewport height, video background)
+      {
+        id: 'hero-1',
+        type: 'hero',
+        data: {
+          title: 'Ship faster. Scale smarter.',
+          subtitle: 'The developer platform that turns ideas into production in minutes, not months. Join 50,000+ teams building the future.',
+          backgroundType: 'video',
+          videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-futuristic-devices-99786-large.mp4',
+          heightMode: 'viewport',
+          contentAlignment: 'center',
+          overlayOpacity: 85,
+          titleAnimation: 'slide-up',
+          showScrollIndicator: true,
+          primaryButton: { text: 'Start Building Free', url: '#pricing' },
+          secondaryButton: { text: 'Watch Demo', url: '#features' },
+        },
+      },
+      // Section 2: Stats (social proof)
+      {
+        id: 'stats-1',
+        type: 'stats',
+        data: {
+          title: 'Trusted by developers worldwide',
+          stats: [
+            { value: '50K+', label: 'Active Projects', icon: 'Folder' },
+            { value: '99.9%', label: 'Uptime SLA', icon: 'Shield' },
+            { value: '150+', label: 'Integrations', icon: 'Puzzle' },
+            { value: '<1s', label: 'Deploy Time', icon: 'Zap' },
+          ],
+        },
+      },
+      // Section 3: Link-Grid (features as bento-style cards)
+      {
+        id: 'link-grid-1',
+        type: 'link-grid',
+        data: {
+          columns: 3,
+          links: [
+            { icon: 'Sparkles', title: 'AI Copilot', description: 'Code suggestions powered by the latest AI models. Write better code, faster.', url: '#features' },
+            { icon: 'Rocket', title: 'Instant Deploy', description: 'Push to production in one click. Zero configuration, infinite possibilities.', url: '#features' },
+            { icon: 'Shield', title: 'Enterprise Security', description: 'SOC 2 Type II, GDPR, and HIPAA compliant from day one.', url: '#features' },
+            { icon: 'Blocks', title: 'Modular APIs', description: 'Build anything with composable blocks. Mix, match, and extend.', url: '#features' },
+            { icon: 'Globe', title: 'Global Edge', description: '300+ edge locations worldwide. Your users get speed, everywhere.', url: '#features' },
+            { icon: 'Users', title: 'Team Collaboration', description: 'Real-time editing, branching, and reviews. Built for modern teams.', url: '#features' },
+          ],
+        },
+      },
+      // Section 4: Two-Column (feature deep-dive #1)
+      {
+        id: 'two-col-1',
+        type: 'two-column',
+        data: {
+          content: {
+            type: 'doc',
+            content: [
+              { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'AI-Powered Development' }] },
+              { type: 'paragraph', content: [{ type: 'text', text: 'Stop writing boilerplate. Our AI understands your codebase and generates production-ready code that actually works.' }] },
+              { type: 'bulletList', content: [
+                { type: 'listItem', content: [{ type: 'paragraph', content: [{ type: 'text', text: 'Context-aware code completion' }] }] },
+                { type: 'listItem', content: [{ type: 'paragraph', content: [{ type: 'text', text: 'Automatic documentation generation' }] }] },
+                { type: 'listItem', content: [{ type: 'paragraph', content: [{ type: 'text', text: 'Intelligent refactoring suggestions' }] }] },
+                { type: 'listItem', content: [{ type: 'paragraph', content: [{ type: 'text', text: 'Built-in security scanning' }] }] },
+              ]},
+            ],
+          },
+          imageSrc: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800',
+          imageAlt: 'Code on screen',
+          imagePosition: 'right',
+        },
+      },
+      // Section 5: Two-Column (feature deep-dive #2, image left)
+      {
+        id: 'two-col-2',
+        type: 'two-column',
+        data: {
+          content: {
+            type: 'doc',
+            content: [
+              { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'Enterprise-Grade Infrastructure' }] },
+              { type: 'paragraph', content: [{ type: 'text', text: 'From your first 100 users to your first 100 million. Auto-scaling, self-healing infrastructure that just works.' }] },
+              { type: 'bulletList', content: [
+                { type: 'listItem', content: [{ type: 'paragraph', content: [{ type: 'text', text: 'Auto-scaling compute' }] }] },
+                { type: 'listItem', content: [{ type: 'paragraph', content: [{ type: 'text', text: 'Global CDN included' }] }] },
+                { type: 'listItem', content: [{ type: 'paragraph', content: [{ type: 'text', text: 'DDoS protection' }] }] },
+                { type: 'listItem', content: [{ type: 'paragraph', content: [{ type: 'text', text: 'Automatic failover' }] }] },
+              ]},
+            ],
+          },
+          imageSrc: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800',
+          imageAlt: 'Server infrastructure',
+          imagePosition: 'left',
+        },
+      },
+      // Section 6: Quote (testimonial)
+      {
+        id: 'quote-1',
+        type: 'quote',
+        data: {
+          text: 'We went from idea to YC Demo Day in 6 weeks. Momentum handled all the infrastructure complexity so we could focus on building our product.',
+          author: 'Alex Chen',
+          source: 'Co-founder, Series A Startup',
+          variant: 'styled',
+        },
+      },
+      // Section 7: Accordion (FAQ section)
+      {
+        id: 'accordion-1',
+        type: 'accordion',
+        data: {
+          title: 'Frequently Asked Questions',
+          items: [
+            { 
+              question: 'How does pricing work?', 
+              answer: { type: 'doc', content: [{ type: 'paragraph', content: [{ type: 'text', text: 'Start free with generous limits. As you scale, pay only for what you use. No surprises, no hidden fees. We also offer startup credits for qualifying companies.' }] }] } 
+            },
+            { 
+              question: 'Is my data secure?', 
+              answer: { type: 'doc', content: [{ type: 'paragraph', content: [{ type: 'text', text: 'Absolutely. We are SOC 2 Type II certified, GDPR compliant, and offer HIPAA-compliant options for healthcare companies. All data is encrypted at rest and in transit.' }] }] } 
+            },
+            { 
+              question: 'Can I migrate from my current platform?', 
+              answer: { type: 'doc', content: [{ type: 'paragraph', content: [{ type: 'text', text: 'Yes! We offer free migration assistance for teams coming from other platforms. Most migrations complete in under 24 hours with zero downtime.' }] }] } 
+            },
+            { 
+              question: 'What kind of support do you offer?', 
+              answer: { type: 'doc', content: [{ type: 'paragraph', content: [{ type: 'text', text: 'All plans include community support. Pro and Enterprise plans include dedicated support with guaranteed response times and a named account manager.' }] }] } 
+            },
+          ],
+        },
+      },
+      // Section 8: CTA (gradient, full-width)
+      {
+        id: 'cta-1',
+        type: 'cta',
+        data: {
+          title: 'Ready to ship?',
+          subtitle: 'Join 50,000+ developers building the next generation of applications.',
+          buttonText: 'Start Building Free',
+          buttonUrl: '#pricing',
+          gradient: true,
+        },
+      },
+    ],
+  },
+];
+
+// =====================================================
 // MAIN EXPORT
 // =====================================================
 export const STARTER_TEMPLATES: StarterTemplate[] = [
@@ -1227,6 +1390,59 @@ export const STARTER_TEMPLATES: StarterTemplate[] = [
       siteTitle: 'LaunchPad',
       titleTemplate: '%s | LaunchPad',
       defaultDescription: 'The platform that scales with your ambition. Build faster, iterate smarter, grow exponentially.',
+      robotsIndex: true,
+      robotsFollow: true,
+      developmentMode: false,
+    },
+    cookieBannerSettings: {
+      enabled: true,
+    },
+    siteSettings: {
+      homepageSlug: 'hem',
+    },
+  },
+  {
+    id: 'momentum',
+    name: 'Momentum',
+    description: 'Stunning single-page template with YC-style dark gradient design. Bold typography, smooth animations, and maximum impact.',
+    category: 'startup',
+    icon: 'Zap',
+    tagline: 'One page. Maximum impact.',
+    aiChatPosition: 'Disabled for clean single-page experience',
+    pages: momentumPages,
+    branding: {
+      organizationName: 'Momentum',
+      brandTagline: 'Build the Future',
+      primaryColor: '250 91% 64%',       // Vibrant purple (Linear-style)
+      secondaryColor: '240 10% 10%',     // Near-black background
+      accentColor: '180 100% 50%',       // Cyan accent
+      headingFont: 'Plus Jakarta Sans',  // Modern geometric sans
+      bodyFont: 'Inter',
+      borderRadius: 'lg',
+      shadowIntensity: 'medium',
+      allowThemeToggle: false,           // Dark mode only for consistency
+    },
+    chatSettings: {
+      enabled: false,                    // Clean single-page feel
+      widgetEnabled: false,
+    },
+    footerSettings: {
+      email: 'hello@momentum.dev',
+      phone: '',
+      address: 'San Francisco, CA',
+      postalCode: '',
+      weekdayHours: '',
+      weekendHours: '',
+      showHours: false,
+      legalLinks: [
+        { id: 'privacy', label: 'Privacy', url: '/privacy', enabled: true },
+        { id: 'terms', label: 'Terms', url: '/terms', enabled: true },
+      ],
+    },
+    seoSettings: {
+      siteTitle: 'Momentum',
+      titleTemplate: '%s | Momentum',
+      defaultDescription: 'Ship faster. Scale smarter. The developer platform that turns ideas into production in minutes.',
       robotsIndex: true,
       robotsFollow: true,
       developmentMode: false,
