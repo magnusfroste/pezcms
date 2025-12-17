@@ -270,7 +270,14 @@ serve(async (req) => {
         headers['Authorization'] = `Bearer ${settings.localApiKey}`;
       }
 
-      response = await fetch(`${endpoint}/v1/chat/completions`, {
+      // Handle endpoints that already include /v1 path
+      const baseEndpoint = endpoint.replace(/\/+$/, ''); // Remove trailing slashes
+      const apiPath = baseEndpoint.endsWith('/v1') ? '/chat/completions' : '/v1/chat/completions';
+      const fullUrl = `${baseEndpoint}${apiPath}`;
+      
+      console.log('Calling local AI endpoint:', { fullUrl, model: settings?.localModel });
+
+      response = await fetch(fullUrl, {
         method: 'POST',
         headers,
         body: JSON.stringify({
