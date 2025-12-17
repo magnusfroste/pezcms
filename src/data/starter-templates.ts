@@ -312,6 +312,47 @@ const launchpadPages: TemplatePage[] = [
       },
     ],
   },
+  {
+    title: 'Integritetspolicy',
+    slug: 'integritetspolicy',
+    meta: {
+      description: 'Information om hur vi hanterar dina personuppgifter enligt GDPR',
+      showTitle: true,
+      titleAlignment: 'left',
+    },
+    blocks: [
+      {
+        id: 'text-1',
+        type: 'text',
+        data: {
+          content: {
+            type: 'doc',
+            content: [
+              { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'Inledning' }] },
+              { type: 'paragraph', content: [{ type: 'text', text: 'Vi värnar om din integritet och arbetar aktivt för att skydda dina personuppgifter. Denna policy beskriver hur vi samlar in, använder och skyddar information om dig i enlighet med dataskyddsförordningen (GDPR).' }] },
+              { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'Personuppgiftsansvarig' }] },
+              { type: 'paragraph', content: [{ type: 'text', text: 'LaunchPad AB är personuppgiftsansvarig för behandlingen av dina personuppgifter. Du når oss på hello@launchpad.io.' }] },
+              { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'Vilka uppgifter samlar vi in?' }] },
+              { type: 'paragraph', content: [{ type: 'text', text: 'Vi samlar in uppgifter som du lämnar till oss, exempelvis när du registrerar ett konto, kontaktar oss eller använder våra tjänster. Detta kan inkludera namn, e-postadress, telefonnummer och annan relevant information.' }] },
+              { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'Hur använder vi uppgifterna?' }] },
+              { type: 'bulletList', content: [
+                { type: 'listItem', content: [{ type: 'paragraph', content: [{ type: 'text', text: 'För att tillhandahålla och förbättra våra tjänster' }] }] },
+                { type: 'listItem', content: [{ type: 'paragraph', content: [{ type: 'text', text: 'För att kommunicera med dig om din användning av tjänsten' }] }] },
+                { type: 'listItem', content: [{ type: 'paragraph', content: [{ type: 'text', text: 'För att uppfylla rättsliga förpliktelser' }] }] },
+                { type: 'listItem', content: [{ type: 'paragraph', content: [{ type: 'text', text: 'För att skicka relevant information och marknadsföring (med ditt samtycke)' }] }] },
+              ]},
+              { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'Dina rättigheter' }] },
+              { type: 'paragraph', content: [{ type: 'text', text: 'Enligt GDPR har du rätt att begära tillgång till, rättelse av och radering av dina personuppgifter. Du har också rätt att begära begränsning av behandling, invända mot behandling samt rätt till dataportabilitet.' }] },
+              { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'Cookies' }] },
+              { type: 'paragraph', content: [{ type: 'text', text: 'Vi använder cookies för att förbättra din upplevelse på vår webbplats. Du kan hantera dina cookie-inställningar via din webbläsare.' }] },
+              { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'Kontakt' }] },
+              { type: 'paragraph', content: [{ type: 'text', text: 'Har du frågor om vår hantering av personuppgifter? Kontakta oss på hello@launchpad.io.' }] },
+            ],
+          },
+        },
+      },
+    ],
+  },
 ];
 
 // =====================================================
@@ -668,6 +709,47 @@ const trustcorpPages: TemplatePage[] = [
       },
     ],
   },
+  {
+    title: 'Integritetspolicy',
+    slug: 'integritetspolicy',
+    meta: {
+      description: 'Information om hur vi hanterar dina personuppgifter enligt GDPR',
+      showTitle: true,
+      titleAlignment: 'left',
+    },
+    blocks: [
+      {
+        id: 'text-1',
+        type: 'text',
+        data: {
+          content: {
+            type: 'doc',
+            content: [
+              { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'Inledning' }] },
+              { type: 'paragraph', content: [{ type: 'text', text: 'TrustCorp AB värnar om din integritet och arbetar aktivt för att skydda dina personuppgifter. Denna policy beskriver hur vi samlar in, använder och skyddar information om dig i enlighet med dataskyddsförordningen (GDPR).' }] },
+              { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'Personuppgiftsansvarig' }] },
+              { type: 'paragraph', content: [{ type: 'text', text: 'TrustCorp AB är personuppgiftsansvarig för behandlingen av dina personuppgifter. Du når oss på contact@trustcorp.com.' }] },
+              { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'Vilka uppgifter samlar vi in?' }] },
+              { type: 'paragraph', content: [{ type: 'text', text: 'Vi samlar in uppgifter som du lämnar till oss i samband med affärsrelationer, exempelvis kontaktuppgifter för företagsrepresentanter, projektrelaterad information och kommunikationshistorik.' }] },
+              { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'Hur använder vi uppgifterna?' }] },
+              { type: 'bulletList', content: [
+                { type: 'listItem', content: [{ type: 'paragraph', content: [{ type: 'text', text: 'För att leverera avtalade tjänster och produkter' }] }] },
+                { type: 'listItem', content: [{ type: 'paragraph', content: [{ type: 'text', text: 'För att hantera kundrelationer och kommunikation' }] }] },
+                { type: 'listItem', content: [{ type: 'paragraph', content: [{ type: 'text', text: 'För att uppfylla rättsliga och regulatoriska krav' }] }] },
+                { type: 'listItem', content: [{ type: 'paragraph', content: [{ type: 'text', text: 'För affärsutveckling och marknadsföring (med samtycke)' }] }] },
+              ]},
+              { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'Datalagring och säkerhet' }] },
+              { type: 'paragraph', content: [{ type: 'text', text: 'Vi lagrar all data inom EU/EES och tillämpar branschledande säkerhetsåtgärder inklusive kryptering, åtkomstkontroll och regelbundna säkerhetsgranskningar.' }] },
+              { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'Dina rättigheter' }] },
+              { type: 'paragraph', content: [{ type: 'text', text: 'Enligt GDPR har du rätt att begära tillgång till, rättelse av och radering av dina personuppgifter. Du har också rätt att begära begränsning av behandling, invända mot behandling samt rätt till dataportabilitet.' }] },
+              { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'Kontakt' }] },
+              { type: 'paragraph', content: [{ type: 'text', text: 'För frågor om personuppgiftshantering, kontakta vårt dataskyddsombud på privacy@trustcorp.com.' }] },
+            ],
+          },
+        },
+      },
+    ],
+  },
 ];
 
 // =====================================================
@@ -1011,6 +1093,47 @@ const securehealthPages: TemplatePage[] = [
       },
     ],
   },
+  {
+    title: 'Integritetspolicy',
+    slug: 'integritetspolicy',
+    meta: {
+      description: 'Information om hur vi hanterar dina personuppgifter och patientdata enligt GDPR',
+      showTitle: true,
+      titleAlignment: 'left',
+    },
+    blocks: [
+      {
+        id: 'text-1',
+        type: 'text',
+        data: {
+          content: {
+            type: 'doc',
+            content: [
+              { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'Inledning' }] },
+              { type: 'paragraph', content: [{ type: 'text', text: 'SecureHealth värnar om din integritet och hanterar dina personuppgifter och patientdata med högsta möjliga säkerhet. Denna policy beskriver hur vi samlar in, använder och skyddar information om dig i enlighet med dataskyddsförordningen (GDPR) och patientdatalagen.' }] },
+              { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'Personuppgiftsansvarig' }] },
+              { type: 'paragraph', content: [{ type: 'text', text: 'SecureHealth AB är personuppgiftsansvarig för behandlingen av dina personuppgifter. Du når vårt dataskyddsombud på privacy@securehealth.se.' }] },
+              { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'Vilka uppgifter samlar vi in?' }] },
+              { type: 'paragraph', content: [{ type: 'text', text: 'Vi samlar in nödvändiga uppgifter för att kunna ge dig vård av hög kvalitet:' }] },
+              { type: 'bulletList', content: [
+                { type: 'listItem', content: [{ type: 'paragraph', content: [{ type: 'text', text: 'Identitetsuppgifter (namn, personnummer, kontaktuppgifter)' }] }] },
+                { type: 'listItem', content: [{ type: 'paragraph', content: [{ type: 'text', text: 'Hälso- och sjukvårdsuppgifter (journaler, diagnoser, behandlingar)' }] }] },
+                { type: 'listItem', content: [{ type: 'paragraph', content: [{ type: 'text', text: 'Boknings- och kommunikationshistorik' }] }] },
+              ]},
+              { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'Rättslig grund för behandling' }] },
+              { type: 'paragraph', content: [{ type: 'text', text: 'Vi behandlar dina personuppgifter med stöd av vår rättsliga skyldighet att föra patientjournal enligt patientdatalagen, samt för att utföra uppgifter av allmänt intresse inom hälso- och sjukvårdsområdet.' }] },
+              { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'Dataskydd och AI-assistenten' }] },
+              { type: 'paragraph', content: [{ type: 'text', text: 'Vår AI-assistent körs lokalt på våra egna servrar. Din data lämnar aldrig vår infrastruktur och delas inte med externa parter. Detta säkerställer full HIPAA/GDPR-efterlevnad för alla konversationer.' }] },
+              { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'Dina rättigheter' }] },
+              { type: 'paragraph', content: [{ type: 'text', text: 'Du har rätt att ta del av dina journaluppgifter, begära rättelse av felaktiga uppgifter, samt i vissa fall begära radering eller begränsning av behandling. Observera att patientjournaler enligt lag måste bevaras i minst 10 år.' }] },
+              { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'Kontakt' }] },
+              { type: 'paragraph', content: [{ type: 'text', text: 'Har du frågor om hur vi hanterar dina personuppgifter? Kontakta vårt dataskyddsombud på privacy@securehealth.se eller ring vår vårdcentral.' }] },
+            ],
+          },
+        },
+      },
+    ],
+  },
 ];
 
 // =====================================================
@@ -1049,6 +1172,9 @@ export const STARTER_TEMPLATES: StarterTemplate[] = [
       weekendHours: 'Closed',
       linkedin: 'https://linkedin.com/company/launchpad',
       twitter: 'https://twitter.com/launchpad',
+      legalLinks: [
+        { id: 'privacy', label: 'Integritetspolicy', url: '/integritetspolicy', enabled: true },
+      ],
     },
     siteSettings: {
       homepageSlug: 'hem',
@@ -1085,6 +1211,9 @@ export const STARTER_TEMPLATES: StarterTemplate[] = [
       weekdayHours: 'Mon-Fri 8-17',
       weekendHours: 'Closed',
       linkedin: 'https://linkedin.com/company/trustcorp',
+      legalLinks: [
+        { id: 'privacy', label: 'Integritetspolicy', url: '/integritetspolicy', enabled: true },
+      ],
     },
     siteSettings: {
       homepageSlug: 'hem',
