@@ -414,7 +414,7 @@ export default function SiteSettingsPage() {
                       id="siteTitle"
                       value={seoData.siteTitle}
                       onChange={(e) => setSeoData(prev => ({ ...prev, siteTitle: e.target.value }))}
-                      placeholder="Sophiahemmet"
+                      placeholder="My Organization"
                     />
                   </div>
                   <div className="space-y-2">
@@ -423,7 +423,7 @@ export default function SiteSettingsPage() {
                       id="titleTemplate"
                       value={seoData.titleTemplate}
                       onChange={(e) => setSeoData(prev => ({ ...prev, titleTemplate: e.target.value }))}
-                      placeholder="%s | Sophiahemmet"
+                      placeholder="%s | My Organization"
                     />
                     <p className="text-xs text-muted-foreground">%s is replaced with the page title</p>
                   </div>
@@ -461,7 +461,7 @@ export default function SiteSettingsPage() {
                       id="twitterHandle"
                       value={seoData.twitterHandle}
                       onChange={(e) => setSeoData(prev => ({ ...prev, twitterHandle: e.target.value }))}
-                      placeholder="@sophiahemmet"
+                      placeholder="@myorganization"
                     />
                   </div>
                 </CardContent>
