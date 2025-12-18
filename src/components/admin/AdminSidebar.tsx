@@ -34,6 +34,7 @@ const navigation = [
   { name: "Quick Start", href: "/admin/quick-start", icon: Rocket },
   { name: "Pages", href: "/admin/pages", icon: FileText },
   { name: "Blog", href: "/admin/blog", icon: BookOpen },
+  { name: "Blog Settings", href: "/admin/blog/settings", icon: Settings, adminOnly: true },
   { name: "Form Submissions", href: "/admin/forms", icon: Inbox, adminOnly: true },
   { name: "Global Elements", href: "/admin/global-blocks", icon: LayoutGrid, adminOnly: true },
   { name: "Content Hub", href: "/admin/content-hub", icon: Database, adminOnly: true },

@@ -27,6 +27,7 @@ import FormSubmissionsPage from "./pages/admin/FormSubmissionsPage";
 import BlogPostsPage from "./pages/admin/BlogPostsPage";
 import BlogPostEditorPage from "./pages/admin/BlogPostEditorPage";
 import BlogCategoriesPage from "./pages/admin/BlogCategoriesPage";
+import BlogSettingsPage from "./pages/admin/BlogSettingsPage";
 import PreviewPage from "./pages/PreviewPage";
 import PublicPage from "./pages/PublicPage";
 import BlogArchivePage from "./pages/BlogArchivePage";
@@ -55,6 +56,7 @@ const router = createBrowserRouter([
   { path: "/admin/blog", element: <BlogPostsPage /> },
   { path: "/admin/blog/new", element: <BlogPostEditorPage /> },
   { path: "/admin/blog/categories", element: <BlogCategoriesPage /> },
+  { path: "/admin/blog/settings", element: <BlogSettingsPage /> },
   { path: "/admin/blog/:id", element: <BlogPostEditorPage /> },
   { path: "/admin/media", element: <MediaLibraryPage /> },
   { path: "/admin/users", element: <UsersPage /> },
