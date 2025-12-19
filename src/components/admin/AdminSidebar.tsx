@@ -115,7 +115,7 @@ export function AdminSidebar() {
             {index > 0 && <SidebarSeparator className="my-2" />}
             <SidebarGroup>
               {!isCollapsed && (
-                <SidebarGroupLabel className="text-xs text-sidebar-foreground/50 uppercase tracking-wider">
+                <SidebarGroupLabel className="text-[10px] text-sidebar-foreground/40 uppercase tracking-widest font-normal mb-1">
                   {group.label}
                 </SidebarGroupLabel>
               )}
