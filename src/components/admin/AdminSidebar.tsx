@@ -13,6 +13,7 @@ import {
   LayoutGrid,
   Inbox,
   BookOpen,
+  ChevronRight,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { ROLE_LABELS } from "@/types/cms";
@@ -25,24 +26,62 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarTrigger,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarGroupContent,
   useSidebar,
 } from "@/components/ui/sidebar";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
-const navigation = [
-  { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
-  { name: "Quick Start", href: "/admin/quick-start", icon: Rocket },
-  { name: "Pages", href: "/admin/pages", icon: FileText },
-  { name: "Blog", href: "/admin/blog", icon: BookOpen },
-  { name: "Blog Settings", href: "/admin/blog/settings", icon: Settings, adminOnly: true },
-  { name: "Form Submissions", href: "/admin/forms", icon: Inbox, adminOnly: true },
-  { name: "Global Elements", href: "/admin/global-blocks", icon: LayoutGrid, adminOnly: true },
-  { name: "Content Hub", href: "/admin/content-hub", icon: Database, adminOnly: true },
-  { name: "Menu Order", href: "/admin/menu-order", icon: Menu, adminOnly: true },
-  { name: "Users", href: "/admin/users", icon: Users, adminOnly: true },
-  { name: "Branding", href: "/admin/branding", icon: Palette, adminOnly: true },
-  { name: "AI Chat", href: "/admin/chat", icon: MessageSquare, adminOnly: true },
-  { name: "Settings", href: "/admin/settings", icon: Settings, adminOnly: true },
+type NavItem = {
+  name: string;
+  href: string;
+  icon: React.ComponentType<{ className?: string }>;
+  adminOnly?: boolean;
+};
+
+type NavGroup = {
+  label: string;
+  items: NavItem[];
+  adminOnly?: boolean;
+};
+
+const navigationGroups: NavGroup[] = [
+  {
+    label: "Main",
+    items: [
+      { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
+      { name: "Quick Start", href: "/admin/quick-start", icon: Rocket },
+    ],
+  },
+  {
+    label: "Content",
+    items: [
+      { name: "Pages", href: "/admin/pages", icon: FileText },
+      { name: "Blog", href: "/admin/blog", icon: BookOpen },
+    ],
+  },
+  {
+    label: "Data",
+    adminOnly: true,
+    items: [
+      { name: "Form Submissions", href: "/admin/forms", icon: Inbox },
+      { name: "Content Hub", href: "/admin/content-hub", icon: Database },
+      { name: "Global Elements", href: "/admin/global-blocks", icon: LayoutGrid },
+    ],
+  },
+  {
+    label: "System",
+    adminOnly: true,
+    items: [
+      { name: "Menu Order", href: "/admin/menu-order", icon: Menu },
+      { name: "Users", href: "/admin/users", icon: Users },
+      { name: "Branding", href: "/admin/branding", icon: Palette },
+      { name: "AI Chat", href: "/admin/chat", icon: MessageSquare },
+      { name: "Settings", href: "/admin/settings", icon: Settings },
+    ],
+  },
 ];
 
 export function AdminSidebar() {
@@ -51,7 +90,13 @@ export function AdminSidebar() {
   const { state } = useSidebar();
   const isCollapsed = state === "collapsed";
 
-  const filteredNav = navigation.filter((item) => !item.adminOnly || isAdmin);
+  const isItemActive = (href: string) =>
+    location.pathname === href || (href !== "/admin" && location.pathname.startsWith(href));
+
+  const isGroupActive = (items: NavItem[]) =>
+    items.some((item) => isItemActive(item.href));
+
+  const filteredGroups = navigationGroups.filter((group) => !group.adminOnly || isAdmin);
 
   return (
     <Sidebar collapsible="icon" className="border-r border-sidebar-border">
@@ -69,29 +114,45 @@ export function AdminSidebar() {
       </SidebarHeader>
 
       {/* Navigation */}
-      <SidebarContent className="px-2 py-4">
-        <SidebarMenu>
-          {filteredNav.map((item) => {
-            const isActive =
-              location.pathname === item.href || (item.href !== "/admin" && location.pathname.startsWith(item.href));
-
-            return (
-              <SidebarMenuItem key={item.name}>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <SidebarMenuButton asChild isActive={isActive} tooltip={item.name}>
-                      <Link to={item.href}>
-                        <item.icon className="h-5 w-5" />
-                        <span>{item.name}</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </TooltipTrigger>
-                  {isCollapsed && <TooltipContent side="right">{item.name}</TooltipContent>}
-                </Tooltip>
-              </SidebarMenuItem>
-            );
-          })}
-        </SidebarMenu>
+      <SidebarContent className="px-2 py-2">
+        {filteredGroups.map((group) => (
+          <Collapsible key={group.label} defaultOpen={isGroupActive(group.items)} className="group/collapsible">
+            <SidebarGroup>
+              {!isCollapsed && (
+                <CollapsibleTrigger asChild>
+                  <SidebarGroupLabel className="cursor-pointer hover:bg-sidebar-accent/50 rounded-md transition-colors flex items-center justify-between pr-2">
+                    {group.label}
+                    <ChevronRight className="h-3.5 w-3.5 transition-transform group-data-[state=open]/collapsible:rotate-90" />
+                  </SidebarGroupLabel>
+                </CollapsibleTrigger>
+              )}
+              <CollapsibleContent>
+                <SidebarGroupContent>
+                <SidebarMenu>
+                    {group.items.map((item) => {
+                      const isActive = isItemActive(item.href);
+                      return (
+                        <SidebarMenuItem key={item.name}>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <SidebarMenuButton asChild isActive={isActive} tooltip={item.name}>
+                                <Link to={item.href}>
+                                  <item.icon className="h-4 w-4" />
+                                  <span>{item.name}</span>
+                                </Link>
+                              </SidebarMenuButton>
+                            </TooltipTrigger>
+                            {isCollapsed && <TooltipContent side="right">{item.name}</TooltipContent>}
+                          </Tooltip>
+                        </SidebarMenuItem>
+                      );
+                    })}
+                  </SidebarMenu>
+                </SidebarGroupContent>
+              </CollapsibleContent>
+            </SidebarGroup>
+          </Collapsible>
+        ))}
       </SidebarContent>
 
       {/* User section */}
