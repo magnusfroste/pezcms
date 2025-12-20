@@ -33,8 +33,8 @@ export const defaultFooterData: FooterBlockData = {
   showHours: true,
   sectionOrder: ['brand', 'quickLinks', 'contact', 'hours'],
   legalLinks: [
-    { id: 'privacy', label: 'Integritetspolicy', url: '/integritetspolicy', enabled: true },
-    { id: 'accessibility', label: 'Tillgänglighet', url: '/tillganglighet', enabled: true },
+    { id: 'privacy', label: 'Privacy Policy', url: '/privacy-policy', enabled: true },
+    { id: 'accessibility', label: 'Accessibility', url: '/accessibility', enabled: true },
   ],
 };
 
