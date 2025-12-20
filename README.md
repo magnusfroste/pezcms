@@ -42,6 +42,24 @@ Unlike traditional CMS (website only) or pure headless solutions (API only, requ
 - **Rich text editor** — Powered by Tiptap
 - **Media library** — With automatic WebP optimization
 
+### Blog Module
+- **Full blog engine** — Posts, categories, tags, and author profiles
+- **SEO optimized** — Meta tags, reading time, featured images
+- **Editorial workflow** — Draft → Review → Published with scheduling
+- **RSS feed** — Auto-generated feed for subscribers
+
+### Newsletter
+- **Subscriber management** — Double opt-in, GDPR-compliant
+- **Email campaigns** — Create and send newsletters
+- **Analytics** — Open rates, click tracking, engagement metrics
+- **GDPR tools** — Export and delete subscriber data
+
+### Integration Module (N8N Webhooks)
+- **Webhook system** — Trigger on page, blog, form, and newsletter events
+- **N8N templates** — Pre-built workflows for common automations
+- **Event types** — `page.published`, `blog_post.published`, `newsletter.subscribed`, `form.submitted`, and more
+- **Delivery logs** — Track webhook success/failure with retry support
+
 ### Editorial Workflow
 - **Roles** — Writer, Approver, Admin
 - **Approval flow** — Draft → Review → Published

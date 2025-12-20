@@ -66,6 +66,14 @@ supabase functions deploy invalidate-cache
 supabase functions deploy migrate-page
 supabase functions deploy process-image
 supabase functions deploy publish-scheduled-pages
+supabase functions deploy send-webhook
+supabase functions deploy newsletter-send
+supabase functions deploy newsletter-export
+supabase functions deploy newsletter-subscribe
+supabase functions deploy newsletter-confirm
+supabase functions deploy newsletter-unsubscribe
+supabase functions deploy newsletter-track-open
+supabase functions deploy newsletter-track-click
 ```
 
 ---
@@ -196,11 +204,27 @@ Set these in your hosting provider:
 
 | Table | Description |
 |-------|-------------|
-| `blog_posts` | Blog articles |
+| `blog_posts` | Blog articles with SEO, featured images, reading time |
 | `blog_categories` | Hierarchical categories |
 | `blog_tags` | Flat tags |
 | `blog_post_categories` | Post-category relations |
 | `blog_post_tags` | Post-tag relations |
+
+### Newsletter Tables
+
+| Table | Description |
+|-------|-------------|
+| `newsletter_subscribers` | Email subscribers with double opt-in |
+| `newsletters` | Email campaigns with status tracking |
+| `newsletter_email_opens` | Open tracking per recipient |
+| `newsletter_link_clicks` | Click tracking per link |
+
+### Webhook Tables (Integration Module)
+
+| Table | Description |
+|-------|-------------|
+| `webhooks` | Webhook configurations with events |
+| `webhook_logs` | Delivery logs with response tracking |
 
 ### Chat Tables
 
@@ -232,6 +256,14 @@ Set these in your hosting provider:
 | `migrate-page` | AI content migration | Yes |
 | `process-image` | WebP conversion | Yes |
 | `publish-scheduled-pages` | Cron job for scheduling | No |
+| `send-webhook` | Trigger webhooks for events | Yes |
+| `newsletter-send` | Send newsletter campaigns | Yes |
+| `newsletter-export` | GDPR export of subscribers | Yes |
+| `newsletter-subscribe` | Handle newsletter subscriptions | No |
+| `newsletter-confirm` | Double opt-in confirmation | No |
+| `newsletter-unsubscribe` | Handle unsubscriptions | No |
+| `newsletter-track-open` | Track email opens | No |
+| `newsletter-track-click` | Track link clicks | No |
 
 ---
 
