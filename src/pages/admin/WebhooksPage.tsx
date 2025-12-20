@@ -27,8 +27,10 @@ import {
   Play,
   Loader2,
   ChevronDown,
-  Code
+  Code,
+  Zap
 } from 'lucide-react';
+import { N8NTemplates } from '@/components/admin/N8NTemplates';
 import { 
   useWebhooks, 
   useWebhookLogs, 
@@ -133,6 +135,10 @@ export default function WebhooksPage() {
       <Tabs defaultValue="webhooks" className="space-y-4">
         <TabsList>
           <TabsTrigger value="webhooks">Webhooks</TabsTrigger>
+          <TabsTrigger value="templates">
+            <Zap className="h-4 w-4 mr-1" />
+            N8N Mallar
+          </TabsTrigger>
           <TabsTrigger value="logs" disabled={!viewingLogsFor}>
             Loggar {viewingLogsFor && '(vald)'}
           </TabsTrigger>
@@ -268,6 +274,10 @@ export default function WebhooksPage() {
               ))}
             </div>
           )}
+        </TabsContent>
+
+        <TabsContent value="templates">
+          <N8NTemplates />
         </TabsContent>
 
         <TabsContent value="logs">
