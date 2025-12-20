@@ -407,6 +407,49 @@ const launchpadPages: TemplatePage[] = [
       },
     ],
   },
+  {
+    title: 'Cookie Policy',
+    slug: 'cookie-policy',
+    menu_order: 101,
+    showInMenu: false,
+    meta: {
+      description: 'Information about how we use cookies on our website',
+      showTitle: true,
+      titleAlignment: 'left',
+    },
+    blocks: [
+      {
+        id: 'text-1',
+        type: 'text',
+        data: {
+          content: {
+            type: 'doc',
+            content: [
+              { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'What Are Cookies?' }] },
+              { type: 'paragraph', content: [{ type: 'text', text: 'Cookies are small text files stored on your device when you visit our website. They help us provide you with a better experience by remembering your preferences and understanding how you use our platform.' }] },
+              { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'Types of Cookies We Use' }] },
+              { type: 'heading', attrs: { level: 3 }, content: [{ type: 'text', text: 'Essential Cookies' }] },
+              { type: 'paragraph', content: [{ type: 'text', text: 'Required for the website to function properly. These cookies enable core functionality such as security, authentication, and session management. You cannot opt out of these cookies.' }] },
+              { type: 'heading', attrs: { level: 3 }, content: [{ type: 'text', text: 'Analytics Cookies' }] },
+              { type: 'paragraph', content: [{ type: 'text', text: 'Help us understand how visitors interact with our website by collecting anonymous usage data. We use this information to improve our platform and user experience.' }] },
+              { type: 'heading', attrs: { level: 3 }, content: [{ type: 'text', text: 'Functional Cookies' }] },
+              { type: 'paragraph', content: [{ type: 'text', text: 'Remember your preferences and settings to provide enhanced, personalized features. These include language preferences and display settings.' }] },
+              { type: 'heading', attrs: { level: 3 }, content: [{ type: 'text', text: 'Marketing Cookies' }] },
+              { type: 'paragraph', content: [{ type: 'text', text: 'Used to track visitors across websites to display relevant advertisements. These cookies are set by our advertising partners and require your consent.' }] },
+              { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'Managing Your Cookie Preferences' }] },
+              { type: 'paragraph', content: [{ type: 'text', text: 'You can manage your cookie preferences at any time through our cookie banner or your browser settings. Note that disabling certain cookies may affect website functionality.' }] },
+              { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'Third-Party Cookies' }] },
+              { type: 'paragraph', content: [{ type: 'text', text: 'Some cookies are placed by third-party services that appear on our pages. We do not control these cookies. Please refer to the respective privacy policies of these providers for more information.' }] },
+              { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'Updates to This Policy' }] },
+              { type: 'paragraph', content: [{ type: 'text', text: 'We may update this Cookie Policy from time to time. Any changes will be posted on this page with an updated revision date.' }] },
+              { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'Contact' }] },
+              { type: 'paragraph', content: [{ type: 'text', text: 'Questions about our use of cookies? Contact us at hello@launchpad.io.' }] },
+            ],
+          },
+        },
+      },
+    ],
+  },
 ];
 
 // =====================================================
@@ -856,6 +899,47 @@ const trustcorpPages: TemplatePage[] = [
       },
     ],
   },
+  {
+    title: 'Cookie Policy',
+    slug: 'cookie-policy',
+    menu_order: 101,
+    showInMenu: false,
+    meta: {
+      description: 'Information about how we use cookies for enterprise clients',
+      showTitle: true,
+      titleAlignment: 'left',
+    },
+    blocks: [
+      {
+        id: 'text-1',
+        type: 'text',
+        data: {
+          content: {
+            type: 'doc',
+            content: [
+              { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'What Are Cookies?' }] },
+              { type: 'paragraph', content: [{ type: 'text', text: 'Cookies are small text files stored on your device when you visit our website. They help us provide secure, personalized experiences for our enterprise clients and visitors.' }] },
+              { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'Types of Cookies We Use' }] },
+              { type: 'heading', attrs: { level: 3 }, content: [{ type: 'text', text: 'Essential Cookies' }] },
+              { type: 'paragraph', content: [{ type: 'text', text: 'Required for secure operation of our enterprise services. These enable authentication, session management, and security features. Essential cookies cannot be disabled.' }] },
+              { type: 'heading', attrs: { level: 3 }, content: [{ type: 'text', text: 'Analytics Cookies' }] },
+              { type: 'paragraph', content: [{ type: 'text', text: 'Help us understand how enterprise clients interact with our platform. All analytics data is processed in compliance with GDPR and our data processing agreements.' }] },
+              { type: 'heading', attrs: { level: 3 }, content: [{ type: 'text', text: 'Functional Cookies' }] },
+              { type: 'paragraph', content: [{ type: 'text', text: 'Remember your preferences and settings across sessions. These include language preferences, dashboard configurations, and accessibility settings.' }] },
+              { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'Enterprise Data Sovereignty' }] },
+              { type: 'paragraph', content: [{ type: 'text', text: 'For enterprise clients with on-premise deployments, cookie handling can be configured according to your organization policies. Contact your account manager for customization options.' }] },
+              { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'Managing Cookie Preferences' }] },
+              { type: 'paragraph', content: [{ type: 'text', text: 'You can manage cookie preferences through our consent banner or your browser settings. Enterprise administrators can configure organization-wide cookie policies through the admin dashboard.' }] },
+              { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'Third-Party Services' }] },
+              { type: 'paragraph', content: [{ type: 'text', text: 'We minimize third-party cookie usage. Any third-party services used are vetted for security and compliance with enterprise requirements.' }] },
+              { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'Contact' }] },
+              { type: 'paragraph', content: [{ type: 'text', text: 'For questions about cookie usage or enterprise data handling, contact our privacy team at privacy@trustcorp.com.' }] },
+            ],
+          },
+        },
+      },
+    ],
+  },
 ];
 
 // =====================================================
@@ -1292,6 +1376,47 @@ const securehealthPages: TemplatePage[] = [
       },
     ],
   },
+  {
+    title: 'Cookie Policy',
+    slug: 'cookie-policy',
+    menu_order: 101,
+    showInMenu: false,
+    meta: {
+      description: 'Information about how we use cookies on our healthcare website',
+      showTitle: true,
+      titleAlignment: 'left',
+    },
+    blocks: [
+      {
+        id: 'text-1',
+        type: 'text',
+        data: {
+          content: {
+            type: 'doc',
+            content: [
+              { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'What Are Cookies?' }] },
+              { type: 'paragraph', content: [{ type: 'text', text: 'Cookies are small text files stored on your device when you visit our website. We use cookies to provide secure, HIPAA-compliant services while respecting your privacy.' }] },
+              { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'Types of Cookies We Use' }] },
+              { type: 'heading', attrs: { level: 3 }, content: [{ type: 'text', text: 'Essential Cookies' }] },
+              { type: 'paragraph', content: [{ type: 'text', text: 'Required for secure access to our patient portal and healthcare services. These cookies enable authentication, session management, and security features required for HIPAA compliance.' }] },
+              { type: 'heading', attrs: { level: 3 }, content: [{ type: 'text', text: 'Analytics Cookies' }] },
+              { type: 'paragraph', content: [{ type: 'text', text: 'Help us understand how patients use our website to improve the experience. Analytics data is anonymized and never includes protected health information (PHI).' }] },
+              { type: 'heading', attrs: { level: 3 }, content: [{ type: 'text', text: 'Functional Cookies' }] },
+              { type: 'paragraph', content: [{ type: 'text', text: 'Remember your preferences such as language settings and accessibility options. These enhance your experience but do not store health information.' }] },
+              { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'HIPAA Compliance' }] },
+              { type: 'paragraph', content: [{ type: 'text', text: 'Our cookie usage is designed to comply with HIPAA regulations. Cookies never contain protected health information. All patient data is processed separately through our secure, HIPAA-compliant infrastructure.' }] },
+              { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'Patient Portal Cookies' }] },
+              { type: 'paragraph', content: [{ type: 'text', text: 'When you access our patient portal, session cookies are used to maintain your secure login. These cookies are encrypted and expire when you log out or after a period of inactivity.' }] },
+              { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'Managing Cookie Preferences' }] },
+              { type: 'paragraph', content: [{ type: 'text', text: 'You can manage non-essential cookie preferences through our cookie banner. Note that disabling essential cookies may prevent access to certain healthcare services.' }] },
+              { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'Contact' }] },
+              { type: 'paragraph', content: [{ type: 'text', text: 'Questions about cookies or data privacy? Contact our privacy team at privacy@securehealth.com.' }] },
+            ],
+          },
+        },
+      },
+    ],
+  },
 ];
 
 // =====================================================
@@ -1505,6 +1630,7 @@ export const STARTER_TEMPLATES: StarterTemplate[] = [
       legalLinks: [
         { id: 'privacy', label: 'Privacy Policy', url: '/privacy-policy', enabled: true },
         { id: 'terms', label: 'Terms of Service', url: '/terms-of-service', enabled: true },
+        { id: 'cookies', label: 'Cookie Policy', url: '/cookie-policy', enabled: true },
       ],
     },
     seoSettings: {
@@ -1619,6 +1745,7 @@ export const STARTER_TEMPLATES: StarterTemplate[] = [
       legalLinks: [
         { id: 'privacy', label: 'Privacy Policy', url: '/privacy-policy', enabled: true },
         { id: 'terms', label: 'Terms of Service', url: '/terms-of-service', enabled: true },
+        { id: 'cookies', label: 'Cookie Policy', url: '/cookie-policy', enabled: true },
       ],
     },
     seoSettings: {
@@ -1679,6 +1806,7 @@ export const STARTER_TEMPLATES: StarterTemplate[] = [
       legalLinks: [
         { id: 'privacy', label: 'Privacy Policy', url: '/privacy-policy', enabled: true },
         { id: 'terms', label: 'Terms of Service', url: '/terms-of-service', enabled: true },
+        { id: 'cookies', label: 'Cookie Policy', url: '/cookie-policy', enabled: true },
         { id: 'accessibility', label: 'Accessibility', url: '/accessibility', enabled: true },
       ],
     },
