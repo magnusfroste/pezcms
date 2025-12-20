@@ -3,37 +3,6 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import type { Json } from '@/integrations/supabase/types';
 
-export type FooterSectionId = 'brand' | 'quickLinks' | 'contact' | 'hours';
-
-export interface FooterLegalLink {
-  id: string;
-  label: string;
-  url: string;
-  enabled: boolean;
-}
-
-export interface FooterSettings {
-  phone: string;
-  email: string;
-  address: string;
-  postalCode: string;
-  weekdayHours: string;
-  weekendHours: string;
-  facebook?: string;
-  instagram?: string;
-  linkedin?: string;
-  twitter?: string;
-  youtube?: string;
-  // Section visibility
-  showBrand?: boolean;
-  showQuickLinks?: boolean;
-  showContact?: boolean;
-  showHours?: boolean;
-  // Section order
-  sectionOrder?: FooterSectionId[];
-  // Legal links
-  legalLinks?: FooterLegalLink[];
-}
 
 export interface GeneralSettings {
   homepageSlug: string;
@@ -121,28 +90,6 @@ const defaultBrandingSettings: BrandingSettings = {
   defaultTheme: 'light',
 };
 
-const defaultFooterSettings: FooterSettings = {
-  phone: '',
-  email: '',
-  address: '',
-  postalCode: '',
-  weekdayHours: '',
-  weekendHours: '',
-  facebook: '',
-  instagram: '',
-  linkedin: '',
-  twitter: '',
-  youtube: '',
-  showBrand: true,
-  showQuickLinks: true,
-  showContact: true,
-  showHours: true,
-  sectionOrder: ['brand', 'quickLinks', 'contact', 'hours'],
-  legalLinks: [
-    { id: 'privacy', label: 'Privacy Policy', url: '/privacy-policy', enabled: true },
-    { id: 'accessibility', label: 'Accessibility', url: '/accessibility', enabled: true },
-  ],
-};
 
 const defaultSeoSettings: SeoSettings = {
   siteTitle: '',
@@ -380,14 +327,6 @@ function useUpdateSiteSettings<T>(key: string, successMessage: string) {
   });
 }
 
-// Footer hooks
-export function useFooterSettings() {
-  return useSiteSettings<FooterSettings>('footer', defaultFooterSettings);
-}
-
-export function useUpdateFooterSettings() {
-  return useUpdateSiteSettings<FooterSettings>('footer', 'Footer settings have been updated.');
-}
 
 // SEO hooks
 export function useSeoSettings() {
