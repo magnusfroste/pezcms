@@ -140,6 +140,9 @@ export interface HeaderBlockData {
   navAlignment?: 'left' | 'center' | 'right';
   headerHeight?: 'compact' | 'default' | 'tall';
   showBorder?: boolean;
+  // Mobile menu
+  mobileMenuStyle?: 'default' | 'fullscreen' | 'slide';
+  mobileMenuAnimation?: 'fade' | 'slide-down' | 'slide-up';
   // Custom nav items (external links beyond CMS pages)
   customNavItems?: HeaderNavItem[];
 }

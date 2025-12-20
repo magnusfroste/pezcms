@@ -309,6 +309,49 @@ export function HeaderBlockEditor({ data, onChange }: HeaderBlockEditorProps) {
         </CardContent>
       </Card>
 
+      {/* Mobile Menu */}
+      <Card>
+        <CardContent className="pt-6 space-y-4">
+          <h3 className="font-medium text-sm text-muted-foreground uppercase tracking-wide">
+            Mobile Menu
+          </h3>
+
+          <div className="space-y-2">
+            <Label>Menu Style</Label>
+            <Select
+              value={data.mobileMenuStyle || 'default'}
+              onValueChange={(value: 'default' | 'fullscreen' | 'slide') => onChange({ ...data, mobileMenuStyle: value })}
+            >
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="default">Default (Dropdown)</SelectItem>
+                <SelectItem value="fullscreen">Fullscreen Overlay</SelectItem>
+                <SelectItem value="slide">Slide from Right</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label>Animation</Label>
+            <Select
+              value={data.mobileMenuAnimation || 'fade'}
+              onValueChange={(value: 'fade' | 'slide-down' | 'slide-up') => onChange({ ...data, mobileMenuAnimation: value })}
+            >
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="fade">Fade In</SelectItem>
+                <SelectItem value="slide-down">Slide Down</SelectItem>
+                <SelectItem value="slide-up">Slide Up</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Custom Navigation Items */}
       <Card>
         <CardContent className="pt-6 space-y-4">
