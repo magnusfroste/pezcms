@@ -1383,7 +1383,7 @@ export const STARTER_TEMPLATES: StarterTemplate[] = [
       linkedin: 'https://linkedin.com/company/launchpad',
       twitter: 'https://twitter.com/launchpad',
       legalLinks: [
-        { id: 'privacy', label: 'Integritetspolicy', url: '/integritetspolicy', enabled: true },
+        { id: 'privacy', label: 'Privacy Policy', url: '/privacy-policy', enabled: true },
       ],
     },
     seoSettings: {
@@ -1496,7 +1496,7 @@ export const STARTER_TEMPLATES: StarterTemplate[] = [
       weekendHours: 'Closed',
       linkedin: 'https://linkedin.com/company/trustcorp',
       legalLinks: [
-        { id: 'privacy', label: 'Integritetspolicy', url: '/integritetspolicy', enabled: true },
+        { id: 'privacy', label: 'Privacy Policy', url: '/privacy-policy', enabled: true },
       ],
     },
     seoSettings: {
@@ -1555,8 +1555,8 @@ export const STARTER_TEMPLATES: StarterTemplate[] = [
       weekdayHours: 'Mon-Fri 8-17',
       weekendHours: 'Emergency line 24/7',
       legalLinks: [
-        { id: 'privacy', label: 'Integritetspolicy', url: '/integritetspolicy', enabled: true },
-        { id: 'accessibility', label: 'Tillgänglighet', url: '/tillganglighet', enabled: true },
+        { id: 'privacy', label: 'Privacy Policy', url: '/privacy-policy', enabled: true },
+        { id: 'accessibility', label: 'Accessibility', url: '/accessibility', enabled: true },
       ],
     },
     seoSettings: {

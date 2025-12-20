@@ -139,8 +139,8 @@ const defaultFooterSettings: FooterSettings = {
   showHours: true,
   sectionOrder: ['brand', 'quickLinks', 'contact', 'hours'],
   legalLinks: [
-    { id: 'privacy', label: 'Integritetspolicy', url: '/integritetspolicy', enabled: true },
-    { id: 'accessibility', label: 'Tillgänglighet', url: '/tillganglighet', enabled: true },
+    { id: 'privacy', label: 'Privacy Policy', url: '/privacy-policy', enabled: true },
+    { id: 'accessibility', label: 'Accessibility', url: '/accessibility', enabled: true },
   ],
 };
 
@@ -194,12 +194,12 @@ export interface CookieBannerSettings {
 
 const defaultCookieBannerSettings: CookieBannerSettings = {
   enabled: true,
-  title: 'Vi använder cookies',
-  description: 'Vi använder cookies för att förbättra din upplevelse på webbplatsen, analysera trafik och anpassa innehåll. Genom att klicka på "Acceptera alla" samtycker du till vår användning av cookies.',
-  policyLinkText: 'Läs mer om vår integritetspolicy',
-  policyLinkUrl: '/integritetspolicy',
-  acceptButtonText: 'Acceptera alla',
-  rejectButtonText: 'Endast nödvändiga',
+  title: 'We use cookies',
+  description: 'We use cookies to improve your experience on our website, analyze traffic, and personalize content. By clicking "Accept all", you consent to our use of cookies.',
+  policyLinkText: 'Read our Privacy Policy',
+  policyLinkUrl: '/privacy-policy',
+  acceptButtonText: 'Accept all',
+  rejectButtonText: 'Essential only',
 };
 
 export interface MaintenanceSettings {
