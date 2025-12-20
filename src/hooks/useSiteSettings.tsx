@@ -495,3 +495,7 @@ export function useBlogSettings() {
 export function useUpdateBlogSettings() {
   return useUpdateSiteSettings<BlogSettings>('blog', 'Blog settings have been updated.');
 }
+
+// Re-export modules hooks for convenience
+export { useModules, useUpdateModules, useIsModuleEnabled, useEnabledModules } from './useModules';
+export type { ModulesSettings, ModuleConfig } from './useModules';

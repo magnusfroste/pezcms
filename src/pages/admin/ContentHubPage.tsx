@@ -1,6 +1,7 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { Globe, Smartphone, MessageSquare, Mail, Code2, Copy, Check, Play, Database, FileJson, Layers, Info, FileText, Rss } from "lucide-react";
+import { Globe, Smartphone, MessageSquare, Mail, Code2, Copy, Check, Play, Database, FileJson, Layers, Info, FileText, Rss, Settings2, Plus } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
@@ -11,14 +12,19 @@ import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { toast } from "sonner";
+import { useModules } from "@/hooks/useModules";
 
-const CHANNELS = [
-  { id: "web", name: "Website", icon: Globe, status: "active", description: "Built-in responsive website" },
-  { id: "blog", name: "Blog", icon: FileText, status: "active", description: "Blog with RSS feed", extra: Rss },
-  { id: "chat", name: "AI Chat", icon: MessageSquare, status: "active", description: "Intelligent chatbot with CAG" },
-  { id: "newsletter", name: "Newsletter", icon: Mail, status: "active", description: "Email campaigns via Resend" },
-  { id: "app", name: "Mobile App", icon: Smartphone, status: "coming", description: "iOS & Android via API" },
-];
+type ChannelStatus = "active" | "inactive" | "coming";
+
+interface Channel {
+  id: string;
+  name: string;
+  icon: React.ComponentType<{ className?: string }>;
+  status: ChannelStatus;
+  description: string;
+  moduleId?: string;
+  extra?: React.ComponentType<{ className?: string }>;
+}
 
 const BLOCK_TYPES = [
   { type: "hero", name: "Hero", category: "Layout" },
@@ -52,6 +58,39 @@ export default function ContentHubPage() {
   const [graphqlQuery, setGraphqlQuery] = useState(DEFAULT_GRAPHQL_QUERY);
   const [queryResult, setQueryResult] = useState<string | null>(null);
   const [isQuerying, setIsQuerying] = useState(false);
+  
+  const { data: modules } = useModules();
+
+  // Build channels based on module status
+  const CHANNELS: Channel[] = [
+    { id: "web", name: "Website", icon: Globe, status: "active", description: "Built-in responsive website" },
+    { 
+      id: "blog", 
+      name: "Blog", 
+      icon: FileText, 
+      status: modules?.blog?.enabled ? "active" : "inactive", 
+      description: "Blog with RSS feed", 
+      moduleId: "blog",
+      extra: Rss 
+    },
+    { 
+      id: "chat", 
+      name: "AI Chat", 
+      icon: MessageSquare, 
+      status: modules?.chat?.enabled ? "active" : "inactive", 
+      description: "Intelligent chatbot with CAG",
+      moduleId: "chat"
+    },
+    { 
+      id: "newsletter", 
+      name: "Newsletter", 
+      icon: Mail, 
+      status: modules?.newsletter?.enabled ? "active" : "inactive", 
+      description: "Email campaigns via Resend",
+      moduleId: "newsletter"
+    },
+    { id: "app", name: "Mobile App", icon: Smartphone, status: "coming", description: "iOS & Android via API" },
+  ];
 
   // Fetch pages to count block usage
   const { data: pages } = useQuery({
@@ -76,6 +115,8 @@ export default function ContentHubPage() {
   }, {} as Record<string, number>) || {};
 
   const totalBlocks = Object.values(blockCounts).reduce((a, b) => a + b, 0);
+  const activeChannels = CHANNELS.filter(c => c.status === "active").length;
+  const inactiveChannels = CHANNELS.filter(c => c.status === "inactive").length;
 
   const copyCode = (code: string, id: string) => {
     navigator.clipboard.writeText(code);
@@ -203,36 +244,68 @@ export default async function Home() {
         {/* Multi-Channel Visualization */}
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Layers className="h-5 w-5" />
-              Multi-Channel Delivery
-            </CardTitle>
-            <CardDescription>
-              Your content can be delivered to multiple channels simultaneously
-            </CardDescription>
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle className="flex items-center gap-2">
+                  <Layers className="h-5 w-5" />
+                  Multi-Channel Delivery
+                </CardTitle>
+                <CardDescription>
+                  Your content can be delivered to multiple channels simultaneously
+                </CardDescription>
+              </div>
+              {inactiveChannels > 0 && (
+                <Button asChild variant="outline" size="sm">
+                  <Link to="/admin/modules">
+                    <Settings2 className="h-4 w-4 mr-2" />
+                    Manage Modules
+                  </Link>
+                </Button>
+              )}
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
               {CHANNELS.map((channel) => (
                 <div
                   key={channel.id}
                   className={`relative p-4 rounded-xl border-2 transition-all ${
                     channel.status === "active"
                       ? "border-primary/50 bg-primary/5"
+                      : channel.status === "inactive"
+                      ? "border-dashed border-amber-500/30 bg-amber-500/5"
                       : "border-dashed border-muted-foreground/30 bg-muted/30"
                   }`}
                 >
                   {channel.status === "active" && (
                     <Badge className="absolute -top-2 -right-2 bg-green-500">Active</Badge>
                   )}
+                  {channel.status === "inactive" && (
+                    <Badge variant="outline" className="absolute -top-2 -right-2 border-amber-500 text-amber-600">
+                      Inactive
+                    </Badge>
+                  )}
                   {channel.status === "coming" && (
                     <Badge variant="secondary" className="absolute -top-2 -right-2">Coming</Badge>
                   )}
                   <channel.icon className={`h-8 w-8 mb-3 ${
-                    channel.status === "active" ? "text-primary" : "text-muted-foreground"
+                    channel.status === "active" 
+                      ? "text-primary" 
+                      : channel.status === "inactive"
+                      ? "text-amber-600"
+                      : "text-muted-foreground"
                   }`} />
                   <h4 className="font-medium">{channel.name}</h4>
                   <p className="text-sm text-muted-foreground">{channel.description}</p>
+                  
+                  {channel.status === "inactive" && channel.moduleId && (
+                    <Button asChild variant="ghost" size="sm" className="mt-2 h-7 text-xs">
+                      <Link to="/admin/modules">
+                        <Plus className="h-3 w-3 mr-1" />
+                        Activate
+                      </Link>
+                    </Button>
+                  )}
                 </div>
               ))}
             </div>
