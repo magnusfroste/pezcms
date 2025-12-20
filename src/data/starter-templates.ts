@@ -1,5 +1,5 @@
-import { ContentBlock, PageMeta } from '@/types/cms';
-import { BrandingSettings, ChatSettings, FooterSettings, SeoSettings, CookieBannerSettings } from '@/hooks/useSiteSettings';
+import { ContentBlock, PageMeta, FooterBlockData } from '@/types/cms';
+import { BrandingSettings, ChatSettings, SeoSettings, CookieBannerSettings } from '@/hooks/useSiteSettings';
 
 // Page definition within a template
 export interface TemplatePage {
@@ -28,7 +28,7 @@ export interface StarterTemplate {
   // Site-wide settings
   branding: Partial<BrandingSettings>;
   chatSettings: Partial<ChatSettings>;
-  footerSettings: Partial<FooterSettings>;
+  footerSettings: Partial<FooterBlockData>;
   seoSettings: Partial<SeoSettings>;
   cookieBannerSettings: Partial<CookieBannerSettings>;
   

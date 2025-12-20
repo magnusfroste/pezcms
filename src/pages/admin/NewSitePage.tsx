@@ -12,7 +12,8 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { StarterTemplateSelector } from '@/components/admin/StarterTemplateSelector';
 import { StarterTemplate } from '@/data/starter-templates';
 import { useCreatePage, usePages, useDeletePage } from '@/hooks/usePages';
-import { useUpdateBrandingSettings, useUpdateChatSettings, useUpdateGeneralSettings, useUpdateFooterSettings, useUpdateSeoSettings, useUpdateCookieBannerSettings } from '@/hooks/useSiteSettings';
+import { useUpdateBrandingSettings, useUpdateChatSettings, useUpdateGeneralSettings, useUpdateSeoSettings, useUpdateCookieBannerSettings } from '@/hooks/useSiteSettings';
+import { useUpdateFooterBlock } from '@/hooks/useGlobalBlocks';
 import { useToast } from '@/hooks/use-toast';
 
 type CreationStep = 'select' | 'creating' | 'done';
@@ -37,7 +38,7 @@ export default function NewSitePage() {
   const updateBranding = useUpdateBrandingSettings();
   const updateChat = useUpdateChatSettings();
   const updateGeneral = useUpdateGeneralSettings();
-  const updateFooter = useUpdateFooterSettings();
+  const updateFooter = useUpdateFooterBlock();
   const updateSeo = useUpdateSeoSettings();
   const updateCookieBanner = useUpdateCookieBannerSettings();
   const { toast } = useToast();
