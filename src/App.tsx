@@ -30,6 +30,7 @@ import BlogPostEditorPage from "./pages/admin/BlogPostEditorPage";
 import BlogCategoriesPage from "./pages/admin/BlogCategoriesPage";
 import BlogTagsPage from "./pages/admin/BlogTagsPage";
 import BlogSettingsPage from "./pages/admin/BlogSettingsPage";
+import ModulesPage from "./pages/admin/ModulesPage";
 import PreviewPage from "./pages/PreviewPage";
 import PublicPage from "./pages/PublicPage";
 import BlogArchivePage from "./pages/BlogArchivePage";
@@ -73,6 +74,7 @@ const router = createBrowserRouter([
   { path: "/admin/global-blocks", element: <GlobalBlocksPage /> },
   { path: "/admin/forms", element: <FormSubmissionsPage /> },
   { path: "/admin/newsletter", element: <NewsletterPage /> },
+  { path: "/admin/modules", element: <ModulesPage /> },
   { path: "/preview/:id", element: <PreviewPage /> },
   { path: "/:slug", element: <PublicPage /> },
 ]);
