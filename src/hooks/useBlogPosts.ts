@@ -555,16 +555,23 @@ export function useDeleteBlogPost() {
   });
 }
 
-// Authors hook (profiles with show_as_author = true)
-export function useAuthors() {
+// Authors hook (profiles that can be assigned as authors)
+// In admin context, show all profiles. For public display, filter by show_as_author.
+export function useAuthors(publicOnly = false) {
   return useQuery({
-    queryKey: ['authors'],
+    queryKey: ['authors', { publicOnly }],
     queryFn: async () => {
-      const { data, error } = await supabase
+      let query = supabase
         .from('profiles')
         .select('*')
-        .eq('show_as_author', true)
         .order('full_name');
+      
+      // Only filter by show_as_author for public-facing contexts
+      if (publicOnly) {
+        query = query.eq('show_as_author', true);
+      }
+      
+      const { data, error } = await query;
       
       if (error) throw error;
       return data;
