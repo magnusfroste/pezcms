@@ -148,11 +148,11 @@ export function ImageUploader({
         <TabsList className="grid w-full grid-cols-5">
           <TabsTrigger value="upload" className="text-xs">
             <Upload className="h-3 w-3 mr-1" />
-            Ladda upp
+            Upload
           </TabsTrigger>
           <TabsTrigger value="library" className="text-xs">
             <FolderOpen className="h-3 w-3 mr-1" />
-            Bibliotek
+            Library
           </TabsTrigger>
           <TabsTrigger value="unsplash" className="text-xs">
             <Camera className="h-3 w-3 mr-1" />
@@ -164,7 +164,7 @@ export function ImageUploader({
           </TabsTrigger>
           <TabsTrigger value="preview" className="text-xs" disabled={!value}>
             <ImageIcon className="h-3 w-3 mr-1" />
-            Förhandsvisning
+            Preview
           </TabsTrigger>
         </TabsList>
 
@@ -176,16 +176,16 @@ export function ImageUploader({
             {isUploading ? (
               <>
                 <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-                <span className="text-sm text-muted-foreground">Konverterar & laddar upp...</span>
+                <span className="text-sm text-muted-foreground">Converting & uploading...</span>
               </>
             ) : (
               <>
                 <Upload className="h-8 w-8 text-muted-foreground" />
                 <span className="text-sm text-muted-foreground">
-                  Klicka för att välja bild
+                  Click to select image
                 </span>
                 <span className="text-xs text-muted-foreground">
-                  Konverteras automatiskt till WebP
+                  Automatically converted to WebP
                 </span>
               </>
             )}
@@ -206,7 +206,7 @@ export function ImageUploader({
           >
             <FolderOpen className="h-8 w-8 text-muted-foreground" />
             <span className="text-sm text-muted-foreground">
-              Klicka för att välja från biblioteket
+              Click to select from library
             </span>
           </div>
         </TabsContent>
@@ -218,10 +218,10 @@ export function ImageUploader({
           >
             <Camera className="h-8 w-8 text-muted-foreground" />
             <span className="text-sm text-muted-foreground">
-              Klicka för att söka stockbilder
+              Click to search stock images
             </span>
             <span className="text-xs text-muted-foreground">
-              Gratis bilder från Unsplash
+              Free images from Unsplash
             </span>
           </div>
         </TabsContent>
@@ -230,7 +230,7 @@ export function ImageUploader({
           <Input
             value={urlInput}
             onChange={(e) => setUrlInput(e.target.value)}
-            placeholder="https://example.com/bild.jpg"
+            placeholder="https://example.com/image.jpg"
           />
           <Button 
             variant="outline" 
@@ -239,7 +239,7 @@ export function ImageUploader({
             disabled={!urlInput.trim()}
             className="w-full"
           >
-            Använd URL
+            Use URL
           </Button>
         </TabsContent>
 
@@ -268,7 +268,7 @@ export function ImageUploader({
             </div>
           ) : (
             <div className={`${aspectClass[aspectRatio]} rounded-lg bg-muted flex items-center justify-center`}>
-              <span className="text-sm text-muted-foreground">Ingen bild vald</span>
+              <span className="text-sm text-muted-foreground">No image selected</span>
             </div>
           )}
         </TabsContent>

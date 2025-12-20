@@ -60,14 +60,14 @@ type BlockDataMap = {
 };
 
 const DEFAULT_BLOCK_DATA: BlockDataMap = {
-  hero: { title: 'Ny Hero', subtitle: '', backgroundType: 'image', heightMode: 'auto', contentAlignment: 'center', overlayOpacity: 60, parallaxEffect: false, titleAnimation: 'none', showScrollIndicator: false, videoAutoplay: true, videoLoop: true, videoMuted: true },
-  text: { content: '<p>Skriv ditt innehåll här...</p>' },
+  hero: { title: 'New Hero', subtitle: '', backgroundType: 'image', heightMode: 'auto', contentAlignment: 'center', overlayOpacity: 60, parallaxEffect: false, titleAnimation: 'none', showScrollIndicator: false, videoAutoplay: true, videoLoop: true, videoMuted: true },
+  text: { content: '<p>Write your content here...</p>' },
   image: { src: '', alt: '' },
-  cta: { title: 'Redo att ta nästa steg?', buttonText: 'Kontakta oss', buttonUrl: '/kontakt', gradient: true },
-  contact: { title: 'Kontakta oss' },
+  cta: { title: 'Ready to take the next step?', buttonText: 'Contact us', buttonUrl: '/contact', gradient: true },
+  contact: { title: 'Contact us' },
   'link-grid': { links: [], columns: 3 },
-  'two-column': { content: '<p>Skriv ditt innehåll här...</p>', imageSrc: '', imageAlt: '', imagePosition: 'right' },
-  'info-box': { title: 'Viktig information', content: '', variant: 'info' },
+  'two-column': { content: '<p>Write your content here...</p>', imageSrc: '', imageAlt: '', imagePosition: 'right' },
+  'info-box': { title: 'Important information', content: '', variant: 'info' },
   accordion: { items: [] },
   'article-grid': { articles: [], columns: 3 },
   youtube: { url: '' },
