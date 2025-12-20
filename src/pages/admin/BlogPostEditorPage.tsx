@@ -212,6 +212,8 @@ export default function BlogPostEditorPage() {
   const canEdit = isNew || post?.status === "draft" || isAdmin || isApprover;
   const canPublish = isAdmin || isApprover;
   
+  console.log("[BlogPostEditor] canEdit check", { isNew, postStatus: post?.status, isAdmin, isApprover, canEdit, hasChanges, title });
+  
   if (!isNew && isLoading) {
     return (
       <AdminLayout>
