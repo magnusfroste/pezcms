@@ -217,9 +217,14 @@ export function PublicNavigation() {
           </div>
         </div>
 
-        {/* Mobile Navigation */}
-        {mobileMenuOpen && (
-          <nav className="md:hidden py-4 border-t animate-fade-in">
+        {/* Mobile Navigation - Default/Dropdown Style */}
+        {mobileMenuOpen && (!headerSettings.mobileMenuStyle || headerSettings.mobileMenuStyle === 'default') && (
+          <nav className={cn(
+            "md:hidden py-4 border-t",
+            headerSettings.mobileMenuAnimation === 'slide-down' && "animate-[slide-in-from-top_0.3s_ease-out]",
+            headerSettings.mobileMenuAnimation === 'slide-up' && "animate-[slide-in-from-bottom_0.3s_ease-out]",
+            (!headerSettings.mobileMenuAnimation || headerSettings.mobileMenuAnimation === 'fade') && "animate-fade-in"
+          )}>
             <div className="flex flex-col gap-1">
               {pages.map((page) => (
                 <Link
@@ -237,7 +242,6 @@ export function PublicNavigation() {
                   {page.title}
                 </Link>
               ))}
-              {/* Blog link in mobile */}
               {blogSettings?.enabled && (
                 <Link
                   to={`/${blogSettings.archiveSlug || 'blogg'}`}
@@ -253,7 +257,6 @@ export function PublicNavigation() {
                   {blogSettings.archiveTitle || 'Blogg'}
                 </Link>
               )}
-              {/* Custom nav items in mobile */}
               {customNavItems.map((item) => (
                 <a
                   key={item.id}
@@ -268,6 +271,143 @@ export function PublicNavigation() {
               ))}
             </div>
           </nav>
+        )}
+
+        {/* Mobile Navigation - Fullscreen Overlay */}
+        {mobileMenuOpen && headerSettings.mobileMenuStyle === 'fullscreen' && (
+          <div className={cn(
+            "fixed inset-0 top-0 left-0 z-50 bg-background md:hidden flex flex-col",
+            headerSettings.mobileMenuAnimation === 'slide-down' && "animate-[slide-in-from-top_0.3s_ease-out]",
+            headerSettings.mobileMenuAnimation === 'slide-up' && "animate-[slide-in-from-bottom_0.3s_ease-out]",
+            (!headerSettings.mobileMenuAnimation || headerSettings.mobileMenuAnimation === 'fade') && "animate-fade-in"
+          )}>
+            <div className="flex items-center justify-between p-6 border-b">
+              <Link to="/" onClick={() => setMobileMenuOpen(false)} className="font-serif font-bold text-xl">
+                {branding?.organizationName || 'Organisation'}
+              </Link>
+              <button
+                onClick={() => setMobileMenuOpen(false)}
+                className="p-2 rounded-md hover:bg-muted transition-colors"
+                aria-label="Close menu"
+              >
+                <X className="h-6 w-6" />
+              </button>
+            </div>
+            <nav className="flex-1 flex flex-col justify-center items-center gap-4 p-6">
+              {pages.map((page) => (
+                <Link
+                  key={page.id}
+                  to={page.slug === 'hem' ? '/' : `/${page.slug}`}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={cn(
+                    'text-2xl font-medium transition-colors',
+                    currentSlug === page.slug
+                      ? 'text-primary'
+                      : 'text-muted-foreground hover:text-foreground'
+                  )}
+                >
+                  {page.title}
+                </Link>
+              ))}
+              {blogSettings?.enabled && (
+                <Link
+                  to={`/${blogSettings.archiveSlug || 'blogg'}`}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={cn(
+                    'text-2xl font-medium transition-colors',
+                    location.pathname.startsWith(`/${blogSettings.archiveSlug || 'blogg'}`)
+                      ? 'text-primary'
+                      : 'text-muted-foreground hover:text-foreground'
+                  )}
+                >
+                  {blogSettings.archiveTitle || 'Blogg'}
+                </Link>
+              )}
+              {customNavItems.map((item) => (
+                <a
+                  key={item.id}
+                  href={item.url}
+                  target={item.openInNewTab ? '_blank' : undefined}
+                  rel={item.openInNewTab ? 'noopener noreferrer' : undefined}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-2xl font-medium transition-colors text-muted-foreground hover:text-foreground"
+                >
+                  {item.label}
+                </a>
+              ))}
+            </nav>
+          </div>
+        )}
+
+        {/* Mobile Navigation - Slide from Right */}
+        {mobileMenuOpen && headerSettings.mobileMenuStyle === 'slide' && (
+          <div className={cn(
+            "fixed inset-y-0 right-0 z-50 w-80 max-w-full bg-background shadow-2xl md:hidden flex flex-col animate-slide-in-right"
+          )}>
+            <div className="flex items-center justify-between p-6 border-b">
+              <span className="font-serif font-bold text-lg">Menu</span>
+              <button
+                onClick={() => setMobileMenuOpen(false)}
+                className="p-2 rounded-md hover:bg-muted transition-colors"
+                aria-label="Close menu"
+              >
+                <X className="h-6 w-6" />
+              </button>
+            </div>
+            <nav className="flex-1 flex flex-col gap-1 p-4 overflow-y-auto">
+              {pages.map((page) => (
+                <Link
+                  key={page.id}
+                  to={page.slug === 'hem' ? '/' : `/${page.slug}`}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={cn(
+                    'px-4 py-3 rounded-md text-base font-medium transition-colors',
+                    'hover:bg-muted',
+                    currentSlug === page.slug
+                      ? 'bg-primary/10 text-primary'
+                      : 'text-muted-foreground'
+                  )}
+                >
+                  {page.title}
+                </Link>
+              ))}
+              {blogSettings?.enabled && (
+                <Link
+                  to={`/${blogSettings.archiveSlug || 'blogg'}`}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={cn(
+                    'px-4 py-3 rounded-md text-base font-medium transition-colors',
+                    'hover:bg-muted',
+                    location.pathname.startsWith(`/${blogSettings.archiveSlug || 'blogg'}`)
+                      ? 'bg-primary/10 text-primary'
+                      : 'text-muted-foreground'
+                  )}
+                >
+                  {blogSettings.archiveTitle || 'Blogg'}
+                </Link>
+              )}
+              {customNavItems.map((item) => (
+                <a
+                  key={item.id}
+                  href={item.url}
+                  target={item.openInNewTab ? '_blank' : undefined}
+                  rel={item.openInNewTab ? 'noopener noreferrer' : undefined}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="px-4 py-3 rounded-md text-base font-medium transition-colors hover:bg-muted text-muted-foreground"
+                >
+                  {item.label}
+                </a>
+              ))}
+            </nav>
+          </div>
+        )}
+
+        {/* Backdrop for slide menu */}
+        {mobileMenuOpen && headerSettings.mobileMenuStyle === 'slide' && (
+          <div 
+            className="fixed inset-0 z-40 bg-black/50 md:hidden animate-fade-in"
+            onClick={() => setMobileMenuOpen(false)}
+          />
         )}
       </div>
     </header>
