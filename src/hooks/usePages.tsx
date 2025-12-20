@@ -186,6 +186,11 @@ export function useUpdatePage() {
         } as unknown as Json,
       });
       
+      // Trigger webhook for page updated (only if page is published)
+      if (data.status === 'published') {
+        webhookEvents.pageUpdated({ id, slug: data.slug, title: data.title });
+      }
+      
       return parsePage(data);
     },
     onSuccess: (data) => {
