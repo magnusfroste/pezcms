@@ -9,8 +9,6 @@ import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
-  useFooterSettings, 
-  useUpdateFooterSettings, 
   useSeoSettings, 
   useUpdateSeoSettings,
   usePerformanceSettings,
@@ -23,76 +21,21 @@ import {
   useUpdateMaintenanceSettings,
   useGeneralSettings,
   useUpdateGeneralSettings,
-  FooterSettings,
-  FooterLegalLink,
   SeoSettings,
   PerformanceSettings,
   CustomScriptsSettings,
   CookieBannerSettings,
   MaintenanceSettings,
   GeneralSettings,
-  FooterSectionId
 } from '@/hooks/useSiteSettings';
 import { usePages } from '@/hooks/usePages';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Loader2, Save, Globe, Zap, Phone, ImageIcon, X, AlertTriangle, GripVertical, Code, CheckCircle2, Circle, Cookie, Plus, Trash2, Scale, Search, Lock, Info, Wrench, Clock, Home } from 'lucide-react';
+import { Loader2, Save, Globe, Zap, ImageIcon, X, AlertTriangle, Code, Cookie, Info, Wrench, Home, Search, Lock, Clock, CheckCircle2, Circle } from 'lucide-react';
 import { MediaLibraryPicker } from '@/components/admin/MediaLibraryPicker';
 import { CodeEditor } from '@/components/admin/CodeEditor';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors, DragEndEvent } from '@dnd-kit/core';
-import { arrayMove, SortableContext, sortableKeyboardCoordinates, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
 import { useUnsavedChanges, UnsavedChangesDialog } from '@/hooks/useUnsavedChanges';
 
-const SECTION_LABELS: Record<FooterSectionId, { label: string; description: string }> = {
-  brand: { label: 'Brand & Logo', description: 'Organization name and tagline' },
-  quickLinks: { label: 'Quick Links', description: 'Links to published pages' },
-  contact: { label: 'Contact Info', description: 'Phone, email and address' },
-  hours: { label: 'Opening Hours', description: 'Weekday and weekend hours' },
-};
-
-interface SortableSectionItemProps {
-  id: FooterSectionId;
-  isVisible: boolean;
-  onToggle: (checked: boolean) => void;
-}
-
-function SortableSectionItem({ id, isVisible, onToggle }: SortableSectionItemProps) {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
-  
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
-
-  const section = SECTION_LABELS[id];
-
-  return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      className={`flex items-center justify-between p-3 rounded-lg border bg-card ${isDragging ? 'opacity-50 shadow-lg' : ''}`}
-    >
-      <div className="flex items-center gap-3">
-        <button
-          {...attributes}
-          {...listeners}
-          className="cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground"
-        >
-          <GripVertical className="h-4 w-4" />
-        </button>
-        <div>
-          <Label>{section.label}</Label>
-          <p className="text-xs text-muted-foreground">{section.description}</p>
-        </div>
-      </div>
-      <Switch
-        checked={isVisible}
-        onCheckedChange={onToggle}
-      />
-    </div>
-  );
-}
 
 function OgImagePicker({ value, onChange }: { value: string; onChange: (url: string) => void }) {
   const [showPicker, setShowPicker] = useState(false);
@@ -143,7 +86,6 @@ function OgImagePicker({ value, onChange }: { value: string; onChange: (url: str
 }
 
 export default function SiteSettingsPage() {
-  const { data: footerSettings, isLoading: footerLoading } = useFooterSettings();
   const { data: seoSettings, isLoading: seoLoading } = useSeoSettings();
   const { data: performanceSettings, isLoading: performanceLoading } = usePerformanceSettings();
   const { data: customScriptsSettings, isLoading: scriptsLoading } = useCustomScriptsSettings();
@@ -152,7 +94,6 @@ export default function SiteSettingsPage() {
   const { data: generalSettings, isLoading: generalLoading } = useGeneralSettings();
   const { data: allPages } = usePages();
   
-  const updateFooter = useUpdateFooterSettings();
   const updateSeo = useUpdateSeoSettings();
   const updatePerformance = useUpdatePerformanceSettings();
   const updateScripts = useUpdateCustomScriptsSettings();
@@ -163,34 +104,6 @@ export default function SiteSettingsPage() {
   const [generalData, setGeneralData] = useState<GeneralSettings>({
     homepageSlug: 'hem',
   });
-  
-  const [footerData, setFooterData] = useState<FooterSettings>({
-    phone: '',
-    email: '',
-    address: '',
-    postalCode: '',
-    weekdayHours: '',
-    weekendHours: '',
-    facebook: '',
-    instagram: '',
-    linkedin: '',
-    twitter: '',
-    youtube: '',
-    showBrand: true,
-    showQuickLinks: true,
-    showContact: true,
-    showHours: true,
-    sectionOrder: ['brand', 'quickLinks', 'contact', 'hours'],
-    legalLinks: [
-      { id: 'privacy', label: 'Privacy Policy', url: '/privacy-policy', enabled: true },
-      { id: 'accessibility', label: 'Accessibility', url: '/accessibility', enabled: true },
-    ],
-  });
-
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
-  );
 
   const [seoData, setSeoData] = useState<SeoSettings>({
     siteTitle: '',
@@ -241,10 +154,6 @@ export default function SiteSettingsPage() {
   });
 
   useEffect(() => {
-    if (footerSettings) setFooterData(footerSettings);
-  }, [footerSettings]);
-
-  useEffect(() => {
     if (seoSettings) setSeoData(seoSettings);
   }, [seoSettings]);
 
@@ -268,14 +177,13 @@ export default function SiteSettingsPage() {
     if (generalSettings) setGeneralData(generalSettings);
   }, [generalSettings]);
 
-  const isLoading = footerLoading || seoLoading || performanceLoading || scriptsLoading || cookieLoading || maintenanceLoading || generalLoading;
-  const isSaving = updateFooter.isPending || updateSeo.isPending || updatePerformance.isPending || updateScripts.isPending || updateCookieBanner.isPending || updateMaintenance.isPending || updateGeneral.isPending;
+  const isLoading = seoLoading || performanceLoading || scriptsLoading || cookieLoading || maintenanceLoading || generalLoading;
+  const isSaving = updateSeo.isPending || updatePerformance.isPending || updateScripts.isPending || updateCookieBanner.isPending || updateMaintenance.isPending || updateGeneral.isPending;
 
   // Track unsaved changes
   const hasChanges = useMemo(() => {
-    if (!footerSettings || !seoSettings || !performanceSettings || !customScriptsSettings || !cookieBannerSettings || !maintenanceSettings || !generalSettings) return false;
+    if (!seoSettings || !performanceSettings || !customScriptsSettings || !cookieBannerSettings || !maintenanceSettings || !generalSettings) return false;
     return (
-      JSON.stringify(footerData) !== JSON.stringify(footerSettings) ||
       JSON.stringify(seoData) !== JSON.stringify(seoSettings) ||
       JSON.stringify(performanceData) !== JSON.stringify(performanceSettings) ||
       JSON.stringify(scriptsData) !== JSON.stringify(customScriptsSettings) ||
@@ -283,7 +191,7 @@ export default function SiteSettingsPage() {
       JSON.stringify(maintenanceData) !== JSON.stringify(maintenanceSettings) ||
       JSON.stringify(generalData) !== JSON.stringify(generalSettings)
     );
-  }, [footerData, seoData, performanceData, scriptsData, cookieData, maintenanceData, generalData, footerSettings, seoSettings, performanceSettings, customScriptsSettings, cookieBannerSettings, maintenanceSettings, generalSettings]);
+  }, [seoData, performanceData, scriptsData, cookieData, maintenanceData, generalData, seoSettings, performanceSettings, customScriptsSettings, cookieBannerSettings, maintenanceSettings, generalSettings]);
 
   const { blocker } = useUnsavedChanges({ hasChanges });
 
@@ -295,7 +203,6 @@ export default function SiteSettingsPage() {
       updateScripts.mutateAsync(scriptsData),
       updateCookieBanner.mutateAsync(cookieData),
       updatePerformance.mutateAsync(performanceData),
-      updateFooter.mutateAsync(footerData),
     ]);
   };
 
@@ -324,7 +231,7 @@ export default function SiteSettingsPage() {
         </AdminPageHeader>
 
         <Tabs defaultValue="general" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-7 max-w-4xl">
+          <TabsList className="grid w-full grid-cols-6 max-w-4xl">
             <TabsTrigger value="general" className="flex items-center gap-2">
               <Home className="h-4 w-4" />
               <span className="hidden sm:inline">General</span>
@@ -348,10 +255,6 @@ export default function SiteSettingsPage() {
             <TabsTrigger value="performance" className="flex items-center gap-2">
               <Zap className="h-4 w-4" />
               <span className="hidden sm:inline">Performance</span>
-            </TabsTrigger>
-            <TabsTrigger value="footer" className="flex items-center gap-2">
-              <Phone className="h-4 w-4" />
-              <span className="hidden sm:inline">Footer</span>
             </TabsTrigger>
           </TabsList>
 
@@ -1080,262 +983,6 @@ export default function SiteSettingsPage() {
                       checked={performanceData.enableServiceWorker}
                       onCheckedChange={(checked) => setPerformanceData(prev => ({ ...prev, enableServiceWorker: checked }))}
                     />
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
-
-          {/* Footer Tab */}
-          <TabsContent value="footer" className="space-y-6">
-
-            {/* Layout Section */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="font-serif">Layout & Order</CardTitle>
-                <CardDescription>Drag to change order, toggle to show/hide</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <DndContext
-                  sensors={sensors}
-                  collisionDetection={closestCenter}
-                  onDragEnd={(event: DragEndEvent) => {
-                    const { active, over } = event;
-                    if (over && active.id !== over.id) {
-                      const currentOrder = footerData.sectionOrder || ['brand', 'quickLinks', 'contact', 'hours'];
-                      const oldIndex = currentOrder.indexOf(active.id as FooterSectionId);
-                      const newIndex = currentOrder.indexOf(over.id as FooterSectionId);
-                      setFooterData(prev => ({
-                        ...prev,
-                        sectionOrder: arrayMove(currentOrder, oldIndex, newIndex),
-                      }));
-                    }
-                  }}
-                >
-                  <SortableContext
-                    items={footerData.sectionOrder || ['brand', 'quickLinks', 'contact', 'hours']}
-                    strategy={verticalListSortingStrategy}
-                  >
-                    <div className="space-y-2">
-                      {(footerData.sectionOrder || ['brand', 'quickLinks', 'contact', 'hours']).map((sectionId) => {
-                        const visibilityKey = {
-                          brand: 'showBrand',
-                          quickLinks: 'showQuickLinks',
-                          contact: 'showContact',
-                          hours: 'showHours',
-                        }[sectionId] as keyof FooterSettings;
-                        
-                        return (
-                          <SortableSectionItem
-                            key={sectionId}
-                            id={sectionId}
-                            isVisible={footerData[visibilityKey] !== false}
-                            onToggle={(checked) => setFooterData(prev => ({ ...prev, [visibilityKey]: checked }))}
-                          />
-                        );
-                      })}
-                    </div>
-                  </SortableContext>
-                </DndContext>
-              </CardContent>
-            </Card>
-
-            <div className="grid gap-6 md:grid-cols-2">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="font-serif">Contact Information</CardTitle>
-                  <CardDescription>Phone, email and address</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                <div className="space-y-2">
-                    <Label htmlFor="phone">Phone number</Label>
-                    <Input
-                      id="phone"
-                      value={footerData.phone}
-                      onChange={(e) => setFooterData(prev => ({ ...prev, phone: e.target.value }))}
-                      placeholder="+1 555-123-4567"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email address</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      value={footerData.email}
-                      onChange={(e) => setFooterData(prev => ({ ...prev, email: e.target.value }))}
-                      placeholder="info@example.com"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="address">Street address</Label>
-                    <Input
-                      id="address"
-                      value={footerData.address}
-                      onChange={(e) => setFooterData(prev => ({ ...prev, address: e.target.value }))}
-                      placeholder="123 Main Street"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="postalCode">Postal code and city</Label>
-                    <Input
-                      id="postalCode"
-                      value={footerData.postalCode}
-                      onChange={(e) => setFooterData(prev => ({ ...prev, postalCode: e.target.value }))}
-                      placeholder="10001 New York"
-                    />
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle className="font-serif">Opening Hours</CardTitle>
-                  <CardDescription>Hours displayed in the footer</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="weekdayHours">Weekdays (Mon–Fri)</Label>
-                    <Input
-                      id="weekdayHours"
-                      value={footerData.weekdayHours}
-                      onChange={(e) => setFooterData(prev => ({ ...prev, weekdayHours: e.target.value }))}
-                      placeholder="8:00 AM – 5:00 PM"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="weekendHours">Weekends (Sat–Sun)</Label>
-                    <Input
-                      id="weekendHours"
-                      value={footerData.weekendHours}
-                      onChange={(e) => setFooterData(prev => ({ ...prev, weekendHours: e.target.value }))}
-                      placeholder="Closed"
-                    />
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle className="font-serif flex items-center gap-2">
-                    <Scale className="h-4 w-4" />
-                    Legal Links
-                  </CardTitle>
-                  <CardDescription>Links displayed at the bottom of the footer (privacy policy, accessibility, etc.)</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  {(footerData.legalLinks || []).map((link, index) => (
-                    <div key={link.id} className="flex items-center gap-3 p-3 rounded-lg border bg-card">
-                      <Switch
-                        checked={link.enabled}
-                        onCheckedChange={(checked) => {
-                          const newLinks = [...(footerData.legalLinks || [])];
-                          newLinks[index] = { ...link, enabled: checked };
-                          setFooterData(prev => ({ ...prev, legalLinks: newLinks }));
-                        }}
-                      />
-                      <div className="flex-1 grid gap-2 sm:grid-cols-2">
-                        <Input
-                          value={link.label}
-                          onChange={(e) => {
-                            const newLinks = [...(footerData.legalLinks || [])];
-                            newLinks[index] = { ...link, label: e.target.value };
-                            setFooterData(prev => ({ ...prev, legalLinks: newLinks }));
-                          }}
-                          placeholder="Link text"
-                        />
-                        <Input
-                          value={link.url}
-                          onChange={(e) => {
-                            const newLinks = [...(footerData.legalLinks || [])];
-                            newLinks[index] = { ...link, url: e.target.value };
-                            setFooterData(prev => ({ ...prev, legalLinks: newLinks }));
-                          }}
-                          placeholder="/privacy-policy"
-                        />
-                      </div>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => {
-                          const newLinks = (footerData.legalLinks || []).filter((_, i) => i !== index);
-                          setFooterData(prev => ({ ...prev, legalLinks: newLinks }));
-                        }}
-                      >
-                        <Trash2 className="h-4 w-4 text-muted-foreground" />
-                      </Button>
-                    </div>
-                  ))}
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => {
-                      const newLink: FooterLegalLink = {
-                        id: `link-${Date.now()}`,
-                        label: '',
-                        url: '',
-                        enabled: true,
-                      };
-                      setFooterData(prev => ({ ...prev, legalLinks: [...(prev.legalLinks || []), newLink] }));
-                    }}
-                  >
-                    <Plus className="h-4 w-4 mr-2" />
-                    Add link
-                  </Button>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle className="font-serif">Social Media</CardTitle>
-                  <CardDescription>Links to social media profiles</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid gap-4 md:grid-cols-2">
-                    <div className="space-y-2">
-                      <Label htmlFor="facebook">Facebook</Label>
-                      <Input
-                        id="facebook"
-                        value={footerData.facebook || ''}
-                        onChange={(e) => setFooterData(prev => ({ ...prev, facebook: e.target.value }))}
-                        placeholder="https://facebook.com/..."
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="instagram">Instagram</Label>
-                      <Input
-                        id="instagram"
-                        value={footerData.instagram || ''}
-                        onChange={(e) => setFooterData(prev => ({ ...prev, instagram: e.target.value }))}
-                        placeholder="https://instagram.com/..."
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="linkedin">LinkedIn</Label>
-                      <Input
-                        id="linkedin"
-                        value={footerData.linkedin || ''}
-                        onChange={(e) => setFooterData(prev => ({ ...prev, linkedin: e.target.value }))}
-                        placeholder="https://linkedin.com/company/..."
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="twitter">Twitter / X</Label>
-                      <Input
-                        id="twitter"
-                        value={footerData.twitter || ''}
-                        onChange={(e) => setFooterData(prev => ({ ...prev, twitter: e.target.value }))}
-                        placeholder="https://x.com/..."
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="youtube">YouTube</Label>
-                      <Input
-                        id="youtube"
-                        value={footerData.youtube || ''}
-                        onChange={(e) => setFooterData(prev => ({ ...prev, youtube: e.target.value }))}
-                        placeholder="https://youtube.com/@..."
-                      />
-                    </div>
                   </div>
                 </CardContent>
               </Card>
