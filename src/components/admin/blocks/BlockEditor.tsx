@@ -100,6 +100,14 @@ const DEFAULT_BLOCK_DATA: BlockDataMap = {
     successMessage: 'Thank you! We\'ll be in touch soon.',
     variant: 'default',
   },
+  newsletter: {
+    title: 'Subscribe to our newsletter',
+    description: 'Get the latest updates delivered to your inbox.',
+    buttonText: 'Subscribe',
+    successMessage: 'Thanks for subscribing! Please check your email to confirm.',
+    variant: 'default',
+    showNameField: false,
+  },
 };
 
 interface BlockEditorProps {
@@ -303,6 +311,13 @@ export function BlockEditor({ blocks, onChange, canEdit }: BlockEditorProps) {
             data={block.data as unknown as FormBlockData}
             onChange={(data) => handleUpdateBlock(block.id, data as unknown as Record<string, unknown>)}
             isEditing={isEditing}
+          />
+        );
+      case 'newsletter':
+        return (
+          <NewsletterBlockEditor
+            data={block.data as unknown as NewsletterBlockData}
+            onChange={(data) => handleUpdateBlock(block.id, data as unknown as Record<string, unknown>)}
           />
         );
       default:
