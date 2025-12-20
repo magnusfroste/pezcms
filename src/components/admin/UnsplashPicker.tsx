@@ -90,15 +90,15 @@ export function UnsplashPicker({ open, onOpenChange, onSelect }: UnsplashPickerP
       const publicUrl = await uploadToStorage(croppedBlob);
       onSelect(publicUrl, selectedPhoto?.alt);
       toast({
-        title: 'Bild sparad',
-        description: 'Beskuren bild har laddats upp till biblioteket',
+        title: 'Image saved',
+        description: 'Cropped image has been uploaded to library',
       });
       handleClose();
     } catch (error) {
       console.error('Upload error:', error);
       toast({
-        title: 'Uppladdning misslyckades',
-        description: 'Kunde inte ladda upp bilden. Försök igen.',
+        title: 'Upload failed',
+        description: 'Could not upload image. Please try again.',
         variant: 'destructive',
       });
     } finally {
@@ -129,7 +129,7 @@ export function UnsplashPicker({ open, onOpenChange, onSelect }: UnsplashPickerP
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <ImageIcon className="h-5 w-5" />
-              Sök stockbilder från Unsplash
+              Search stock images from Unsplash
             </DialogTitle>
           </DialogHeader>
 
@@ -138,7 +138,7 @@ export function UnsplashPicker({ open, onOpenChange, onSelect }: UnsplashPickerP
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder="Sök bilder, t.ex. 'natur', 'kontor', 'medicin'..."
+                placeholder="Search images, e.g. 'nature', 'office', 'medicine'..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-9"
@@ -146,7 +146,7 @@ export function UnsplashPicker({ open, onOpenChange, onSelect }: UnsplashPickerP
               />
             </div>
             <Button type="submit" disabled={!searchQuery.trim() || isFetching}>
-              {isFetching ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Sök'}
+              {isFetching ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Search'}
             </Button>
           </form>
 
@@ -160,20 +160,20 @@ export function UnsplashPicker({ open, onOpenChange, onSelect }: UnsplashPickerP
               <div className="text-center py-12">
                 <ImageIcon className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
                 <h3 className="text-lg font-medium text-foreground mb-1">
-                  Sök efter bilder
+                  Search for images
                 </h3>
                 <p className="text-muted-foreground text-sm">
-                  Skriv ett sökord för att hitta gratis stockbilder
+                  Enter a search term to find free stock images
                 </p>
               </div>
             ) : data?.photos.length === 0 ? (
               <div className="text-center py-12">
                 <ImageIcon className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
                 <h3 className="text-lg font-medium text-foreground mb-1">
-                  Inga bilder hittades
+                  No images found
                 </h3>
                 <p className="text-muted-foreground text-sm">
-                  Prova med ett annat sökord
+                  Try a different search term
                 </p>
               </div>
             ) : (
@@ -226,21 +226,21 @@ export function UnsplashPicker({ open, onOpenChange, onSelect }: UnsplashPickerP
             </a>
             <div className="flex gap-2">
               <Button variant="outline" onClick={handleClose}>
-                Avbryt
+                Cancel
               </Button>
               <Button 
                 variant="secondary" 
                 onClick={handleUseOriginal} 
                 disabled={!selectedPhoto}
               >
-                Använd original
+                Use original
               </Button>
               <Button 
                 onClick={handleSelectAndCrop} 
                 disabled={!selectedPhoto || isUploading}
               >
                 <Crop className="h-4 w-4 mr-2" />
-                Beskär & spara
+                Crop & save
               </Button>
             </div>
           </div>

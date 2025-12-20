@@ -133,15 +133,15 @@ export function MediaLibraryPicker({ open, onOpenChange, onSelect }: MediaLibrar
       const publicUrl = await uploadToStorage(croppedBlob);
       onSelect(publicUrl);
       toast({
-        title: 'Bild sparad',
-        description: 'Beskuren bild har laddats upp till biblioteket',
+        title: 'Image saved',
+        description: 'Cropped image has been uploaded to library',
       });
       handleClose();
     } catch (error) {
       console.error('Upload error:', error);
       toast({
-        title: 'Uppladdning misslyckades',
-        description: 'Kunde inte ladda upp bilden. Försök igen.',
+        title: 'Upload failed',
+        description: 'Could not upload image. Please try again.',
         variant: 'destructive',
       });
     } finally {
@@ -174,18 +174,18 @@ export function MediaLibraryPicker({ open, onOpenChange, onSelect }: MediaLibrar
       <Dialog open={open && !showCropper} onOpenChange={handleClose}>
         <DialogContent className="max-w-4xl max-h-[85vh] flex flex-col">
           <DialogHeader>
-            <DialogTitle>Välj bild</DialogTitle>
+            <DialogTitle>Select image</DialogTitle>
           </DialogHeader>
 
           <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as 'library' | 'unsplash')} className="flex-1 flex flex-col">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="library" className="flex items-center gap-2">
                 <FolderOpen className="h-4 w-4" />
-                Bibliotek
+                Library
               </TabsTrigger>
               <TabsTrigger value="unsplash" className="flex items-center gap-2">
                 <Camera className="h-4 w-4" />
-                Stockbilder
+                Stock images
               </TabsTrigger>
             </TabsList>
 
@@ -194,7 +194,7 @@ export function MediaLibraryPicker({ open, onOpenChange, onSelect }: MediaLibrar
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
-                  placeholder="Sök bilder..."
+                  placeholder="Search images..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="pl-9"
@@ -211,12 +211,12 @@ export function MediaLibraryPicker({ open, onOpenChange, onSelect }: MediaLibrar
                   <div className="text-center py-12">
                     <ImageIcon className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
                     <h3 className="text-lg font-medium text-foreground mb-1">
-                      {searchQuery ? 'Inga bilder hittades' : 'Inga bilder uppladdade'}
+                      {searchQuery ? 'No images found' : 'No images uploaded'}
                     </h3>
                     <p className="text-muted-foreground text-sm">
                       {searchQuery 
-                        ? 'Prova ett annat sökord'
-                        : 'Ladda upp bilder via "Ladda upp"-fliken'
+                        ? 'Try a different search term'
+                        : 'Upload images via the "Upload" tab'
                       }
                     </p>
                   </div>
@@ -258,14 +258,14 @@ export function MediaLibraryPicker({ open, onOpenChange, onSelect }: MediaLibrar
                 <div className="relative flex-1">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
-                    placeholder="Sök bilder, t.ex. 'natur', 'kontor', 'medicin'..."
+                    placeholder="Search images, e.g. 'nature', 'office', 'medicine'..."
                     value={unsplashQuery}
                     onChange={(e) => setUnsplashQuery(e.target.value)}
                     className="pl-9"
                   />
                 </div>
                 <Button type="submit" disabled={!unsplashQuery.trim() || isFetchingUnsplash}>
-                  {isFetchingUnsplash ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Sök'}
+                  {isFetchingUnsplash ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Search'}
                 </Button>
               </form>
 
@@ -279,20 +279,20 @@ export function MediaLibraryPicker({ open, onOpenChange, onSelect }: MediaLibrar
                   <div className="text-center py-12">
                     <Camera className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
                     <h3 className="text-lg font-medium text-foreground mb-1">
-                      Sök efter bilder
+                      Search for images
                     </h3>
                     <p className="text-muted-foreground text-sm">
-                      Skriv ett sökord för att hitta gratis stockbilder
+                      Enter a search term to find free stock images
                     </p>
                   </div>
                 ) : unsplashData?.photos.length === 0 ? (
                   <div className="text-center py-12">
                     <ImageIcon className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
                     <h3 className="text-lg font-medium text-foreground mb-1">
-                      Inga bilder hittades
+                      No images found
                     </h3>
                     <p className="text-muted-foreground text-sm">
-                      Prova med ett annat sökord
+                      Try a different search term
                     </p>
                   </div>
                 ) : (
@@ -347,11 +347,11 @@ export function MediaLibraryPicker({ open, onOpenChange, onSelect }: MediaLibrar
           {/* Footer */}
           <div className="flex justify-end gap-2 pt-4 border-t">
             <Button variant="outline" onClick={handleClose}>
-              Avbryt
+              Cancel
             </Button>
             {activeTab === 'library' ? (
               <Button onClick={handleSelect} disabled={!selectedFile}>
-                Välj bild
+                Select image
               </Button>
             ) : (
               <>
@@ -360,14 +360,14 @@ export function MediaLibraryPicker({ open, onOpenChange, onSelect }: MediaLibrar
                   onClick={handleSelect} 
                   disabled={!selectedUnsplashPhoto}
                 >
-                  Använd original
+                  Use original
                 </Button>
                 <Button 
                   onClick={handleSelectAndCrop} 
                   disabled={!selectedUnsplashPhoto || isUploading}
                 >
                   <Crop className="h-4 w-4 mr-2" />
-                  Beskär & spara
+                  Crop & save
                 </Button>
               </>
             )}
