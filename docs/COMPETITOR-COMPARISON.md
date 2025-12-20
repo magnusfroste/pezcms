@@ -1,125 +1,140 @@
 # Pezcms vs Konkurrenter - Funktionsjämförelse
 
+> **Last Updated:** December 2024
+
 ## Översikt
 
-| Kategori | Pezcms | Contentful | Sanity | Strapi | WordPress |
-|----------|--------|------------|--------|--------|-----------|
-| **Typ** | Head + Headless | Headless | Headless | Headless | Traditional CMS |
-| **Målgrupp** | SMB, Healthcare | Enterprise | Developers | Developers | Alla |
-| **Teknisk nivå** | Låg | Hög | Hög | Medel-Hög | Låg-Medel |
+| Kategori | Pezcms | Webflow | Storyblok | Contentful | WordPress |
+|----------|--------|---------|-----------|------------|-----------|
+| **Typ** | Head + Headless | Visual Builder | Visual + Headless | Pure Headless | Traditional CMS |
+| **Målgrupp** | SMB, Healthcare | Designers, Agencies | Developers, Marketers | Enterprise | Alla |
+| **Teknisk nivå** | Låg | Låg | Medel | Hög | Låg-Medel |
+| **Pris** | 💰 Låg | 💰💰 Medel | 💰💰 Medel | 💰💰💰 Hög | 💰 Gratis/Self-host |
 
 ---
 
 ## Core Platform
 
-| Funktion | Pezcms | Contentful | Sanity | Strapi | WordPress |
-|----------|--------|------------|--------|--------|-----------|
-| **Inbyggd webbplats** | ✅ Ja | ❌ Nej | ❌ Nej | ❌ Nej | ✅ Ja |
-| **Headless API** | ✅ REST + GraphQL | ✅ REST + GraphQL | ✅ GROQ + GraphQL | ✅ REST + GraphQL | ⚠️ Plugin krävs |
-| **Zero-code setup** | ✅ Ja | ❌ Nej | ❌ Nej | ❌ Nej | ⚠️ Begränsad |
-| **Self-hosted option** | ✅ Ja | ❌ Nej | ✅ Ja | ✅ Ja | ✅ Ja |
-| **Managed hosting** | ✅ Inkluderad | ✅ Ja | ✅ Ja | ⚠️ Extra kostnad | ⚠️ Extra kostnad |
+| Funktion | Pezcms | Webflow | Storyblok | Contentful | WordPress |
+|----------|--------|---------|-----------|------------|-----------|
+| **Visuell webbplatsbyggare** | ✅ Ja | ✅ Ja | ✅ Ja | ⚠️ Studio add-on | ✅ Ja |
+| **Headless API** | ✅ REST + GraphQL | ⚠️ Begränsad | ✅ REST + GraphQL | ✅ REST + GraphQL | ⚠️ Plugin krävs |
+| **Zero-code setup** | ✅ Ja | ✅ Ja | ⚠️ Delvis | ❌ Nej | ⚠️ Begränsad |
+| **Self-hosted option** | ✅ Ja | ❌ Nej | ❌ Nej | ❌ Nej | ✅ Ja |
+| **Managed hosting** | ✅ Inkluderad | ✅ Ja | ✅ Ja | ✅ Ja | ⚠️ Extra kostnad |
 
 ---
 
 ## Content Management
 
-| Funktion | Pezcms | Contentful | Sanity | Strapi | WordPress |
-|----------|--------|------------|--------|--------|-----------|
-| **Block-baserad editor** | ✅ 16 blocktyper | ⚠️ Begränsad | ✅ Portable Text | ⚠️ Dynamiska zoner | ✅ Gutenberg |
-| **Drag-and-drop** | ✅ Ja | ❌ Nej | ⚠️ Begränsad | ❌ Nej | ✅ Ja |
-| **Rich text editor** | ✅ Tiptap | ✅ Ja | ✅ Portable Text | ✅ Ja | ✅ Classic/Gutenberg |
+| Funktion | Pezcms | Webflow | Storyblok | Contentful | WordPress |
+|----------|--------|---------|-----------|------------|-----------|
+| **Block-baserad editor** | ✅ 16 blocktyper | ✅ Sections | ✅ Bloks | ⚠️ Begränsad | ✅ Gutenberg |
+| **Drag-and-drop** | ✅ Ja | ✅ Ja | ✅ Ja | ❌ Nej | ✅ Ja |
+| **Rich text editor** | ✅ Tiptap | ✅ Ja | ✅ Ja | ✅ Ja | ✅ Classic/Gutenberg |
 | **Mediabibliotek** | ✅ WebP-optimering | ✅ Ja | ✅ Ja | ✅ Ja | ✅ Ja |
-| **Bildoptimering** | ✅ Automatisk WebP | ✅ CDN transforms | ✅ Ja | ⚠️ Plugin krävs | ⚠️ Plugin krävs |
-| **Versionshantering** | ✅ Ja | ✅ Ja | ✅ Ja | ⚠️ Begränsad | ✅ Revisioner |
+| **Bildoptimering** | ✅ Automatisk WebP | ✅ CDN | ✅ CDN | ✅ CDN transforms | ⚠️ Plugin krävs |
+| **Versionshantering** | ✅ Ja | ⚠️ Backups | ✅ Ja | ✅ Ja | ✅ Revisioner |
 
 ---
 
-## Editorial Workflow
+## Editorial Workflow (Competitive Edge)
 
-| Funktion | Pezcms | Contentful | Sanity | Strapi | WordPress |
-|----------|--------|------------|--------|--------|-----------|
-| **Roller (Writer/Approver/Admin)** | ✅ Inbyggd | ⚠️ Enterprise | ⚠️ Begränsad | ✅ Ja | ✅ Ja |
-| **Approval workflow** | ✅ Draft→Review→Publish | ⚠️ Enterprise | ❌ Nej | ⚠️ Plugin | ⚠️ Plugin |
-| **Schemaläggning** | ✅ Inbyggd | ✅ Ja | ⚠️ Custom | ⚠️ Plugin | ✅ Ja |
-| **Live preview** | ✅ Ja | ⚠️ Setup krävs | ✅ Ja | ⚠️ Setup krävs | ✅ Ja |
-| **Audit logging** | ✅ GDPR-compliant | ⚠️ Enterprise | ❌ Nej | ⚠️ Plugin | ⚠️ Plugin |
+| Funktion | Pezcms | Webflow | Storyblok | Contentful | WordPress |
+|----------|--------|---------|-----------|------------|-----------|
+| **Roller (Writer/Approver/Admin)** | ✅ Inbyggd | ❌ Nej | ⚠️ Begränsad | ⚠️ Enterprise | ✅ Ja |
+| **Approval workflow** | ✅ Draft→Review→Publish | ❌ Nej | ⚠️ Begränsad | 💰 Enterprise | ⚠️ Plugin |
+| **Schemaläggning** | ✅ Inbyggd | ✅ Ja | ✅ Ja | ✅ Ja | ✅ Ja |
+| **Live preview** | ✅ Ja | ✅ Ja | ✅ Ja | ⚠️ Setup krävs | ✅ Ja |
+| **Audit logging** | ✅ GDPR-compliant | ❌ Nej | ⚠️ Begränsad | 💰 Enterprise | ⚠️ Plugin |
 
 ---
 
 ## AI & Automation
 
-| Funktion | Pezcms | Contentful | Sanity | Strapi | WordPress |
-|----------|--------|------------|--------|--------|-----------|
-| **AI Chat-assistent** | ✅ Multi-provider | ❌ Nej | ❌ Nej | ❌ Nej | ⚠️ Plugin |
+| Funktion | Pezcms | Webflow | Storyblok | Contentful | WordPress |
+|----------|--------|---------|-----------|------------|-----------|
+| **AI Chat-assistent** | ✅ Multi-provider | 💰 Betald add-on | ❌ Nej | 💰 Betald add-on | ⚠️ Plugin |
 | **AI Content Migration** | ✅ Automatisk | ❌ Nej | ❌ Nej | ❌ Nej | ❌ Nej |
 | **AI Brand Analysis** | ✅ Ja | ❌ Nej | ❌ Nej | ❌ Nej | ❌ Nej |
 | **Knowledge Base (CAG)** | ✅ CMS-driven | ❌ Nej | ❌ Nej | ❌ Nej | ❌ Nej |
-| **N8N Integration** | ✅ Webhook triggers | ❌ Nej | ❌ Nej | ❌ Nej | ⚠️ Plugin |
+| **N8N/Webhook Integration** | ✅ Inbyggd | ⚠️ Begränsad | ✅ Ja | ✅ Ja | ⚠️ Plugin |
 | **HIPAA-ready AI** | ✅ Local AI option | ❌ Nej | ❌ Nej | ❌ Nej | ❌ Nej |
+
+---
+
+## Built-in Modules (Competitive Edge)
+
+| Funktion | Pezcms | Webflow | Storyblok | Contentful | WordPress |
+|----------|--------|---------|-----------|------------|-----------|
+| **Bloggmodul** | ✅ Komplett | ✅ CMS Collections | ⚠️ Custom setup | ❌ Nej | ✅ Inbyggd |
+| **Nyhetsbrev** | ✅ Inbyggd | ❌ Nej | ❌ Nej | ❌ Nej | ⚠️ Plugin |
+| **Formulär** | ✅ Inbyggd | ✅ Ja | ⚠️ Custom | ❌ Nej | ⚠️ Plugin |
+| **RSS Feed** | ✅ Automatisk | ✅ Ja | ❌ Nej | ❌ Nej | ✅ Ja |
+| **Öppnings-/Klickspårning** | ✅ Inbyggd | ❌ Nej | ❌ Nej | ❌ Nej | ⚠️ Plugin |
+| **GDPR Export/Delete** | ✅ Inbyggd | ❌ Nej | ❌ Nej | ❌ Nej | ⚠️ Plugin |
 
 ---
 
 ## SEO & Performance
 
-| Funktion | Pezcms | Contentful | Sanity | Strapi | WordPress |
-|----------|--------|------------|--------|--------|-----------|
-| **SEO-inställningar** | ✅ Global + per sida | ❌ Manuellt | ❌ Manuellt | ❌ Manuellt | ✅ Yoast/plugins |
-| **Meta tags** | ✅ Automatisk | ❌ Manuellt | ❌ Manuellt | ❌ Manuellt | ✅ Plugin |
-| **Open Graph** | ✅ Inbyggd | ❌ Manuellt | ❌ Manuellt | ❌ Manuellt | ✅ Plugin |
-| **Edge caching** | ✅ Konfigurerbar | ✅ CDN | ✅ CDN | ⚠️ Setup krävs | ⚠️ Plugin |
-| **Lazy loading** | ✅ Automatisk | ❌ Frontend | ❌ Frontend | ❌ Frontend | ⚠️ Plugin |
-| **Custom scripts** | ✅ 4 injection points | ❌ Frontend | ❌ Frontend | ❌ Frontend | ✅ Ja |
+| Funktion | Pezcms | Webflow | Storyblok | Contentful | WordPress |
+|----------|--------|---------|-----------|------------|-----------|
+| **SEO-inställningar** | ✅ Global + per sida | ✅ Ja | ⚠️ Custom | ❌ Manuellt | ✅ Yoast/plugins |
+| **Meta tags** | ✅ Automatisk | ✅ Ja | ⚠️ Custom | ❌ Manuellt | ✅ Plugin |
+| **Open Graph** | ✅ Inbyggd | ✅ Ja | ⚠️ Custom | ❌ Manuellt | ✅ Plugin |
+| **Edge caching** | ✅ Konfigurerbar | ✅ CDN | ✅ CDN | ✅ CDN | ⚠️ Plugin |
+| **Lazy loading** | ✅ Automatisk | ✅ Ja | ❌ Frontend | ❌ Frontend | ⚠️ Plugin |
 
 ---
 
 ## Branding & Design
 
-| Funktion | Pezcms | Contentful | Sanity | Strapi | WordPress |
-|----------|--------|------------|--------|--------|-----------|
-| **Design system** | ✅ CSS variables | ❌ N/A | ❌ N/A | ❌ N/A | ⚠️ Tema-beroende |
-| **Predefined themes** | ✅ 4 healthcare themes | ❌ N/A | ❌ N/A | ❌ N/A | ✅ Tusentals |
-| **Custom branding** | ✅ Färger, typsnitt, logotyp | ❌ N/A | ❌ N/A | ❌ N/A | ✅ Customizer |
-| **Dark mode** | ✅ Inbyggd | ❌ N/A | ❌ N/A | ❌ N/A | ⚠️ Tema-beroende |
-| **Responsive design** | ✅ Automatisk | ❌ Frontend | ❌ Frontend | ❌ Frontend | ⚠️ Tema-beroende |
+| Funktion | Pezcms | Webflow | Storyblok | Contentful | WordPress |
+|----------|--------|---------|-----------|------------|-----------|
+| **Design system** | ✅ CSS variables | ✅ Classes | ❌ N/A | ❌ N/A | ⚠️ Tema-beroende |
+| **Predefined themes** | ✅ 4 healthcare themes | ✅ Templates | ❌ N/A | ❌ N/A | ✅ Tusentals |
+| **Custom branding** | ✅ Färger, typsnitt, logotyp | ✅ Full kontroll | ⚠️ Custom | ❌ N/A | ✅ Customizer |
+| **Dark mode** | ✅ Inbyggd | ⚠️ Manuellt | ❌ N/A | ❌ N/A | ⚠️ Tema-beroende |
+| **Responsive design** | ✅ Automatisk | ✅ Ja | ❌ Frontend | ❌ Frontend | ⚠️ Tema-beroende |
 
 ---
 
 ## Compliance & Security
 
-| Funktion | Pezcms | Contentful | Sanity | Strapi | WordPress |
-|----------|--------|------------|--------|--------|-----------|
-| **GDPR compliance** | ✅ Inbyggd | ⚠️ Enterprise | ⚠️ Manuellt | ⚠️ Manuellt | ⚠️ Plugin |
+| Funktion | Pezcms | Webflow | Storyblok | Contentful | WordPress |
+|----------|--------|---------|-----------|------------|-----------|
+| **GDPR compliance** | ✅ Inbyggd | ⚠️ Delvis | ⚠️ Delvis | ⚠️ Enterprise | ⚠️ Plugin |
 | **Cookie banner** | ✅ Konfigurerbar | ❌ Nej | ❌ Nej | ❌ Nej | ⚠️ Plugin |
-| **WCAG 2.1 AA** | ✅ Ja | ❌ Frontend | ❌ Frontend | ❌ Frontend | ⚠️ Tema-beroende |
-| **Row Level Security** | ✅ Supabase RLS | ✅ Spaces | ⚠️ Begränsad | ✅ Ja | ⚠️ Plugin |
-| **Audit trail** | ✅ Komplett | ⚠️ Enterprise | ❌ Nej | ⚠️ Begränsad | ⚠️ Plugin |
-| **2FA** | ✅ Via Supabase | ✅ Ja | ✅ Ja | ⚠️ Plugin | ⚠️ Plugin |
+| **WCAG 2.1 AA** | ✅ Ja | ⚠️ Manuellt | ❌ Frontend | ❌ Frontend | ⚠️ Tema-beroende |
+| **Row Level Security** | ✅ Supabase RLS | ❌ Nej | ⚠️ Begränsad | ✅ Spaces | ⚠️ Plugin |
+| **Audit trail** | ✅ Komplett | ❌ Nej | ⚠️ Begränsad | 💰 Enterprise | ⚠️ Plugin |
+| **2FA** | ✅ Via Supabase | ✅ Ja | ✅ Ja | ✅ Ja | ⚠️ Plugin |
 
 ---
 
 ## Multi-channel Delivery
 
-| Funktion | Pezcms | Contentful | Sanity | Strapi | WordPress |
-|----------|--------|------------|--------|--------|-----------|
-| **REST API** | ✅ Ja | ✅ Ja | ⚠️ Begränsad | ✅ Ja | ✅ Ja |
-| **GraphQL** | ✅ Ja | ✅ Ja | ✅ Ja | ✅ Plugin | ⚠️ Plugin |
-| **Webhooks** | ✅ N8N integration | ✅ Ja | ✅ Ja | ✅ Ja | ⚠️ Plugin |
+| Funktion | Pezcms | Webflow | Storyblok | Contentful | WordPress |
+|----------|--------|---------|-----------|------------|-----------|
+| **REST API** | ✅ Ja | ⚠️ Begränsad | ✅ Ja | ✅ Ja | ✅ Ja |
+| **GraphQL** | ✅ Ja | ❌ Nej | ✅ Ja | ✅ Ja | ⚠️ Plugin |
+| **Webhooks** | ✅ N8N integration | ⚠️ Begränsad | ✅ Ja | ✅ Ja | ⚠️ Plugin |
 | **Content Hub** | ✅ Visual dashboard | ❌ Nej | ❌ Nej | ❌ Nej | ❌ Nej |
-| **API Explorer** | ✅ Inbyggd | ✅ Playground | ✅ Vision | ✅ Swagger | ❌ Nej |
-| **Code samples** | ✅ React, Next.js, curl | ✅ SDK docs | ✅ SDK docs | ✅ SDK docs | ⚠️ Begränsad |
+| **API Explorer** | ✅ Inbyggd | ❌ Nej | ✅ Ja | ✅ Playground | ❌ Nej |
+| **Code samples** | ✅ React, Next.js, curl | ⚠️ Begränsad | ✅ SDK docs | ✅ SDK docs | ⚠️ Begränsad |
 
 ---
 
 ## Pricing & Setup
 
-| Aspekt | Pezcms | Contentful | Sanity | Strapi | WordPress |
-|--------|--------|------------|--------|--------|-----------|
-| **Startpris** | 💰 Låg | 💰💰💰 Hög | 💰💰 Medel | 💰 Gratis/Self-host | 💰 Gratis/Self-host |
-| **Enterprise features** | ✅ Inkluderade | 💰💰💰 Extra | 💰💰 Extra | 💰💰 Extra | 💰💰 Plugins |
-| **Setup-tid** | ⏱️ Minuter | ⏱️ Veckor | ⏱️ Veckor | ⏱️ Dagar | ⏱️ Timmar |
-| **Utvecklarkrav** | 👤 Ingen | 👥👥 Team | 👥👥 Team | 👥 1-2 devs | 👤 Ingen-1 dev |
-| **Underhåll** | ✅ Minimalt | ⚠️ Kontinuerligt | ⚠️ Kontinuerligt | ⚠️ Kontinuerligt | ⚠️ Plugins/Updates |
+| Aspekt | Pezcms | Webflow | Storyblok | Contentful | WordPress |
+|--------|--------|---------|-----------|------------|-----------|
+| **Startpris** | 💰 Låg | 💰💰 Medel | 💰💰 Medel | 💰💰💰 Hög | 💰 Gratis/Self-host |
+| **Enterprise features** | ✅ Inkluderade | 💰💰 Extra | 💰💰 Extra | 💰💰💰 Extra | 💰💰 Plugins |
+| **Setup-tid** | ⏱️ Minuter | ⏱️ Timmar | ⏱️ Dagar | ⏱️ Veckor | ⏱️ Timmar |
+| **Utvecklarkrav** | 👤 Ingen | 👤 Ingen | 👥 1-2 devs | 👥👥 Team | 👤 Ingen-1 dev |
+| **Underhåll** | ✅ Minimalt | ✅ Minimalt | ⚠️ Kontinuerligt | ⚠️ Kontinuerligt | ⚠️ Plugins/Updates |
 
 ---
 
@@ -167,10 +182,11 @@
 | Scenario | Rekommendation |
 |----------|----------------|
 | Vill ha komplett webbplats + API | ✅ **Pezcms** |
-| Bara headless för befintligt team | Contentful/Sanity |
+| Visuell byggare + headless API | ✅ **Pezcms** eller Storyblok |
+| Behöver redaktionellt arbetsflöde | ✅ **Pezcms** |
 | Behöver AI-funktioner ut-ur-boxen | ✅ **Pezcms** |
+| Designfokuserad byrå | Webflow |
 | Enterprise med stor budget | Contentful |
-| Utvecklarteam som vill bygga allt | Strapi |
 | Blogger/enkel site | WordPress |
 | Svensk sjukvårdsorganisation | ✅ **Pezcms** |
 | GDPR + WCAG compliance kritiskt | ✅ **Pezcms** |
