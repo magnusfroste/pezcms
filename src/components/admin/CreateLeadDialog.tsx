@@ -64,7 +64,7 @@ export function CreateLeadDialog({
         .maybeSingle();
 
       if (existing) {
-        toast.error('A lead with this email already exists');
+        toast.error('A contact with this email already exists');
         setIsSubmitting(false);
         return;
       }
@@ -96,7 +96,7 @@ export function CreateLeadDialog({
         metadata: { text: defaultCompanyId ? `Lead created for company` : 'Lead created manually' },
       });
 
-      toast.success('Lead created');
+      toast.success('Contact created');
       queryClient.invalidateQueries({ queryKey: ['leads'] });
       queryClient.invalidateQueries({ queryKey: ['lead-stats'] });
       if (defaultCompanyId) {
@@ -107,7 +107,7 @@ export function CreateLeadDialog({
       onOpenChange(false);
     } catch (error) {
       console.error('Failed to create lead:', error);
-      toast.error('Could not create lead');
+      toast.error('Could not create contact');
     } finally {
       setIsSubmitting(false);
     }
@@ -117,7 +117,7 @@ export function CreateLeadDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Create New Lead</DialogTitle>
+          <DialogTitle>Create New Contact</DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -171,7 +171,7 @@ export function CreateLeadDialog({
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="lead">Lead</SelectItem>
+                <SelectItem value="lead">Contact</SelectItem>
                 <SelectItem value="opportunity">Opportunity</SelectItem>
                 <SelectItem value="customer">Customer</SelectItem>
                 <SelectItem value="lost">Lost</SelectItem>
@@ -183,9 +183,9 @@ export function CreateLeadDialog({
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
               Cancel
             </Button>
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? 'Creating...' : 'Create Lead'}
-            </Button>
+          <Button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? 'Creating...' : 'Create Contact'}
+          </Button>
           </DialogFooter>
         </form>
       </DialogContent>

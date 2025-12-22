@@ -3,13 +3,29 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import type { Lead, LeadStatus, LeadActivity } from '@/lib/lead-utils';
 
+// Extended Lead type with company relation
+export interface LeadWithCompany extends Lead {
+  companies: {
+    id: string;
+    name: string;
+    domain: string | null;
+  } | null;
+}
+
 export function useLeads(options?: { status?: LeadStatus; needsReview?: boolean }) {
   return useQuery({
     queryKey: ['leads', options],
     queryFn: async () => {
       let query = supabase
         .from('leads')
-        .select('*')
+        .select(`
+          *,
+          companies (
+            id,
+            name,
+            domain
+          )
+        `)
         .order('score', { ascending: false });
 
       if (options?.status) {
@@ -23,7 +39,7 @@ export function useLeads(options?: { status?: LeadStatus; needsReview?: boolean 
       const { data, error } = await query;
 
       if (error) throw error;
-      return data as Lead[];
+      return data as LeadWithCompany[];
     },
   });
 }
@@ -36,12 +52,19 @@ export function useLead(id: string | undefined) {
 
       const { data, error } = await supabase
         .from('leads')
-        .select('*')
+        .select(`
+          *,
+          companies (
+            id,
+            name,
+            domain
+          )
+        `)
         .eq('id', id)
         .single();
 
       if (error) throw error;
-      return data as Lead;
+      return data as LeadWithCompany;
     },
     enabled: !!id,
   });
@@ -84,11 +107,11 @@ export function useUpdateLead() {
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['leads'] });
       queryClient.invalidateQueries({ queryKey: ['lead', data.id] });
-      toast.success('Lead uppdaterad');
+      toast.success('Contact updated');
     },
     onError: (error) => {
       console.error('Update lead error:', error);
-      toast.error('Kunde inte uppdatera lead');
+      toast.error('Could not update contact');
     },
   });
 }
@@ -111,11 +134,11 @@ export function useAddLeadNote() {
     },
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ['lead-activities', variables.leadId] });
-      toast.success('Anteckning sparad');
+      toast.success('Note saved');
     },
     onError: (error) => {
       console.error('Add note error:', error);
-      toast.error('Kunde inte spara anteckning');
+      toast.error('Could not save note');
     },
   });
 }
@@ -135,11 +158,11 @@ export function useQualifyLead() {
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['leads'] });
       queryClient.invalidateQueries({ queryKey: ['lead', data?.lead_id] });
-      toast.success('Lead kvalificerad med AI');
+      toast.success('Contact qualified with AI');
     },
     onError: (error) => {
       console.error('Qualify lead error:', error);
-      toast.error('Kunde inte kvalificera lead');
+      toast.error('Could not qualify contact');
     },
   });
 }

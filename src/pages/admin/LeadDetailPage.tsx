@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { AdminPageHeader } from '@/components/admin/AdminPageHeader';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -43,9 +43,9 @@ export default function LeadDetailPage() {
     return (
       <AdminLayout>
         <div className="flex flex-col items-center justify-center h-64 gap-4">
-          <p>Lead not found</p>
-          <Button onClick={() => navigate('/admin/leads')}>
-            Back to leads
+          <p>Contact not found</p>
+          <Button onClick={() => navigate('/admin/contacts')}>
+            Back to contacts
           </Button>
         </div>
       </AdminLayout>
@@ -53,6 +53,8 @@ export default function LeadDetailPage() {
   }
 
   const statusInfo = getLeadStatusInfo(lead.status);
+  // Display company name from linked company, fallback to text field
+  const companyName = lead.companies?.name || lead.company;
 
   const handleStatusChange = (newStatus: LeadStatus) => {
     updateLead.mutate({ 
@@ -87,15 +89,15 @@ export default function LeadDetailPage() {
   return (
     <AdminLayout>
       <div className="mb-6">
-        <Button variant="ghost" size="sm" onClick={() => navigate('/admin/leads')}>
+        <Button variant="ghost" size="sm" onClick={() => navigate('/admin/contacts')}>
           <ArrowLeft className="h-4 w-4 mr-2" />
-          Back to leads
+          Back to contacts
         </Button>
       </div>
       
       <AdminPageHeader
         title={lead.name || lead.email}
-        description={lead.company || 'Lead details'}
+        description={companyName || 'Contact details'}
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -112,7 +114,7 @@ export default function LeadDetailPage() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="lead">Lead</SelectItem>
+                      <SelectItem value="lead">Contact</SelectItem>
                       <SelectItem value="opportunity">Opportunity</SelectItem>
                       <SelectItem value="customer">Customer</SelectItem>
                       <SelectItem value="lost">Lost</SelectItem>
@@ -198,7 +200,7 @@ export default function LeadDetailPage() {
             onAddActivity={handleAddActivity}
             isLoading={activitiesLoading}
             title="Activity History"
-            description="All interactions with this lead"
+            description="All interactions with this contact"
           />
         </div>
 
@@ -226,10 +228,19 @@ export default function LeadDetailPage() {
                 </div>
               )}
               
-              {lead.company && (
+              {(lead.companies || lead.company) && (
                 <div className="flex items-center gap-3">
                   <Building className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm">{lead.company}</span>
+                  {lead.companies ? (
+                    <Link 
+                      to={`/admin/companies/${lead.companies.id}`}
+                      className="text-sm hover:underline text-primary"
+                    >
+                      {lead.companies.name}
+                    </Link>
+                  ) : (
+                    <span className="text-sm">{lead.company}</span>
+                  )}
                 </div>
               )}
               

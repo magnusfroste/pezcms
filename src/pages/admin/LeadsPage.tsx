@@ -26,7 +26,7 @@ export default function LeadsPage() {
 
   const statCards = [
     { label: 'Total', value: stats?.total || 0, icon: Users, color: 'text-foreground' },
-    { label: 'Leads', value: stats?.leads || 0, icon: TrendingUp, color: 'text-blue-500' },
+    { label: 'Contacts', value: stats?.leads || 0, icon: TrendingUp, color: 'text-blue-500' },
     { label: 'Opportunities', value: stats?.opportunities || 0, icon: Sparkles, color: 'text-amber-500' },
     { label: 'Customers', value: stats?.customers || 0, icon: UserCheck, color: 'text-green-500' },
   ];
@@ -40,12 +40,12 @@ export default function LeadsPage() {
   return (
     <AdminLayout>
       <AdminPageHeader
-        title="Leads"
-        description="Manage leads and view pipeline"
+        title="Contacts"
+        description="Manage contacts and view pipeline"
       >
         <Button onClick={() => setShowCreateDialog(true)}>
           <Plus className="h-4 w-4 mr-2" />
-          New Lead
+          New Contact
         </Button>
       </AdminPageHeader>
 
@@ -129,7 +129,7 @@ export default function LeadsPage() {
               <AlertCircle className="h-5 w-5 text-amber-500" />
               <div className="flex-1">
                 <p className="font-medium">
-                  {reviewLeads?.length} lead{reviewLeads?.length !== 1 ? 's' : ''} need{reviewLeads?.length === 1 ? 's' : ''} review
+                  {reviewLeads?.length} contact{reviewLeads?.length !== 1 ? 's' : ''} need{reviewLeads?.length === 1 ? 's' : ''} review
                 </p>
                 <p className="text-sm text-muted-foreground">
                   AI could not determine status with sufficient confidence
@@ -150,7 +150,7 @@ export default function LeadsPage() {
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList>
           <TabsTrigger value="pipeline">Pipeline</TabsTrigger>
-          <TabsTrigger value="all">All Leads</TabsTrigger>
+          <TabsTrigger value="all">All Contacts</TabsTrigger>
           <TabsTrigger value="review" className="relative">
             Needs Review
             {(reviewLeads?.length || 0) > 0 && (
@@ -181,13 +181,13 @@ export default function LeadsPage() {
                     {leadsLoading ? (
                       <p className="text-sm text-muted-foreground">Loading...</p>
                     ) : stageLeads.length === 0 ? (
-                      <p className="text-sm text-muted-foreground italic">No leads</p>
+                      <p className="text-sm text-muted-foreground italic">No contacts</p>
                     ) : (
                       stageLeads.map((lead) => (
                         <LeadCard
                           key={lead.id}
                           lead={lead}
-                          onClick={() => navigate(`/admin/leads/${lead.id}`)}
+                          onClick={() => navigate(`/admin/contacts/${lead.id}`)}
                         />
                       ))
                     )}
@@ -201,14 +201,14 @@ export default function LeadsPage() {
         <TabsContent value="all" className="mt-6">
           <Card>
             <CardHeader>
-              <CardTitle>All Leads</CardTitle>
+              <CardTitle>All Contacts</CardTitle>
               <CardDescription>Sorted by score</CardDescription>
             </CardHeader>
             <CardContent>
               {leadsLoading ? (
                 <p>Loading...</p>
               ) : !leads?.length ? (
-                <p className="text-muted-foreground">No leads yet</p>
+                <p className="text-muted-foreground">No contacts yet</p>
               ) : (
                 <div className="space-y-2">
                   {leads.map((lead) => (
@@ -216,7 +216,7 @@ export default function LeadsPage() {
                       key={lead.id}
                       lead={lead}
                       showStatus
-                      onClick={() => navigate(`/admin/leads/${lead.id}`)}
+                      onClick={() => navigate(`/admin/contacts/${lead.id}`)}
                     />
                   ))}
                 </div>
@@ -233,7 +233,7 @@ export default function LeadsPage() {
             </CardHeader>
             <CardContent>
               {!reviewLeads?.length ? (
-                <p className="text-muted-foreground">No leads need review</p>
+                <p className="text-muted-foreground">No contacts need review</p>
               ) : (
                 <div className="space-y-2">
                   {reviewLeads.map((lead) => (
@@ -241,7 +241,7 @@ export default function LeadsPage() {
                       key={lead.id}
                       lead={lead}
                       showStatus
-                      onClick={() => navigate(`/admin/leads/${lead.id}`)}
+                      onClick={() => navigate(`/admin/contacts/${lead.id}`)}
                     />
                   ))}
                 </div>
@@ -260,6 +260,12 @@ interface LeadCardProps {
     email: string;
     name: string | null;
     company: string | null;
+    company_id: string | null;
+    companies: {
+      id: string;
+      name: string;
+      domain: string | null;
+    } | null;
     score: number;
     status: LeadStatus;
     ai_summary: string | null;
@@ -272,6 +278,8 @@ interface LeadCardProps {
 
 function LeadCard({ lead, showStatus, onClick }: LeadCardProps) {
   const statusInfo = getLeadStatusInfo(lead.status);
+  // Display company name from linked company, fallback to text field for legacy data
+  const companyName = lead.companies?.name || lead.company;
 
   return (
     <Card 
@@ -295,8 +303,8 @@ function LeadCard({ lead, showStatus, onClick }: LeadCardProps) {
             {lead.name && (
               <p className="text-sm text-muted-foreground truncate">{lead.email}</p>
             )}
-            {lead.company && (
-              <p className="text-sm text-muted-foreground">{lead.company}</p>
+            {companyName && (
+              <p className="text-sm text-muted-foreground">{companyName}</p>
             )}
             {lead.ai_summary && (
               <p className="text-xs text-muted-foreground mt-1 line-clamp-2">

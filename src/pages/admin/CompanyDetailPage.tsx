@@ -366,7 +366,7 @@ export default function CompanyDetailPage() {
                       <TableRow key={lead.id}>
                         <TableCell>
                           <Link 
-                            to={`/admin/leads/${lead.id}`}
+                            to={`/admin/contacts/${lead.id}`}
                             className="flex flex-col hover:underline"
                           >
                             <span className="font-medium">{lead.name || 'Namnlös'}</span>
