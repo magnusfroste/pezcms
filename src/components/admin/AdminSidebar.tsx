@@ -18,6 +18,7 @@ import {
   Puzzle,
   Webhook,
   UserCheck,
+  Package,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { ROLE_LABELS } from "@/types/cms";
@@ -72,6 +73,7 @@ const navigationGroups: NavGroup[] = [
     adminOnly: true,
     items: [
       { name: "Leads", href: "/admin/leads", icon: UserCheck, moduleId: "leads" },
+      { name: "Products", href: "/admin/products", icon: Package, moduleId: "leads" },
       { name: "Form Submissions", href: "/admin/forms", icon: Inbox, moduleId: "forms" },
       { name: "Newsletter", href: "/admin/newsletter", icon: Mail, moduleId: "newsletter" },
       { name: "Media Library", href: "/admin/media", icon: Image, moduleId: "mediaLibrary" },

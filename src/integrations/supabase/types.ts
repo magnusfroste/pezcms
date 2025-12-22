@@ -323,6 +323,66 @@ export type Database = {
           },
         ]
       }
+      deals: {
+        Row: {
+          closed_at: string | null
+          created_at: string
+          created_by: string | null
+          currency: string
+          expected_close: string | null
+          id: string
+          lead_id: string
+          notes: string | null
+          product_id: string | null
+          stage: Database["public"]["Enums"]["deal_stage"]
+          updated_at: string
+          value_cents: number
+        }
+        Insert: {
+          closed_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          currency?: string
+          expected_close?: string | null
+          id?: string
+          lead_id: string
+          notes?: string | null
+          product_id?: string | null
+          stage?: Database["public"]["Enums"]["deal_stage"]
+          updated_at?: string
+          value_cents?: number
+        }
+        Update: {
+          closed_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          currency?: string
+          expected_close?: string | null
+          id?: string
+          lead_id?: string
+          notes?: string | null
+          product_id?: string | null
+          stage?: Database["public"]["Enums"]["deal_stage"]
+          updated_at?: string
+          value_cents?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "deals_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "deals_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       form_submissions: {
         Row: {
           block_id: string
@@ -773,6 +833,45 @@ export type Database = {
         }
         Relationships: []
       }
+      products: {
+        Row: {
+          created_at: string
+          currency: string
+          description: string | null
+          id: string
+          is_active: boolean
+          name: string
+          price_cents: number
+          sort_order: number | null
+          type: Database["public"]["Enums"]["product_type"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          currency?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          price_cents?: number
+          sort_order?: number | null
+          type?: Database["public"]["Enums"]["product_type"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          currency?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          price_cents?: number
+          sort_order?: number | null
+          type?: Database["public"]["Enums"]["product_type"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -968,8 +1067,10 @@ export type Database = {
     }
     Enums: {
       app_role: "writer" | "approver" | "admin"
+      deal_stage: "proposal" | "negotiation" | "closed_won" | "closed_lost"
       lead_status: "lead" | "opportunity" | "customer" | "lost"
       page_status: "draft" | "reviewing" | "published" | "archived"
+      product_type: "one_time" | "recurring"
       webhook_event:
         | "page.published"
         | "page.updated"
@@ -1108,8 +1209,10 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["writer", "approver", "admin"],
+      deal_stage: ["proposal", "negotiation", "closed_won", "closed_lost"],
       lead_status: ["lead", "opportunity", "customer", "lost"],
       page_status: ["draft", "reviewing", "published", "archived"],
+      product_type: ["one_time", "recurring"],
       webhook_event: [
         "page.published",
         "page.updated",
