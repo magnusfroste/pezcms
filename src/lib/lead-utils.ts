@@ -8,6 +8,7 @@ export interface Lead {
   email: string;
   name: string | null;
   company: string | null;
+  company_id: string | null;
   phone: string | null;
   source: string;
   source_id: string | null;
@@ -21,6 +22,61 @@ export interface Lead {
   created_at: string;
   updated_at: string;
   created_by: string | null;
+}
+
+/**
+ * Extract domain from email address
+ */
+function extractDomain(email: string): string | null {
+  const parts = email.toLowerCase().split('@');
+  if (parts.length !== 2) return null;
+  const domain = parts[1];
+  // Skip common personal email domains
+  const personalDomains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'icloud.com', 'live.com', 'msn.com', 'aol.com'];
+  if (personalDomains.includes(domain)) return null;
+  return domain;
+}
+
+/**
+ * Find or create company by email domain
+ */
+async function findOrCreateCompanyByDomain(email: string, companyName?: string): Promise<string | null> {
+  const domain = extractDomain(email);
+  if (!domain) return null;
+
+  try {
+    // Try to find existing company by domain
+    const { data: existingCompany } = await supabase
+      .from('companies')
+      .select('id')
+      .eq('domain', domain)
+      .maybeSingle();
+
+    if (existingCompany) {
+      return existingCompany.id;
+    }
+
+    // Create new company from domain
+    const name = companyName || domain.split('.')[0].charAt(0).toUpperCase() + domain.split('.')[0].slice(1);
+    const { data: newCompany, error } = await supabase
+      .from('companies')
+      .insert({
+        name,
+        domain,
+      })
+      .select('id')
+      .single();
+
+    if (error) {
+      console.warn('Could not create company:', error);
+      return null;
+    }
+
+    return newCompany.id;
+  } catch (error) {
+    console.warn('findOrCreateCompanyByDomain error:', error);
+    return null;
+  }
 }
 
 export interface LeadActivity {
@@ -46,6 +102,7 @@ const ACTIVITY_POINTS: Record<string, number> = {
 
 /**
  * Create or update a lead from form submission
+ * Now auto-links to company by email domain
  */
 export async function createLeadFromForm(options: {
   email: string;
@@ -85,13 +142,17 @@ export async function createLeadFromForm(options: {
       return { lead: existingLead as Lead, isNew: false, error: null };
     }
 
-    // Create new lead
+    // Auto-match or create company by email domain
+    const companyId = await findOrCreateCompanyByDomain(email, company);
+
+    // Create new lead with company_id link
     const { data: newLead, error: insertError } = await supabase
       .from('leads')
       .insert({
         email,
         name: name || null,
-        company: company || null,
+        company: company || null, // Keep for backwards compat, but company_id is primary
+        company_id: companyId,
         phone: phone || null,
         source: 'form',
         source_id: sourceId || null,
@@ -116,6 +177,7 @@ export async function createLeadFromForm(options: {
         form_data: formData,
         page_id: pageId,
         is_initial: true,
+        auto_matched_company: !!companyId,
       },
     });
 
@@ -224,14 +286,14 @@ export async function qualifyLead(leadId: string): Promise<void> {
 }
 
 /**
- * Get lead status display info
+ * Get contact status display info (renamed from lead)
  */
 export function getLeadStatusInfo(status: LeadStatus): { label: string; color: string } {
   const statusMap: Record<LeadStatus, { label: string; color: string }> = {
-    lead: { label: 'Lead', color: 'bg-blue-500' },
+    lead: { label: 'Contact', color: 'bg-blue-500' },
     opportunity: { label: 'Opportunity', color: 'bg-amber-500' },
-    customer: { label: 'Kund', color: 'bg-green-500' },
-    lost: { label: 'Förlorad', color: 'bg-gray-500' },
+    customer: { label: 'Customer', color: 'bg-green-500' },
+    lost: { label: 'Lost', color: 'bg-gray-500' },
   };
   return statusMap[status] || statusMap.lead;
 }

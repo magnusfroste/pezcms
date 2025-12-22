@@ -74,7 +74,7 @@ const navigationGroups: NavGroup[] = [
     label: "Data",
     adminOnly: true,
     items: [
-      { name: "Leads", href: "/admin/leads", icon: UserCheck, moduleId: "leads" },
+      { name: "Contacts", href: "/admin/contacts", icon: UserCheck, moduleId: "leads" },
       { name: "Deals", href: "/admin/deals", icon: Briefcase, moduleId: "deals" },
       { name: "Companies", href: "/admin/companies", icon: Building2, moduleId: "companies" },
       { name: "Products", href: "/admin/products", icon: Package, moduleId: "products" },
