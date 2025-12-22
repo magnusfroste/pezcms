@@ -56,3 +56,6 @@ verify_jwt = true
 
 [functions.newsletter-gdpr]
 verify_jwt = false
+
+[functions.qualify-lead]
+verify_jwt = true

@@ -12,6 +12,7 @@ import { Loader2, CheckCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { Json } from '@/integrations/supabase/types';
 import { webhookEvents } from '@/lib/webhook-utils';
+import { createLeadFromForm } from '@/lib/lead-utils';
 
 interface FormBlockProps {
   data: FormBlockData;
@@ -96,6 +97,25 @@ export function FormBlock({ data, blockId, pageId }: FormBlockProps) {
         }]);
 
       if (error) throw error;
+
+      // Create/update lead automatically
+      const emailField = data.fields.find(f => f.type === 'email');
+      const nameField = data.fields.find(f => f.label.toLowerCase().includes('namn') || f.label.toLowerCase().includes('name'));
+      const companyField = data.fields.find(f => f.label.toLowerCase().includes('företag') || f.label.toLowerCase().includes('company'));
+      const phoneField = data.fields.find(f => f.type === 'phone');
+
+      if (emailField && formData[emailField.id]) {
+        await createLeadFromForm({
+          email: formData[emailField.id] as string,
+          name: nameField ? (formData[nameField.id] as string) : undefined,
+          company: companyField ? (formData[companyField.id] as string) : undefined,
+          phone: phoneField ? (formData[phoneField.id] as string) : undefined,
+          formName: data.title || 'Contact Form',
+          formData: submissionData as Record<string, unknown>,
+          sourceId: blockId,
+          pageId: pageId,
+        });
+      }
 
       // Trigger webhook for form submission
       webhookEvents.formSubmitted({

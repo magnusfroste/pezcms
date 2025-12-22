@@ -397,6 +397,109 @@ export type Database = {
         }
         Relationships: []
       }
+      lead_activities: {
+        Row: {
+          created_at: string
+          id: string
+          lead_id: string
+          metadata: Json | null
+          points: number | null
+          type: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          lead_id: string
+          metadata?: Json | null
+          points?: number | null
+          type: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          lead_id?: string
+          metadata?: Json | null
+          points?: number | null
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lead_activities_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      leads: {
+        Row: {
+          ai_qualified_at: string | null
+          ai_summary: string | null
+          assigned_to: string | null
+          company: string | null
+          converted_at: string | null
+          created_at: string
+          created_by: string | null
+          email: string
+          id: string
+          name: string | null
+          needs_review: boolean | null
+          phone: string | null
+          score: number | null
+          source: string
+          source_id: string | null
+          status: Database["public"]["Enums"]["lead_status"]
+          updated_at: string
+        }
+        Insert: {
+          ai_qualified_at?: string | null
+          ai_summary?: string | null
+          assigned_to?: string | null
+          company?: string | null
+          converted_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          email: string
+          id?: string
+          name?: string | null
+          needs_review?: boolean | null
+          phone?: string | null
+          score?: number | null
+          source?: string
+          source_id?: string | null
+          status?: Database["public"]["Enums"]["lead_status"]
+          updated_at?: string
+        }
+        Update: {
+          ai_qualified_at?: string | null
+          ai_summary?: string | null
+          assigned_to?: string | null
+          company?: string | null
+          converted_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          email?: string
+          id?: string
+          name?: string | null
+          needs_review?: boolean | null
+          phone?: string | null
+          score?: number | null
+          source?: string
+          source_id?: string | null
+          status?: Database["public"]["Enums"]["lead_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "leads_assigned_to_fkey"
+            columns: ["assigned_to"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       newsletter_email_opens: {
         Row: {
           created_at: string
@@ -865,6 +968,7 @@ export type Database = {
     }
     Enums: {
       app_role: "writer" | "approver" | "admin"
+      lead_status: "lead" | "opportunity" | "customer" | "lost"
       page_status: "draft" | "reviewing" | "published" | "archived"
       webhook_event:
         | "page.published"
@@ -1004,6 +1108,7 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["writer", "approver", "admin"],
+      lead_status: ["lead", "opportunity", "customer", "lost"],
       page_status: ["draft", "reviewing", "published", "archived"],
       webhook_event: [
         "page.published",
