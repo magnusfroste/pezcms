@@ -9,10 +9,11 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useLead, useLeadActivities, useUpdateLead, useAddLeadNote, useQualifyLead } from '@/hooks/useLeads';
 import { getLeadStatusInfo, type LeadStatus } from '@/lib/lead-utils';
+import { DealSection } from '@/components/admin/DealSection';
 import { 
   ArrowLeft, Mail, Phone, Building, Calendar, Sparkles, 
   AlertCircle, MessageSquare, MousePointer, FileText, 
-  RefreshCw, User
+  RefreshCw, User, Briefcase
 } from 'lucide-react';
 import { format, formatDistanceToNow } from 'date-fns';
 import { sv } from 'date-fns/locale';
@@ -25,6 +26,8 @@ const ACTIVITY_ICONS: Record<string, typeof Mail> = {
   status_change: RefreshCw,
   note: MessageSquare,
   call: Phone,
+  deal_closed_won: Briefcase,
+  deal_closed_lost: Briefcase,
 };
 
 export default function LeadDetailPage() {
@@ -160,6 +163,9 @@ export default function LeadDetailPage() {
               </CardContent>
             </Card>
           )}
+
+          {/* Deals Section */}
+          <DealSection leadId={lead.id} />
 
           {/* Add Note */}
           <Card>
@@ -325,6 +331,8 @@ function getActivityLabel(type: string): string {
     call: 'Samtal',
     page_visit: 'Sidvisning',
     newsletter_subscribe: 'Prenumererade på nyhetsbrev',
+    deal_closed_won: 'Deal vunnen',
+    deal_closed_lost: 'Deal förlorad',
   };
   return labels[type] || type;
 }
