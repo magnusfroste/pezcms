@@ -91,6 +91,50 @@ serve(async (req) => {
     } else {
       console.log(`[newsletter-track] Repeat open for: ${trackingId}`);
     }
+
+    // Track lead activity for email open
+    const { data: openRecord } = await supabase
+      .from("newsletter_email_opens")
+      .select("recipient_email, newsletter_id")
+      .eq("tracking_id", trackingId)
+      .single();
+
+    if (openRecord?.recipient_email) {
+      // Find lead by email
+      const { data: lead } = await supabase
+        .from("leads")
+        .select("id")
+        .eq("email", openRecord.recipient_email)
+        .maybeSingle();
+
+      if (lead) {
+        await supabase.from("lead_activities").insert({
+          lead_id: lead.id,
+          type: "email_open",
+          points: 3,
+          metadata: {
+            newsletter_id: openRecord.newsletter_id,
+            tracking_id: trackingId,
+          },
+        });
+
+        // Update lead score
+        const { data: activities } = await supabase
+          .from("lead_activities")
+          .select("points")
+          .eq("lead_id", lead.id);
+
+        if (activities) {
+          const totalScore = activities.reduce((sum, a) => sum + (a.points || 0), 0);
+          await supabase
+            .from("leads")
+            .update({ score: totalScore })
+            .eq("id", lead.id);
+        }
+
+        console.log(`[newsletter-track] Lead activity tracked for: ${openRecord.recipient_email}`);
+      }
+    }
   } catch (error) {
     console.error("[newsletter-track] Error:", error);
   }
