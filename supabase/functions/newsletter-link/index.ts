@@ -88,6 +88,51 @@ serve(async (req) => {
       console.log(`[newsletter-link] Repeat click for: ${linkId}`);
     }
 
+    // Track lead activity for link click
+    const { data: clickRecord } = await supabase
+      .from("newsletter_link_clicks")
+      .select("recipient_email, newsletter_id, original_url")
+      .eq("link_id", linkId)
+      .single();
+
+    if (clickRecord?.recipient_email) {
+      // Find lead by email
+      const { data: lead } = await supabase
+        .from("leads")
+        .select("id")
+        .eq("email", clickRecord.recipient_email)
+        .maybeSingle();
+
+      if (lead) {
+        await supabase.from("lead_activities").insert({
+          lead_id: lead.id,
+          type: "link_click",
+          points: 5,
+          metadata: {
+            newsletter_id: clickRecord.newsletter_id,
+            link_id: linkId,
+            url: clickRecord.original_url,
+          },
+        });
+
+        // Update lead score
+        const { data: activities } = await supabase
+          .from("lead_activities")
+          .select("points")
+          .eq("lead_id", lead.id);
+
+        if (activities) {
+          const totalScore = activities.reduce((sum, a) => sum + (a.points || 0), 0);
+          await supabase
+            .from("leads")
+            .update({ score: totalScore })
+            .eq("id", lead.id);
+        }
+
+        console.log(`[newsletter-link] Lead activity tracked for: ${clickRecord.recipient_email}`);
+      }
+    }
+
     // Redirect to original URL
     return new Response(null, {
       status: 302,

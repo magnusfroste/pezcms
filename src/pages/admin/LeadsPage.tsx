@@ -7,13 +7,15 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useLeads, useLeadStats } from '@/hooks/useLeads';
 import { getLeadStatusInfo, type LeadStatus } from '@/lib/lead-utils';
-import { Users, TrendingUp, UserCheck, AlertCircle, Sparkles } from 'lucide-react';
+import { Users, TrendingUp, UserCheck, AlertCircle, Sparkles, Plus } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
+import { CreateLeadDialog } from '@/components/admin/CreateLeadDialog';
 
 export default function LeadsPage() {
+  const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [activeTab, setActiveTab] = useState<string>('pipeline');
   const { data: stats, isLoading: statsLoading } = useLeadStats();
   const { data: leads, isLoading: leadsLoading } = useLeads();
@@ -38,7 +40,14 @@ export default function LeadsPage() {
       <AdminPageHeader
         title="Leads"
         description="Hantera leads och se pipeline"
-      />
+      >
+        <Button onClick={() => setShowCreateDialog(true)}>
+          <Plus className="h-4 w-4 mr-2" />
+          Ny lead
+        </Button>
+      </AdminPageHeader>
+
+      <CreateLeadDialog open={showCreateDialog} onOpenChange={setShowCreateDialog} />
 
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">

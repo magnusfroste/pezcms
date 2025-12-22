@@ -66,6 +66,65 @@ serve(async (req) => {
 
       console.log(`[newsletter-subscribe] Email confirmed: ${data.email}`);
       
+      // Create or update lead from newsletter subscription
+      try {
+        const { data: existingLead } = await supabase
+          .from("leads")
+          .select("id")
+          .eq("email", data.email)
+          .maybeSingle();
+
+        if (existingLead) {
+          // Add activity to existing lead
+          await supabase.from("lead_activities").insert({
+            lead_id: existingLead.id,
+            type: "newsletter_subscribe",
+            points: 8,
+            metadata: { name: data.name },
+          });
+
+          // Update score
+          const { data: activities } = await supabase
+            .from("lead_activities")
+            .select("points")
+            .eq("lead_id", existingLead.id);
+
+          if (activities) {
+            const totalScore = activities.reduce((sum, a) => sum + (a.points || 0), 0);
+            await supabase
+              .from("leads")
+              .update({ score: totalScore })
+              .eq("id", existingLead.id);
+          }
+        } else {
+          // Create new lead
+          const { data: newLead } = await supabase
+            .from("leads")
+            .insert({
+              email: data.email,
+              name: data.name || null,
+              source: "newsletter",
+              status: "lead",
+              score: 8,
+              needs_review: false,
+            })
+            .select()
+            .single();
+
+          if (newLead) {
+            await supabase.from("lead_activities").insert({
+              lead_id: newLead.id,
+              type: "newsletter_subscribe",
+              points: 8,
+              metadata: { is_initial: true },
+            });
+          }
+        }
+        console.log(`[newsletter-subscribe] Lead created/updated for: ${data.email}`);
+      } catch (leadError) {
+        console.warn("[newsletter-subscribe] Lead creation error:", leadError);
+      }
+      
       // Trigger webhook for newsletter subscribed
       try {
         await supabase.functions.invoke('send-webhook', {
