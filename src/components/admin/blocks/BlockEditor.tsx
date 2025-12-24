@@ -14,7 +14,7 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import { ContentBlock, ContentBlockType, HeroBlockData, TextBlockData, ImageBlockData, CTABlockData, ContactBlockData, LinkGridBlockData, TwoColumnBlockData, InfoBoxBlockData, AccordionBlockData, ArticleGridBlockData, YouTubeBlockData, QuoteBlockData, SeparatorBlockData, GalleryBlockData, StatsBlockData, ChatBlockData, MapBlockData, FormBlockData, PopupBlockData, BookingBlockData, PricingBlockData, TestimonialsBlockData, TeamBlockData, LogosBlockData, ComparisonBlockData, BlockSpacing, BlockAnimation } from '@/types/cms';
+import { ContentBlock, ContentBlockType, HeroBlockData, TextBlockData, ImageBlockData, CTABlockData, ContactBlockData, LinkGridBlockData, TwoColumnBlockData, InfoBoxBlockData, AccordionBlockData, ArticleGridBlockData, YouTubeBlockData, QuoteBlockData, SeparatorBlockData, GalleryBlockData, StatsBlockData, ChatBlockData, MapBlockData, FormBlockData, PopupBlockData, BookingBlockData, PricingBlockData, TestimonialsBlockData, TeamBlockData, LogosBlockData, ComparisonBlockData, FeaturesBlockData, BlockSpacing, BlockAnimation } from '@/types/cms';
 import { BlockWrapper } from './BlockWrapper';
 import { BlockSelector } from './BlockSelector';
 import { HeroBlockEditor } from './HeroBlockEditor';
@@ -43,6 +43,7 @@ import { TestimonialsBlockEditor } from './TestimonialsBlockEditor';
 import { TeamBlockEditor } from './TeamBlockEditor';
 import { LogosBlockEditor } from './LogosBlockEditor';
 import { ComparisonBlockEditor } from './ComparisonBlockEditor';
+import { FeaturesBlockEditor } from './FeaturesBlockEditor';
 import { TemplateEmptyState } from '@/components/admin/StarterTemplateSelector';
 import { StarterTemplate } from '@/data/starter-templates';
 
@@ -82,6 +83,7 @@ type BlockDataMap = {
   team: TeamBlockData;
   logos: LogosBlockData;
   comparison: ComparisonBlockData;
+  features: FeaturesBlockData;
 };
 
 const DEFAULT_BLOCK_DATA: BlockDataMap = {
@@ -196,6 +198,16 @@ const DEFAULT_BLOCK_DATA: BlockDataMap = {
     showPrices: true,
     showButtons: true,
     stickyHeader: false,
+  },
+  features: {
+    title: 'Our Services',
+    subtitle: 'What we offer',
+    features: [],
+    columns: 3,
+    layout: 'grid',
+    variant: 'cards',
+    iconStyle: 'circle',
+    showLinks: true,
   },
 };
 
@@ -485,6 +497,13 @@ export function BlockEditor({ blocks, onChange, canEdit }: BlockEditorProps) {
             data={block.data as unknown as ComparisonBlockData}
             onChange={(data) => handleUpdateBlock(block.id, data as unknown as Record<string, unknown>)}
             isEditing={isEditing}
+          />
+        );
+      case 'features':
+        return (
+          <FeaturesBlockEditor
+            data={block.data as unknown as FeaturesBlockData}
+            onChange={(data) => handleUpdateBlock(block.id, data as unknown as Record<string, unknown>)}
           />
         );
       default:

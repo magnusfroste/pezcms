@@ -92,6 +92,7 @@ export type ContentBlockType =
   | 'team'
   | 'logos'
   | 'comparison'
+  | 'features'
   | 'footer'
   | 'header';
 
@@ -557,6 +558,26 @@ export interface ComparisonBlockData {
   showPrices?: boolean;
   showButtons?: boolean;
   stickyHeader?: boolean;
+}
+
+// Features/Services block data
+export interface FeatureItem {
+  id: string;
+  icon: string;
+  title: string;
+  description: string;
+  url?: string;
+}
+
+export interface FeaturesBlockData {
+  title?: string;
+  subtitle?: string;
+  features: FeatureItem[];
+  columns?: 2 | 3 | 4;
+  layout?: 'grid' | 'list';
+  variant?: 'default' | 'cards' | 'minimal' | 'centered';
+  iconStyle?: 'circle' | 'square' | 'none';
+  showLinks?: boolean;
 }
 
 // Workflow actions

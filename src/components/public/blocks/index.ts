@@ -24,3 +24,4 @@ export { TestimonialsBlock } from './TestimonialsBlock';
 export { TeamBlock } from './TeamBlock';
 export { LogosBlock } from './LogosBlock';
 export { ComparisonBlock } from './ComparisonBlock';
+export { FeaturesBlock } from './FeaturesBlock';

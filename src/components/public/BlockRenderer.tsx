@@ -1,4 +1,4 @@
-import { ContentBlock, BlockSpacing, SpacingSize, AnimationType, PopupBlockData, BookingBlockData, PricingBlockData, TestimonialsBlockData, TeamBlockData, LogosBlockData, ComparisonBlockData } from '@/types/cms';
+import { ContentBlock, BlockSpacing, SpacingSize, AnimationType, PopupBlockData, BookingBlockData, PricingBlockData, TestimonialsBlockData, TeamBlockData, LogosBlockData, ComparisonBlockData, FeaturesBlockData } from '@/types/cms';
 import { AnimatedBlock } from './AnimatedBlock';
 import { cn } from '@/lib/utils';
 import {
@@ -28,6 +28,7 @@ import {
   TeamBlock,
   LogosBlock,
   ComparisonBlock,
+  FeaturesBlock,
 } from './blocks';
 import type {
   HeroBlockData,
@@ -152,6 +153,8 @@ export function BlockRenderer({ block, pageId, index = 0 }: BlockRendererProps) 
         return <LogosBlock data={block.data as unknown as LogosBlockData} />;
       case 'comparison':
         return <ComparisonBlock data={block.data as unknown as ComparisonBlockData} />;
+      case 'features':
+        return <FeaturesBlock data={block.data as unknown as FeaturesBlockData} />;
       default:
         return null;
     }

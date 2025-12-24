@@ -36,6 +36,7 @@ import {
   Users,
   Building2,
   TableProperties,
+  Sparkles,
 } from 'lucide-react';
 import { ContentBlockType } from '@/types/cms';
 
@@ -171,6 +172,12 @@ const BLOCK_GROUPS: BlockGroup[] = [
         label: 'Comparison',
         icon: <TableProperties className="h-5 w-5" />,
         description: 'Feature comparison table for plans',
+      },
+      {
+        type: 'features',
+        label: 'Features',
+        icon: <Sparkles className="h-5 w-5" />,
+        description: 'Services or features with icons',
       },
       {
         type: 'map',
