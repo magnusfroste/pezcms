@@ -88,6 +88,7 @@ export type ContentBlockType =
   | 'popup'
   | 'booking'
   | 'pricing'
+  | 'testimonials'
   | 'footer'
   | 'header';
 
@@ -450,6 +451,30 @@ export interface PricingBlockData {
   showToggle?: boolean;
   monthlyLabel?: string;
   yearlyLabel?: string;
+}
+
+// Testimonials block data
+export interface Testimonial {
+  id: string;
+  content: string;
+  author: string;
+  role?: string;
+  company?: string;
+  avatar?: string;
+  rating?: number; // 1-5 stars
+}
+
+export interface TestimonialsBlockData {
+  title?: string;
+  subtitle?: string;
+  testimonials: Testimonial[];
+  layout: 'grid' | 'carousel' | 'single';
+  columns?: 2 | 3;
+  showRating?: boolean;
+  showAvatar?: boolean;
+  variant?: 'default' | 'cards' | 'minimal';
+  autoplay?: boolean;
+  autoplaySpeed?: number; // in seconds
 }
 
 // Workflow actions

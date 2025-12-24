@@ -30,6 +30,7 @@ const BLOCK_LABELS: Record<ContentBlockType, string> = {
   popup: 'Popup',
   booking: 'Booking',
   pricing: 'Pricing',
+  testimonials: 'Testimonials',
   footer: 'Footer',
   header: 'Header',
 };

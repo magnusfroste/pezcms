@@ -32,6 +32,7 @@ import {
   Megaphone,
   CalendarCheck,
   CreditCard,
+  MessageSquareQuote,
 } from 'lucide-react';
 import { ContentBlockType } from '@/types/cms';
 
@@ -143,6 +144,12 @@ const BLOCK_GROUPS: BlockGroup[] = [
         label: 'Statistics',
         icon: <BarChart3 className="h-5 w-5" />,
         description: 'Display key figures visually',
+      },
+      {
+        type: 'testimonials',
+        label: 'Testimonials',
+        icon: <MessageSquareQuote className="h-5 w-5" />,
+        description: 'Customer reviews with ratings',
       },
       {
         type: 'map',
