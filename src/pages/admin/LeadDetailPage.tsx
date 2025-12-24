@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from '@/components/ui/command';
@@ -16,8 +17,10 @@ import { useAddLeadActivity, type ActivityType } from '@/hooks/useActivities';
 import { getLeadStatusInfo, type LeadStatus } from '@/lib/lead-utils';
 import { DealSection } from '@/components/admin/DealSection';
 import { ActivityTimeline } from '@/components/admin/ActivityTimeline';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 import { 
-  ArrowLeft, Mail, Phone, Building, Calendar, Sparkles, AlertCircle, Check, ChevronsUpDown, X, Plus
+  ArrowLeft, Mail, Phone, Building, Calendar, Sparkles, AlertCircle, Check, ChevronsUpDown, X, Plus, Loader2
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
@@ -38,6 +41,14 @@ export default function LeadDetailPage() {
   const [showNewCompanyForm, setShowNewCompanyForm] = useState(false);
   const [newCompanyName, setNewCompanyName] = useState('');
   const [newCompanyDomain, setNewCompanyDomain] = useState('');
+  const [newCompanyIndustry, setNewCompanyIndustry] = useState('');
+  const [newCompanySize, setNewCompanySize] = useState('');
+  const [newCompanyPhone, setNewCompanyPhone] = useState('');
+  const [newCompanyAddress, setNewCompanyAddress] = useState('');
+  const [newCompanyWebsite, setNewCompanyWebsite] = useState('');
+  const [newCompanyNotes, setNewCompanyNotes] = useState('');
+  const [isEnrichingInline, setIsEnrichingInline] = useState(false);
+  const [showEnrichedFields, setShowEnrichedFields] = useState(false);
 
   if (isLoading) {
     return (
@@ -74,6 +85,54 @@ export default function LeadDetailPage() {
     setShowNewCompanyForm(false);
   };
 
+  const handleEnrichInline = async () => {
+    if (!newCompanyDomain.trim()) {
+      toast.error('Ange en domän för att berika');
+      return;
+    }
+    
+    setIsEnrichingInline(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('enrich-company', {
+        body: { domain: newCompanyDomain.trim() }
+      });
+      
+      if (error) throw error;
+      
+      if (data?.success && data?.data) {
+        const enrichedData = data.data;
+        if (enrichedData.industry) setNewCompanyIndustry(enrichedData.industry);
+        if (enrichedData.size) setNewCompanySize(enrichedData.size);
+        if (enrichedData.phone) setNewCompanyPhone(enrichedData.phone);
+        if (enrichedData.address) setNewCompanyAddress(enrichedData.address);
+        if (enrichedData.website) setNewCompanyWebsite(enrichedData.website);
+        if (enrichedData.description) setNewCompanyNotes(enrichedData.description);
+        setShowEnrichedFields(true);
+        toast.success('Företagsinformation hämtad');
+      } else {
+        toast.error('Kunde inte hämta företagsinformation');
+      }
+    } catch (error) {
+      console.error('Enrichment failed:', error);
+      toast.error('Kunde inte hämta företagsinformation');
+    } finally {
+      setIsEnrichingInline(false);
+    }
+  };
+
+  const resetNewCompanyForm = () => {
+    setNewCompanyName('');
+    setNewCompanyDomain('');
+    setNewCompanyIndustry('');
+    setNewCompanySize('');
+    setNewCompanyPhone('');
+    setNewCompanyAddress('');
+    setNewCompanyWebsite('');
+    setNewCompanyNotes('');
+    setShowEnrichedFields(false);
+    setShowNewCompanyForm(false);
+  };
+
   const handleCreateCompany = async () => {
     if (!newCompanyName.trim()) return;
     
@@ -81,20 +140,18 @@ export default function LeadDetailPage() {
       {
         name: newCompanyName.trim(),
         domain: newCompanyDomain.trim() || null,
-        industry: null,
-        size: null,
-        address: null,
-        phone: null,
-        website: null,
-        notes: null,
+        industry: newCompanyIndustry.trim() || null,
+        size: newCompanySize.trim() || null,
+        address: newCompanyAddress.trim() || null,
+        phone: newCompanyPhone.trim() || null,
+        website: newCompanyWebsite.trim() || null,
+        notes: newCompanyNotes.trim() || null,
         created_by: null,
       },
       {
         onSuccess: (newCompany) => {
           handleCompanyChange(newCompany.id);
-          setNewCompanyName('');
-          setNewCompanyDomain('');
-          setShowNewCompanyForm(false);
+          resetNewCompanyForm();
         },
       }
     );
@@ -293,36 +350,132 @@ export default function LeadDetailPage() {
                     </PopoverTrigger>
                     <PopoverContent className="w-72 p-0" align="start">
                       {showNewCompanyForm ? (
-                        <div className="p-3 space-y-3">
+                        <div className="p-3 space-y-3 max-h-96 overflow-y-auto">
                           <div className="flex items-center justify-between">
-                            <span className="text-sm font-medium">New Company</span>
+                            <span className="text-sm font-medium">Nytt företag</span>
                             <Button
                               variant="ghost"
                               size="sm"
                               className="h-6 w-6 p-0"
-                              onClick={() => setShowNewCompanyForm(false)}
+                              onClick={resetNewCompanyForm}
                             >
                               <X className="h-4 w-4" />
                             </Button>
                           </div>
                           <Input
-                            placeholder="Company name *"
+                            placeholder="Företagsnamn *"
                             value={newCompanyName}
                             onChange={(e) => setNewCompanyName(e.target.value)}
                             autoFocus
                           />
-                          <Input
-                            placeholder="Domain (e.g. acme.com)"
-                            value={newCompanyDomain}
-                            onChange={(e) => setNewCompanyDomain(e.target.value)}
-                          />
+                          <div className="flex gap-2">
+                            <Input
+                              placeholder="Domän (t.ex. acme.com)"
+                              value={newCompanyDomain}
+                              onChange={(e) => setNewCompanyDomain(e.target.value)}
+                              className="flex-1"
+                            />
+                            <Button
+                              variant="outline"
+                              size="icon"
+                              onClick={handleEnrichInline}
+                              disabled={!newCompanyDomain.trim() || isEnrichingInline}
+                              title="Berika med AI"
+                            >
+                              {isEnrichingInline ? (
+                                <Loader2 className="h-4 w-4 animate-spin" />
+                              ) : (
+                                <Sparkles className="h-4 w-4" />
+                              )}
+                            </Button>
+                          </div>
+                          
+                          {showEnrichedFields && (
+                            <div className="space-y-3 pt-2 border-t">
+                              <div className="grid grid-cols-2 gap-2">
+                                <div className="space-y-1">
+                                  <Label className="text-xs">Bransch</Label>
+                                  <Select value={newCompanyIndustry} onValueChange={setNewCompanyIndustry}>
+                                    <SelectTrigger className="h-8 text-xs">
+                                      <SelectValue placeholder="Välj..." />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                      <SelectItem value="IT & Teknik">IT & Teknik</SelectItem>
+                                      <SelectItem value="Finans & Försäkring">Finans & Försäkring</SelectItem>
+                                      <SelectItem value="Detaljhandel">Detaljhandel</SelectItem>
+                                      <SelectItem value="Tillverkning">Tillverkning</SelectItem>
+                                      <SelectItem value="Hälsa & Sjukvård">Hälsa & Sjukvård</SelectItem>
+                                      <SelectItem value="Utbildning">Utbildning</SelectItem>
+                                      <SelectItem value="Konsulttjänster">Konsulttjänster</SelectItem>
+                                      <SelectItem value="Media & Underhållning">Media & Underhållning</SelectItem>
+                                      <SelectItem value="Bygg & Fastighet">Bygg & Fastighet</SelectItem>
+                                      <SelectItem value="Övrigt">Övrigt</SelectItem>
+                                    </SelectContent>
+                                  </Select>
+                                </div>
+                                <div className="space-y-1">
+                                  <Label className="text-xs">Storlek</Label>
+                                  <Select value={newCompanySize} onValueChange={setNewCompanySize}>
+                                    <SelectTrigger className="h-8 text-xs">
+                                      <SelectValue placeholder="Välj..." />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                      <SelectItem value="1-10">1-10 anställda</SelectItem>
+                                      <SelectItem value="11-50">11-50 anställda</SelectItem>
+                                      <SelectItem value="51-200">51-200 anställda</SelectItem>
+                                      <SelectItem value="201-500">201-500 anställda</SelectItem>
+                                      <SelectItem value="501+">501+ anställda</SelectItem>
+                                    </SelectContent>
+                                  </Select>
+                                </div>
+                              </div>
+                              <div className="space-y-1">
+                                <Label className="text-xs">Telefon</Label>
+                                <Input
+                                  placeholder="Telefonnummer"
+                                  value={newCompanyPhone}
+                                  onChange={(e) => setNewCompanyPhone(e.target.value)}
+                                  className="h-8 text-xs"
+                                />
+                              </div>
+                              <div className="space-y-1">
+                                <Label className="text-xs">Webbplats</Label>
+                                <Input
+                                  placeholder="https://..."
+                                  value={newCompanyWebsite}
+                                  onChange={(e) => setNewCompanyWebsite(e.target.value)}
+                                  className="h-8 text-xs"
+                                />
+                              </div>
+                              <div className="space-y-1">
+                                <Label className="text-xs">Adress</Label>
+                                <Input
+                                  placeholder="Adress"
+                                  value={newCompanyAddress}
+                                  onChange={(e) => setNewCompanyAddress(e.target.value)}
+                                  className="h-8 text-xs"
+                                />
+                              </div>
+                              <div className="space-y-1">
+                                <Label className="text-xs">Beskrivning</Label>
+                                <Textarea
+                                  placeholder="Företagsbeskrivning..."
+                                  value={newCompanyNotes}
+                                  onChange={(e) => setNewCompanyNotes(e.target.value)}
+                                  rows={2}
+                                  className="text-xs"
+                                />
+                              </div>
+                            </div>
+                          )}
+                          
                           <Button
                             className="w-full"
                             size="sm"
                             onClick={handleCreateCompany}
                             disabled={!newCompanyName.trim() || createCompany.isPending}
                           >
-                            {createCompany.isPending ? 'Creating...' : 'Create & Link'}
+                            {createCompany.isPending ? 'Skapar...' : 'Skapa & länka'}
                           </Button>
                         </div>
                       ) : (
