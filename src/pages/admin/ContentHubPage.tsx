@@ -9,7 +9,7 @@ import {
   ChevronDown, AlertCircle, Quote, LayoutGrid, Image, Images, 
   Youtube, Grid3X3, MousePointerClick, Phone, ClipboardList, 
   Bot, MailPlus, MapPin, BarChart3, CalendarCheck, CreditCard,
-  MessageCircle, Users, Building, Columns3, BellRing,
+  MessageCircle, Users, Building, Columns3, BellRing, Sparkles,
   type LucideIcon
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -77,6 +77,7 @@ const BLOCK_TYPES: BlockType[] = [
   { type: "team", name: "Team", category: "Marketing", icon: Users },
   { type: "logos", name: "Logo Cloud", category: "Marketing", icon: Building },
   { type: "comparison", name: "Comparison", category: "Marketing", icon: Columns3 },
+  { type: "features", name: "Features", category: "Marketing", icon: Sparkles },
   // Data
   { type: "stats", name: "Statistics", category: "Data", icon: BarChart3 },
 ];

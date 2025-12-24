@@ -34,6 +34,7 @@ const BLOCK_LABELS: Record<ContentBlockType, string> = {
   team: 'Team',
   logos: 'Logo Cloud',
   comparison: 'Comparison',
+  features: 'Features',
   footer: 'Footer',
   header: 'Header',
 };
