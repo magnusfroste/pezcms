@@ -20,3 +20,4 @@ export { NewsletterBlock } from './NewsletterBlock';
 export { PopupBlock } from './PopupBlock';
 export { BookingBlock } from './BookingBlock';
 export { PricingBlock } from './PricingBlock';
+export { TestimonialsBlock } from './TestimonialsBlock';

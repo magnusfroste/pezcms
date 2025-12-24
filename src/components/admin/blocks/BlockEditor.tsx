@@ -14,7 +14,7 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import { ContentBlock, ContentBlockType, HeroBlockData, TextBlockData, ImageBlockData, CTABlockData, ContactBlockData, LinkGridBlockData, TwoColumnBlockData, InfoBoxBlockData, AccordionBlockData, ArticleGridBlockData, YouTubeBlockData, QuoteBlockData, SeparatorBlockData, GalleryBlockData, StatsBlockData, ChatBlockData, MapBlockData, FormBlockData, PopupBlockData, BookingBlockData, PricingBlockData, BlockSpacing, BlockAnimation } from '@/types/cms';
+import { ContentBlock, ContentBlockType, HeroBlockData, TextBlockData, ImageBlockData, CTABlockData, ContactBlockData, LinkGridBlockData, TwoColumnBlockData, InfoBoxBlockData, AccordionBlockData, ArticleGridBlockData, YouTubeBlockData, QuoteBlockData, SeparatorBlockData, GalleryBlockData, StatsBlockData, ChatBlockData, MapBlockData, FormBlockData, PopupBlockData, BookingBlockData, PricingBlockData, TestimonialsBlockData, BlockSpacing, BlockAnimation } from '@/types/cms';
 import { BlockWrapper } from './BlockWrapper';
 import { BlockSelector } from './BlockSelector';
 import { HeroBlockEditor } from './HeroBlockEditor';
@@ -39,6 +39,7 @@ import { NewsletterBlockEditor } from './NewsletterBlockEditor';
 import { PopupBlockEditor } from './PopupBlockEditor';
 import { BookingBlockEditor } from './BookingBlockEditor';
 import { PricingBlockEditor } from './PricingBlockEditor';
+import { TestimonialsBlockEditor } from './TestimonialsBlockEditor';
 import { TemplateEmptyState } from '@/components/admin/StarterTemplateSelector';
 import { StarterTemplate } from '@/data/starter-templates';
 
@@ -74,6 +75,7 @@ type BlockDataMap = {
   popup: PopupBlockData;
   booking: BookingBlockData;
   pricing: PricingBlockData;
+  testimonials: TestimonialsBlockData;
 };
 
 const DEFAULT_BLOCK_DATA: BlockDataMap = {
@@ -145,6 +147,18 @@ const DEFAULT_BLOCK_DATA: BlockDataMap = {
     tiers: [],
     columns: 3,
     variant: 'cards',
+  },
+  testimonials: {
+    title: 'What Our Customers Say',
+    subtitle: 'Real feedback from real customers',
+    testimonials: [],
+    layout: 'grid',
+    columns: 3,
+    showRating: true,
+    showAvatar: true,
+    variant: 'cards',
+    autoplay: true,
+    autoplaySpeed: 5,
   },
 };
 
@@ -400,6 +414,14 @@ export function BlockEditor({ blocks, onChange, canEdit }: BlockEditorProps) {
         return (
           <PricingBlockEditor
             data={block.data as unknown as PricingBlockData}
+            onChange={(data) => handleUpdateBlock(block.id, data as unknown as Record<string, unknown>)}
+            isEditing={isEditing}
+          />
+        );
+      case 'testimonials':
+        return (
+          <TestimonialsBlockEditor
+            data={block.data as unknown as TestimonialsBlockData}
             onChange={(data) => handleUpdateBlock(block.id, data as unknown as Record<string, unknown>)}
             isEditing={isEditing}
           />
