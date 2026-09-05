@@ -4,7 +4,7 @@
   "layers": {
     "schema": {
       "migration_head": "20260906200000",
-      "migrations_count": 578,
+      "migrations_count": 579,
       "migrations": [
         {
           "version": "00000000000000",
@@ -2277,6 +2277,10 @@
         {
           "version": "20260905100000",
           "name": "kb-svaret-har-en-skrivare"
+        },
+        {
+          "version": "20260905212724",
+          "name": "9ee24985-8e0e-4af3-8525-f918a586defc"
         },
         {
           "version": "20260906100000",
