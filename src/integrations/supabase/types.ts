@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      _mig_runner: {
+        Row: {
+          applied_at: string
+          error: string | null
+          filename: string
+          id: number
+          sql_text: string
+          status: string
+        }
+        Insert: {
+          applied_at?: string
+          error?: string | null
+          filename: string
+          id?: number
+          sql_text: string
+          status?: string
+        }
+        Update: {
+          applied_at?: string
+          error?: string | null
+          filename?: string
+          id?: number
+          sql_text?: string
+          status?: string
+        }
+        Relationships: []
+      }
       a2a_activity: {
         Row: {
           created_at: string
