@@ -3,8 +3,8 @@
   "schema_version": 1,
   "layers": {
     "schema": {
-      "migration_head": "20260906200000",
-      "migrations_count": 578,
+      "migration_head": "20260906210000",
+      "migrations_count": 580,
       "migrations": [
         {
           "version": "00000000000000",
@@ -2279,6 +2279,10 @@
           "name": "kb-svaret-har-en-skrivare"
         },
         {
+          "version": "20260905212724",
+          "name": "9ee24985-8e0e-4af3-8525-f918a586defc"
+        },
+        {
           "version": "20260906100000",
           "name": "brevladan-far-en-svarare"
         },
@@ -2317,21 +2321,25 @@
         {
           "version": "20260906200000",
           "name": "vaulten-behover-bada-nycklarna"
+        },
+        {
+          "version": "20260906210000",
+          "name": "takten-ar-plattformens"
         }
       ]
     },
     "skills": {
-      "seed_hash": "sha256:d338e440e076711a8210c75f1b977e20ce723963f34d55e9f14f071455c8810b",
+      "seed_hash": "sha256:6acd6e156a886db08fb8af2e3d8e493b3a80cca04f6b13a70a7a20da36ca32d1",
       "skill_count": 562,
       "module_count": 67
     },
     "edge_functions": {
       "count": 77,
-      "shared_hash": "sha256:08ece7f96bc01defddfb6d3b96cfaecbf32216374ad2a56a744665cb9e6286cb",
+      "shared_hash": "sha256:3d759cde6328d4184385e88fca0546045543ff4be208850de0d31292a23ec2af",
       "functions": {
         "a2a": "sha256:0f4de74f6b9d1ac7c4b77af4bfcf1cb3ab47d56b3cfde9d62ec27071ae3551c2",
         "agent-card": "sha256:9486e3f1a5360c2d0fcfb032e24760eb337757878c51f4eeac4adf786432cddb",
-        "agent-execute": "sha256:f8ac3931000aefd05cb030c6d43c1b7e4f9c18cbf8575650387eba56adc0ff68",
+        "agent-execute": "sha256:21f8d86673c51400b13a4f8d8fd599c08732870b51b95b8f8597109f5733f30c",
         "agent-operate": "sha256:9edc79c928f9920a74d8cfbba484aeabe7b21fba0018ae2ec813031593a74798",
         "ai-task": "sha256:35ae34d3748467b51f716cfef3d80af31b08e92e801905277b8460765b017169",
         "automation-dispatcher": "sha256:8c04d415561f35764d0c72e7765f618497ee96a48f637f640730b805592015a7",
