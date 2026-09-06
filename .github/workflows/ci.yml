@@ -61,6 +61,11 @@ jobs:
 
       - name: Run tests
         run: npx vitest run
+        env:
+          # The live-DB suites that seed or read guarded tables (reconciliation,
+          # period-lock, MCP exposure) run only with a service key; without the
+          # secret they skip, honestly, instead of failing on the anon guard.
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.DEV_SUPABASE_SERVICE_ROLE_KEY }}
 
       - name: MCP module registry guard (static)
         run: npm run verify:hr-modules

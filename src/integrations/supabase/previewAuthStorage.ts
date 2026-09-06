@@ -3,7 +3,9 @@
 // On a Lovable preview surface, broker the auth session to the editor over
 // postMessage so the project's preview surfaces share one login; else localStorage.
 export function brokeredPreviewStorage() {
-  if (typeof window === 'undefined') return undefined;
+  // Bun/Node scripts (skills:json, sync-skills) import the client too: there
+  // `window` may exist but `location` does not. Outside a browser: no broker.
+  if (typeof window === 'undefined' || typeof location === 'undefined') return undefined;
   const host = location.hostname;
   const PREVIEW_ZONES = ['lovableproject.com', 'lovableproject-dev.com', 'lovable.app', 'gpt-eng.com', 'gptengineer.run'];
   const onPreviewZone = PREVIEW_ZONES.some((z) => host === z || host.endsWith('.' + z));
@@ -35,6 +37,7 @@ export function brokeredPreviewStorage() {
     new Promise((resolve) => {
       const requestId = newId();
       let done = false;
+      // eslint-disable-next-line prefer-const -- Lovable-generated file; assigned once below, referenced by finish() above the assignment.
       let timer: ReturnType<typeof setTimeout>;
       const finish = (r: { ok: boolean; value?: string | null } | null) => {
         if (done) return;
