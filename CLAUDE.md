@@ -393,8 +393,9 @@ admin "Sync skills from code" button.
 
 ### Drift & agent-usability learnings (operational)
 
-Hard-won notes from reconciling the Lovable-managed dev instance and making the
-MCP skill surface usable by an autonomous operator (OpenClaw):
+Hard-won notes from reconciling the (since retired) Lovable-managed dev instance
+and making the MCP skill surface usable by an autonomous operator (OpenClaw). The
+managed-ledger lessons still apply to every fork's Supabase integration:
 
 - **Forward-date migrations for managed instances.** Lovable's migrate runner
   applies migrations from its own `supabase_migrations` ledger; a repo migration
@@ -502,17 +503,19 @@ how a whole instance inverted (#430) — read the declared one, everywhere.
 
 Prefer runtime fallbacks over static validation gates. If API keys exist, the feature works — don't require manual `enabled` flags on top of working credentials.
 
-## Agent coordination (Claude Code ↔ Lovable / OpenClaw)
+## Agent coordination (Claude Code ↔ OpenClaw)
 
 > The old Agent Bridge on `clawstack.froste.eu` is **decommissioned** — do not use it.
+> The Lovable-managed dev instance (dev.flowwink.com, `rzhjotxffjfsdlhrdkpj`) was
+> **retired 2026-09-06**: its GitHub sync is disconnected and nothing in CI points at
+> it. Do not use the Lovable MCP for this repo.
 
-**Lovable dev sandbox** — dev.flowwink.com is the primary development environment, reached via the
-**Lovable MCP** (mcp.lovable.dev): project `fac5f9b2-2dc8-4cce-be0a-4266a826f893` ("flowwink") in
-workspace `oBEHQe55t4gxaILuzdAd`. Useful tools:
-
-- `send_message` — task Lovable's agent in natural language (**consumes workspace credits**)
-- `query_database` — SQL against the dev backend (`rzhjotxffjfsdlhrdkpj`); prefer SELECT
-- `get_diff`, `list_files`, `read_file`, `list_messages` — inspect code and agent history
+**Sandbox is the CI battery** — sandbox.flowwink.com (`lxirafnvepnfozeojqfb`) is the instance
+the repo owns: full admin for testers, destroyed and rebuilt nightly at 04:00 UTC
+(`reset_sandbox`), `api_keys` survive the rebuild. The live-DB suites, the daily MCP
+regression and the timesheet regression all target it (`SANDBOX_*` secrets/variables in
+GitHub Actions). Real development happens on a branch → PR → CI → merge → `sync-forks.sh`;
+there is no shared dev backend to keep in step any more.
 
 **OpenClaw** — the external MCP operator runs at `https://openclaw.liteit.se`
 (health: `GET /health` → `{"ok":true,"status":"live"}`). It operates FlowWink instances through the

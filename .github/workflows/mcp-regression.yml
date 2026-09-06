@@ -7,6 +7,10 @@ name: MCP Regression (Live)
 #
 # Kör live JSON-RPC handshake (initialize) + tools/list-diff mot deployad
 # MCP-edge function. Vid drift → fail + öppna GitHub Issue.
+#
+# Målet är SANDBOXEN (sandbox.flowwink.com) — instansen vi äger och som byggs
+# om varje natt; api_keys överlever ombyggnaden så MCP_API_KEY håller.
+# Lovable-dev pensionerades 2026-09-06. Byt mål med variabeln MCP_REGRESSION_URL.
 
 on:
   push:
@@ -28,8 +32,6 @@ jobs:
     name: Live MCP handshake + tools/list diff
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    # Skippa bot-pushar (Lovable agent committar ofta moduländringar — inte värt en live-check varje gång)
-    if: github.actor != 'lovable-dev[bot]' && github.actor != 'lovable[bot]'
 
     steps:
       - name: Checkout code
@@ -65,6 +67,7 @@ jobs:
         if: steps.secret_check.outputs.has_key == 'true'
         run: npm run test:mcp-regression
         env:
+          MCP_URL: ${{ vars.MCP_REGRESSION_URL || 'https://lxirafnvepnfozeojqfb.supabase.co/functions/v1/mcp-server' }}
           MCP_API_KEY: ${{ secrets.MCP_API_KEY }}
 
       - name: Open GitHub Issue on regression

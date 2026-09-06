@@ -76,7 +76,7 @@ const MCP_URL =
   process.env.MCP_URL ??
   (process.env.SUPABASE_URL
     ? `${process.env.SUPABASE_URL.replace(/\/$/, '')}/functions/v1/mcp-server`
-    : 'https://rzhjotxffjfsdlhrdkpj.supabase.co/functions/v1/mcp-server');
+    : 'https://lxirafnvepnfozeojqfb.supabase.co/functions/v1/mcp-server'); // sandbox.flowwink.com — the CI battery
 
 const AUTH_TOKEN = process.env.MCP_API_KEY ?? process.env.SUPABASE_ANON_KEY ?? '';
 

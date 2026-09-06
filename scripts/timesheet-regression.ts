@@ -33,7 +33,7 @@
 
 const SUPABASE_URL =
   process.env.SUPABASE_URL?.replace(/\/$/, '') ??
-  'https://rzhjotxffjfsdlhrdkpj.supabase.co';
+  'https://lxirafnvepnfozeojqfb.supabase.co'; // sandbox.flowwink.com — the CI battery
 const ANON_KEY = process.env.SUPABASE_ANON_KEY ?? '';
 const ADMIN_JWT = process.env.MCP_ADMIN_JWT ?? '';
 const EXEC_URL = `${SUPABASE_URL}/functions/v1/agent-execute`;

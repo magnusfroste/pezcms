@@ -63,12 +63,12 @@ because that determines how a change reaches it:
 > ```
 
 - **Pushing to `main`** auto-deploys the *frontend* to flowwink.com only.
-- **Backend auto-deploy (dev instance):** `.github/workflows/supabase-deploy.yml`
+- **Backend auto-deploy (one ref):** `.github/workflows/supabase-deploy.yml`
   runs `supabase db push` + `supabase functions deploy` on every push to `main`
   that touches `supabase/**`, targeting the `SUPABASE_PROJECT_REF` variable
-  (default: the dev instance `rzhjotxffjfsdlhrdkpj`). This closes the historical
-  gap where Lovable reflected git changes in its GUI but never applied migrations
-  or deployed functions — so backend changes no longer need a manual nudge.
+  (no default — the job skips until the variable is set). The Lovable-managed
+  dev instance it used to default to was retired 2026-09-06; the repo's own
+  test instance is the sandbox (`lxirafnvepnfozeojqfb`, sandbox.flowwink.com).
   Requires the `SUPABASE_ACCESS_TOKEN` + `SUPABASE_DB_PASSWORD` secrets; without
   them the job skips (never red-fails main). Per-function `verify_jwt` comes from
   `supabase/config.toml`, so public functions stay anon-reachable automatically.

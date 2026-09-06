@@ -6,16 +6,10 @@ on:
   push:
     branches: [main]
 
-# Skip entire workflow for Lovable bot pushes — they sync frequently and
-# would otherwise spam notifications on every save. Manual pushes and PRs
-# still run CI as normal.
-run-name: CI${{ (github.actor == 'lovable-dev[bot]' || github.actor == 'lovable[bot]') && ' (skipped — bot push)' || '' }}
-
 jobs:
   lint-and-typecheck:
     name: Lint & Type Check
     runs-on: ubuntu-latest
-    if: github.actor != 'lovable-dev[bot]' && github.actor != 'lovable[bot]'
 
     steps:
       - name: Checkout code
@@ -63,9 +57,12 @@ jobs:
         run: npx vitest run
         env:
           # The live-DB suites that seed or read guarded tables (reconciliation,
-          # period-lock, MCP exposure) run only with a service key; without the
-          # secret they skip, honestly, instead of failing on the anon guard.
-          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.DEV_SUPABASE_SERVICE_ROLE_KEY }}
+          # period-lock, MCP exposure) run against the SANDBOX — the instance we
+          # own, rebuilt nightly — only with its service key; without the secret
+          # they skip, honestly, instead of failing on the anon guard. The
+          # Lovable-managed dev instance was retired 2026-09-06.
+          VITE_SUPABASE_URL: ${{ vars.SANDBOX_SUPABASE_URL || 'https://lxirafnvepnfozeojqfb.supabase.co' }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SANDBOX_SUPABASE_SERVICE_ROLE_KEY }}
 
       - name: MCP module registry guard (static)
         run: npm run verify:hr-modules
@@ -101,8 +98,8 @@ jobs:
       - name: Timesheet → Invoice regression
         run: npm run test:timesheet-regression
         env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          SUPABASE_URL: ${{ vars.SANDBOX_SUPABASE_URL || 'https://lxirafnvepnfozeojqfb.supabase.co' }}
+          SUPABASE_ANON_KEY: ${{ secrets.SANDBOX_SUPABASE_ANON_KEY }}
           MCP_ADMIN_JWT: ${{ secrets.MCP_ADMIN_JWT }}
           MCP_PROJECT_ID: ${{ secrets.MCP_PROJECT_ID }}
         continue-on-error: true
@@ -111,7 +108,6 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     needs: lint-and-typecheck
-    if: github.actor != 'lovable-dev[bot]' && github.actor != 'lovable[bot]'
 
     steps:
       - name: Checkout code
