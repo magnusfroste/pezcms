@@ -52,7 +52,9 @@ const REQUIRED_MCP_UTILITIES = [
   'extract_pdf_text',   // PDF → text
 ];
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+// Module-level client: a placeholder key keeps the import from throwing when
+// the suite is skipped for lack of a service key (createClient refuses '').
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY || 'no-service-key-suite-skipped');
 
 describeIfServiceKey('MCP catalog exposure invariants (live DB)', () => {
   it('every mcp_exposed=true skill is also enabled (no orphan tools in catalog)', async () => {
