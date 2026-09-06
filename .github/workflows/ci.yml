@@ -57,12 +57,12 @@ jobs:
         run: npx vitest run
         env:
           # The live-DB suites that seed or read guarded tables (reconciliation,
-          # period-lock, MCP exposure) run against the SANDBOX — the instance we
-          # own, rebuilt nightly — only with its service key; without the secret
-          # they skip, honestly, instead of failing on the anon guard. The
-          # Lovable-managed dev instance was retired 2026-09-06.
-          VITE_SUPABASE_URL: ${{ vars.SANDBOX_SUPABASE_URL || 'https://lxirafnvepnfozeojqfb.supabase.co' }}
-          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SANDBOX_SUPABASE_SERVICE_ROLE_KEY }}
+          # period-lock, MCP exposure) run against WHATEVER instance the repo
+          # owner wires in here — the source carries no target of its own, so a
+          # fork never inherits somebody else's database as its test bed.
+          # Unset → the suites skip, honestly, and say so (src/test/live-db.ts).
+          VITE_SUPABASE_URL: ${{ vars.LIVE_TEST_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.LIVE_TEST_SUPABASE_SERVICE_ROLE_KEY }}
 
       - name: MCP module registry guard (static)
         run: npm run verify:hr-modules
@@ -96,10 +96,12 @@ jobs:
       # gating PRs on live edge-function availability.
 
       - name: Timesheet → Invoice regression
+        # Same rule: no LIVE_TEST_SUPABASE_URL variable → no target → skip.
+        if: vars.LIVE_TEST_SUPABASE_URL != ''
         run: npm run test:timesheet-regression
         env:
-          SUPABASE_URL: ${{ vars.SANDBOX_SUPABASE_URL || 'https://lxirafnvepnfozeojqfb.supabase.co' }}
-          SUPABASE_ANON_KEY: ${{ secrets.SANDBOX_SUPABASE_ANON_KEY }}
+          SUPABASE_URL: ${{ vars.LIVE_TEST_SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.LIVE_TEST_SUPABASE_ANON_KEY }}
           MCP_ADMIN_JWT: ${{ secrets.MCP_ADMIN_JWT }}
           MCP_PROJECT_ID: ${{ secrets.MCP_PROJECT_ID }}
         continue-on-error: true

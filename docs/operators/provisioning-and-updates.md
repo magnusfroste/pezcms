@@ -66,9 +66,10 @@ because that determines how a change reaches it:
 - **Backend auto-deploy (one ref):** `.github/workflows/supabase-deploy.yml`
   runs `supabase db push` + `supabase functions deploy` on every push to `main`
   that touches `supabase/**`, targeting the `SUPABASE_PROJECT_REF` variable
-  (no default — the job skips until the variable is set). The Lovable-managed
-  dev instance it used to default to was retired 2026-09-06; the repo's own
-  test instance is the sandbox (`lxirafnvepnfozeojqfb`, sandbox.flowwink.com).
+  (no default — the job skips until the variable is set). The same rule holds
+  for every live check in CI (`LIVE_TEST_*`, `MCP_REGRESSION_URL`): the source
+  names no instance, the repo owner wires one in. The Lovable-managed dev
+  instance that used to be the default was retired 2026-09-06.
   Requires the `SUPABASE_ACCESS_TOKEN` + `SUPABASE_DB_PASSWORD` secrets; without
   them the job skips (never red-fails main). Per-function `verify_jwt` comes from
   `supabase/config.toml`, so public functions stay anon-reachable automatically.

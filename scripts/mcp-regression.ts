@@ -72,11 +72,17 @@ const EXPECTED_TOOLS: Record<string, string[]> = {
   deals: ['manage_deal'],
 };
 
+// No instance default: the target is the caller's choice (MCP_URL or
+// SUPABASE_URL). A default here would make every fork test against upstream.
 const MCP_URL =
   process.env.MCP_URL ??
   (process.env.SUPABASE_URL
     ? `${process.env.SUPABASE_URL.replace(/\/$/, '')}/functions/v1/mcp-server`
-    : 'https://lxirafnvepnfozeojqfb.supabase.co/functions/v1/mcp-server'); // sandbox.flowwink.com — the CI battery
+    : '');
+if (!MCP_URL) {
+  console.error('MCP regression: set MCP_URL (or SUPABASE_URL) to the instance to test against.');
+  process.exit(3);
+}
 
 const AUTH_TOKEN = process.env.MCP_API_KEY ?? process.env.SUPABASE_ANON_KEY ?? '';
 

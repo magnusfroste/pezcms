@@ -8,9 +8,10 @@ name: MCP Regression (Live)
 # Kör live JSON-RPC handshake (initialize) + tools/list-diff mot deployad
 # MCP-edge function. Vid drift → fail + öppna GitHub Issue.
 #
-# Målet är SANDBOXEN (sandbox.flowwink.com) — instansen vi äger och som byggs
-# om varje natt; api_keys överlever ombyggnaden så MCP_API_KEY håller.
-# Lovable-dev pensionerades 2026-09-06. Byt mål med variabeln MCP_REGRESSION_URL.
+# Källkoden bär INGET mål: MCP_REGRESSION_URL (variabel) + MCP_API_KEY (secret)
+# sätts av den som äger repot/forken. Saknas någon av dem hoppar jobbet över
+# sig självt och säger det. (Upstream pekar på sandbox.flowwink.com, vars
+# api_keys överlever den nattliga ombyggnaden.)
 
 on:
   push:
@@ -37,12 +38,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Check MCP_API_KEY presence
+      - name: Check MCP_REGRESSION_URL + MCP_API_KEY presence
         id: secret_check
         run: |
-          if [ -z "${{ secrets.MCP_API_KEY }}" ]; then
+          if [ -z "${{ secrets.MCP_API_KEY }}" ] || [ -z "${{ vars.MCP_REGRESSION_URL }}" ]; then
             echo "has_key=false" >> $GITHUB_OUTPUT
-            echo "::warning::MCP_API_KEY saknas — hoppar över live-regression."
+            echo "::warning::MCP_REGRESSION_URL (variabel) eller MCP_API_KEY (secret) saknas — inget mål, hoppar över live-regression."
           else
             echo "has_key=true" >> $GITHUB_OUTPUT
           fi
@@ -67,7 +68,7 @@ jobs:
         if: steps.secret_check.outputs.has_key == 'true'
         run: npm run test:mcp-regression
         env:
-          MCP_URL: ${{ vars.MCP_REGRESSION_URL || 'https://lxirafnvepnfozeojqfb.supabase.co/functions/v1/mcp-server' }}
+          MCP_URL: ${{ vars.MCP_REGRESSION_URL }}
           MCP_API_KEY: ${{ secrets.MCP_API_KEY }}
 
       - name: Open GitHub Issue on regression

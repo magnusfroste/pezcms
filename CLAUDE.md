@@ -510,11 +510,14 @@ Prefer runtime fallbacks over static validation gates. If API keys exist, the fe
 > **retired 2026-09-06**: its GitHub sync is disconnected and nothing in CI points at
 > it. Do not use the Lovable MCP for this repo.
 
-**Sandbox is the CI battery** — sandbox.flowwink.com (`lxirafnvepnfozeojqfb`) is the instance
-the repo owns: full admin for testers, destroyed and rebuilt nightly at 04:00 UTC
-(`reset_sandbox`), `api_keys` survive the rebuild. The live-DB suites, the daily MCP
-regression and the timesheet regression all target it (`SANDBOX_*` secrets/variables in
-GitHub Actions). Real development happens on a branch → PR → CI → merge → `sync-forks.sh`;
+**The source carries no test target.** Every live check (live-DB suites, the daily MCP
+regression, the timesheet regression) reads its instance from GitHub variables/secrets —
+`LIVE_TEST_SUPABASE_URL`, `LIVE_TEST_SUPABASE_SERVICE_ROLE_KEY`, `LIVE_TEST_SUPABASE_ANON_KEY`,
+`MCP_REGRESSION_URL`, `MCP_API_KEY` — and skips, saying so, when they are unset. Never add
+an instance default to a script, test or workflow: the repo is forked, and a default makes
+every fork test (or deploy) against upstream's database. Upstream points these at
+sandbox.flowwink.com (full admin for testers, rebuilt nightly 04:00 UTC via `reset_sandbox`,
+`api_keys` survive the rebuild). Development is branch → PR → CI → merge → `sync-forks.sh`;
 there is no shared dev backend to keep in step any more.
 
 **OpenClaw** — the external MCP operator runs at `https://openclaw.liteit.se`
