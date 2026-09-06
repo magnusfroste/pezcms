@@ -26,9 +26,10 @@ import { describe, expect, it } from 'vitest';
 import { createClient } from '@supabase/supabase-js';
 import { describeIfServiceKey } from '@/test/live-db';
 
-const SUPABASE_URL = process.env.VITE_SUPABASE_URL ?? 'https://rzhjotxffjfsdlhrdkpj.supabase.co';
+// No instance default — unset means the suite skips (describeIfServiceKey).
+const SUPABASE_URL = process.env.VITE_SUPABASE_URL || 'https://unconfigured-live-db.invalid';
 // agent_skills is not anon-readable since the matrix/anon hardening reached
-// dev (2026-09-06, 42501 "permission denied for table agent_skills") — this
+// the fleet (2026-09-06, 42501 "permission denied for table agent_skills") — this
 // suite reads it, so it needs the service key, exactly as live-db.ts says.
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_KEY || '';
 

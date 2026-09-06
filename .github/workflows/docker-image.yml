@@ -44,12 +44,21 @@ jobs:
   build-push:
     name: Build and push frontend image
     runs-on: ubuntu-latest
+    # Fleet-only: forks inherit this file but not its purpose — a fork that
+    # wants it sets the repository variable FLEET_WORKFLOWS=true.
+    if: github.repository == 'magnusfroste/flowwink' || vars.FLEET_WORKFLOWS == 'true'
     env:
       IMAGE: ghcr.io/${{ github.repository_owner }}/flowwink-frontend
-      # Non-sensitive (see note above). Defaults = the dev instance.
-      VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL || 'https://rzhjotxffjfsdlhrdkpj.supabase.co' }}
-      VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.VITE_SUPABASE_PUBLISHABLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ6aGpvdHhmZmpmc2RsaHJka3BqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU1NTk2MzAsImV4cCI6MjA4MTEzNTYzMH0.h_S8ZHuCWWz97-uzQge0sb3riHmElrKTTfs5jrwE72c' }}
-      VITE_SUPABASE_PROJECT_ID: ${{ vars.VITE_SUPABASE_PROJECT_ID || 'rzhjotxffjfsdlhrdkpj' }}
+      # Non-sensitive (see note above) but deliberately WITHOUT an instance
+      # default: this used to bake the upstream dev instance's URL and anon key
+      # into every image, so a self-hosted container that forgot its env vars
+      # quietly ran against somebody else's database. Now the bake-in is a
+      # placeholder and the container entrypoint (docker/40-runtime-env.sh)
+      # MUST supply VITE_SUPABASE_* at start — an unconfigured image fails
+      # visibly instead of pointing at the wrong backend.
+      VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL || 'https://example.supabase.co' }}
+      VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.VITE_SUPABASE_PUBLISHABLE_KEY || 'set-VITE_SUPABASE_PUBLISHABLE_KEY-at-container-start' }}
+      VITE_SUPABASE_PROJECT_ID: ${{ vars.VITE_SUPABASE_PROJECT_ID || 'example' }}
 
     steps:
       - name: Checkout code

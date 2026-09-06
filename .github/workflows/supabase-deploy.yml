@@ -3,9 +3,9 @@ name: Supabase Deploy (migrations + edge functions)
 # WHY THIS EXISTS
 # ---------------
 # Frontend already auto-deploys on push (GitHub → Vercel). But database
-# migrations and edge functions do NOT — Lovable reflects git changes in its GUI
-# yet never applies migrations or deploys functions from a git push, so every
-# backend change needed a manual "nudge". This workflow makes git the single
+# migrations and edge functions do NOT unless a Supabase GitHub integration is
+# wired (the forks have one; the upstream repo has none since the Lovable-managed
+# dev instance was retired 2026-09-06). This workflow makes git the single
 # deploy trigger for ALL layers: on push to main it applies pending migrations
 # (`supabase db push`) and deploys changed edge functions (`supabase functions
 # deploy`, which respects the per-function verify_jwt flags in supabase/config.toml).
@@ -15,7 +15,7 @@ name: Supabase Deploy (migrations + edge functions)
 # - Migrations must be idempotent (CREATE OR REPLACE / IF NOT EXISTS) — enforced
 #   in review and forward-dated by the CI guard (check-migration-forward-dated.ts).
 #   `db push` only applies migrations not already in the ledger; re-applying an
-#   idempotent one (e.g. if Lovable re-stamped its version) is harmless.
+#   idempotent one (e.g. if a managed ledger re-stamped its version) is harmless.
 # - Runs only when supabase/** actually changed.
 # - If the required secrets are not configured yet, the job SKIPS with a notice
 #   instead of failing — so merging this workflow never red-fails main. It
@@ -25,7 +25,7 @@ name: Supabase Deploy (migrations + edge functions)
 #   SUPABASE_ACCESS_TOKEN   Supabase account access token (Dashboard → Account → Access Tokens)
 #   SUPABASE_DB_PASSWORD    Database password for the target project
 # OPTIONAL VARIABLE (Settings → Secrets and variables → Actions → Variables)
-#   SUPABASE_PROJECT_REF    Target project ref (defaults to the dev instance below)
+#   SUPABASE_PROJECT_REF    Target project ref (no default — the job skips without it)
 
 on:
   push:
