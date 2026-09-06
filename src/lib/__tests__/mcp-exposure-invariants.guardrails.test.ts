@@ -66,7 +66,7 @@ describeIfLiveDb('MCP catalog exposure invariants (live DB)', () => {
       orphans,
       `Orphan MCP tools (advertised but not callable): ${orphans.join(', ')}`,
     ).toEqual([]);
-  });
+  }, 20_000);
 
   it('utility skills are MCP-exposed so external operators can run end-to-end flows', async () => {
     const { data, error } = await supabase
@@ -80,7 +80,7 @@ describeIfLiveDb('MCP catalog exposure invariants (live DB)', () => {
       broken.map((r) => `${r.name}(mcp=${r.mcp_exposed},enabled=${r.enabled})`),
       'Utility skills must be enabled AND mcp_exposed for external operator parity',
     ).toEqual([]);
-  });
+  }, 20_000);
 
   it('operator-internal skills are intentionally NOT exposed via MCP', async () => {
     const { data, error } = await supabase
@@ -94,5 +94,5 @@ describeIfLiveDb('MCP catalog exposure invariants (live DB)', () => {
       leaks.map((r) => r.name),
       'Operator-internal skills (peer-comms primitives) leaked to MCP catalog',
     ).toEqual([]);
-  });
+  }, 20_000);
 });
