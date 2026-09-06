@@ -44,6 +44,9 @@ jobs:
   build-push:
     name: Build and push frontend image
     runs-on: ubuntu-latest
+    # Fleet-only: forks inherit this file but not its purpose — a fork that
+    # wants it sets the repository variable FLEET_WORKFLOWS=true.
+    if: github.repository == 'magnusfroste/flowwink' || vars.FLEET_WORKFLOWS == 'true'
     env:
       IMAGE: ghcr.io/${{ github.repository_owner }}/flowwink-frontend
       # Non-sensitive (see note above) but deliberately WITHOUT an instance

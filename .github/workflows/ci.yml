@@ -61,7 +61,11 @@ jobs:
           # owner wires in here — the source carries no target of its own, so a
           # fork never inherits somebody else's database as its test bed.
           # Unset → the suites skip, honestly, and say so (src/test/live-db.ts).
-          VITE_SUPABASE_URL: ${{ vars.LIVE_TEST_SUPABASE_URL }}
+          # The placeholder is what lets `client.ts` be imported at all (createClient
+          # throws on an empty URL); src/test/live-db-probe.ts treats it as
+          # "unconfigured", so nothing is ever probed or written by accident.
+          VITE_SUPABASE_URL: ${{ vars.LIVE_TEST_SUPABASE_URL || 'https://example.supabase.co' }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.LIVE_TEST_SUPABASE_ANON_KEY || 'placeholder-for-ci' }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.LIVE_TEST_SUPABASE_SERVICE_ROLE_KEY }}
 
       - name: MCP module registry guard (static)

@@ -518,7 +518,14 @@ an instance default to a script, test or workflow: the repo is forked, and a def
 every fork test (or deploy) against upstream's database. Upstream points these at
 sandbox.flowwink.com (full admin for testers, rebuilt nightly 04:00 UTC via `reset_sandbox`,
 `api_keys` survive the rebuild). Development is branch → PR → CI → merge → `sync-forks.sh`;
-there is no shared dev backend to keep in step any more.
+there is no shared dev backend to keep in step any more. **PR CI is offline** —
+type check, correctness lint, 3900 unit/guardrail tests, skill linter, artifact
+freshness, build; a single business process does not earn a live step on every PR.
+**Fork syncs run once a day, at night** (`nightly-fork-sync.yml`, 02:30 UTC): a sync is
+a production deploy, and deploying six times in an evening while an operator works
+is how "sometimes I get errors in the project view" happens (optic, 2026-09-04).
+Fleet-only workflows (docker image, release, main-red alert, MCP regression) carry
+`if: github.repository == 'magnusfroste/flowwink'` so forks stop running them.
 
 **OpenClaw** — the external MCP operator runs at `https://openclaw.liteit.se`
 (health: `GET /health` → `{"ok":true,"status":"live"}`). It operates FlowWink instances through the

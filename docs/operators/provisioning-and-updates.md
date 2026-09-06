@@ -76,6 +76,14 @@ because that determines how a change reaches it:
 - **The production fleet is still deployed per instance** (the steps below) —
   the auto-deploy above points at ONE ref. Point it at prod, or extend it to a
   matrix, only deliberately.
+- **Fork syncs happen ONCE a day, at night.** `.github/workflows/nightly-fork-sync.yml`
+  runs `scripts/sync-forks.sh` at 02:30 UTC with per-fork tokens from the
+  upstream repo's secrets (`GITHUB_TOKEN_<FORK>`) and repo variables
+  (`GITHUB_REPO_<FORK>`). A sync is a production deploy on that instance, and
+  every deploy invalidates the chunks a signed-in operator already has loaded:
+  six hand-run syncs on the evening of 2026-09-04 hit an operator mid-session
+  on optic. Merged PRs wait for the night; sync by hand only for an instance
+  that cannot wait, and then that one alone (`./scripts/sync-forks.sh <fork>`).
 - **Forks (autoversio.ai, optictunnels.se, demo.labs1100.com)**: `sync-forks.sh` pushes the fork, and
   both now auto-deploy Vercel AND Supabase (migrations + edge functions) from that
   push — verified 2026-08-31 (deployed sha == fork main). What NO fork rail covers
