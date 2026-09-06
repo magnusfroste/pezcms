@@ -511,9 +511,9 @@ Prefer runtime fallbacks over static validation gates. If API keys exist, the fe
 > it. Do not use the Lovable MCP for this repo.
 
 **The source carries no test target.** Every live check (live-DB suites, the daily MCP
-regression, the timesheet regression) reads its instance from GitHub variables/secrets —
-`LIVE_TEST_SUPABASE_URL`, `LIVE_TEST_SUPABASE_SERVICE_ROLE_KEY`, `LIVE_TEST_SUPABASE_ANON_KEY`,
-`MCP_REGRESSION_URL`, `MCP_API_KEY` — and skips, saying so, when they are unset. Never add
+regression) reads its instance from GitHub variables/secrets —
+`LIVE_TEST_SUPABASE_URL`, `LIVE_TEST_SUPABASE_SERVICE_ROLE_KEY`, `MCP_REGRESSION_URL`,
+`MCP_API_KEY` — and skips, saying so, when they are unset. Never add
 an instance default to a script, test or workflow: the repo is forked, and a default makes
 every fork test (or deploy) against upstream's database. Upstream points these at
 sandbox.flowwink.com (full admin for testers, rebuilt nightly 04:00 UTC via `reset_sandbox`,
